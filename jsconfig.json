@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "checkJs": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@styles/*": ["styles/*"],
+      "@components/*": ["components/*"],
+      "@utilities/*": ["utilities/*"]
+    },  
+  },
+  "include": ["**/*.js", "**/*.jsx", "utilities/*.js"],
+  "exclude": ["node_modules"]
+}
