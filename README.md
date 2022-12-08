@@ -41,13 +41,13 @@ If you don't already have an API key, reach out to Figment.
 Once you have added your API key, make sure to keep it safe to avoid exposing it.
 Check out Figment's [API Key Best Practices](https://docs.figment.io/guides/manage-and-secure-api-keys#api-key-best-practices).
 
-### 6. Run the Demo App
+### 5. Run the Demo App
 
 Ensure you have added a Figment API key to `.env` _before_ you run the server.
 
 `npm run dev` &rarr; starts the Next.js Development server.
 
-### 7. Get Started
+### 6. Get Started
 
 Navigate to [https://localhost:4000](https://localhost:4000) in your browser.
 
