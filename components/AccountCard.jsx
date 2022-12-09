@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 export const explorerUrl = (address) =>
@@ -10,7 +11,7 @@ export default function AccountCard(props) {
         <>
           <div className="profile">
             <h2 className="address">
-              <Link href="/accounts/create-near-account">Account Address</Link>{" "}
+              <Link href="/create-near-account">Account Address</Link>{" "}
               &rarr;
             </h2>
             <Link className="ext_link" href={explorerUrl(props.accountAddress)}>

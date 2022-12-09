@@ -114,8 +114,7 @@ export default function CreateNEARAccountPage() {
         </Modal>
 
         <div className="row">
-
-        <h1 className={styles.title}>Create a NEAR .testnet account</h1>
+          <h1 className={styles.title}>Create a NEAR .testnet account</h1>
         </div>
 
         <Button
@@ -137,10 +136,13 @@ export default function CreateNEARAccountPage() {
           <form onSubmit={handleSubmit} method="post">
             {accountAddress ? (
               <b>Your testnet address for this demo is {accountAddress}</b>
-            ) : (
+            ) : (<>
+            <div className="column">
               <Button style={{width: "auto"}} type="primary" htmlType="submit" disabled={isLoading ? true : false}>
                 Create Account
               </Button>
+            </div>
+            </>
             )}
           </form>
           <p className={styles.description}>
