@@ -31,7 +31,7 @@ The application uses the Next.js framework to display information about each flo
 
 ### 4. Add Figment API Key
 
-`mv .env-example .env` &rarr; Renames the file to `.env`
+`cp .env-template .env` &rarr; Renames the file to `.env`
 
 Paste a valid Figment API key after the variable `API_KEY=`
 

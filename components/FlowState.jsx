@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import React from "react";
 import Link from "next/link";
 import { useState } from "react";
@@ -102,7 +102,7 @@ export default function FlowState({ operation }) {
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              href={`https://explorer.testnet.near.org/transactions/${responseData.data.delegate_transaction.hash}`}
+              href={`https://explorer.testnet.near.org/transactions/${responseData?.data.delegate_transaction.hash}`}
             >
               View Transaction Hash on Block Explorer
             </Link>
