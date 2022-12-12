@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import styles from "/styles/Home.module.css";
 import { Button, Modal, ConfigProvider } from "antd";
+import { WarningOutlined } from "@ant-design/icons";
 
 import { useAppState } from "@utilities/appState";
 
@@ -103,6 +104,7 @@ export default function SubmitData({ operation }) {
 
   const handleClearFormData = async () => {
     setFormData(undefined);
+    setAppState({unsignedTransactionPayload: undefined});
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -358,9 +360,12 @@ export default function SubmitData({ operation }) {
                 <div className="payload">
                   {JSON.stringify(formData, null, 2)}
                 </div>
+
                 <br />
-                <br />
-                <Button
+                {!inputsSent
+                ? (<>
+
+                  <Button
                   style={{
                     width: "auto",
                     marginTop: "10px",
@@ -372,8 +377,8 @@ export default function SubmitData({ operation }) {
                 >
                   Submit Data to Staking API
                 </Button>
-                <br />
-                <Button
+                  <br/><br/><br/>
+                  <Button
                   danger
                   style={{
                     width: "auto",
@@ -383,9 +388,13 @@ export default function SubmitData({ operation }) {
                   type="primary"
                   htmlType="button"
                   onClick={handleClearFormData}
+                  icon={<WarningOutlined />}
                 >
                   Reset Inputs Payload
                 </Button>
+                </>)
+                : ""
+                }
               </>
             ) : (
               <>
@@ -399,18 +408,13 @@ export default function SubmitData({ operation }) {
               </>
             )}
 
-            <br />
-
             {unsignedTransactionPayload && inputsSent ? (
               <>
                 <p>
-                  {" "}
-                  The unsigned transaction payload is created by the Staking
-                  API,
+                  The unsigned transaction payload is created by the Staking API,
                   <br /> based on the <code>action</code> and{" "}
-                  <code>inputs</code>.{" "}
+                  <code>inputs</code>:{" "}
                 </p>
-                <p> Transaction Payload to Sign (click to copy) </p>
                 <div
                   className="payload"
                   onClick={() =>
@@ -428,6 +432,22 @@ export default function SubmitData({ operation }) {
                   Proceed to the next step &rarr;
                 </Button>
                 <br />
+                <br /><br />
+                <Button
+                  danger
+                  style={{
+                    width: "auto",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                  type="primary"
+                  htmlType="button"
+                  onClick={handleClearFormData}
+                  icon={<WarningOutlined />}
+                >
+                  Reset Inputs Payload
+                </Button>
+
               </>
             ) : (
               ""

@@ -68,6 +68,8 @@ export default function ViewAllFlows() {
         theme={{
           token: {
             colorPrimary: "#034d77",
+            colorError: "#C95d30",
+            colorWarning: "#C9C9F4"
           },
         }}
       >

@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button, Modal, ConfigProvider } from "antd";
+import { WarningOutlined } from "@ant-design/icons";
 import { useAppState } from "@utilities/appState";
 
 import styles from "@styles/Home.module.css";
@@ -403,6 +404,7 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
                   type="primary"
                   htmlType="button"
                   onClick={handleReset}
+                  icon={<WarningOutlined />}
                 >
                   Reset Form Data & Current Flow
                 </Button>
@@ -456,6 +458,7 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
                       type="primary"
                       htmlType="button"
                       onClick={handleClearFormData}
+                      icon={<WarningOutlined />}
                     >
                       Clear Form Data
                     </Button>

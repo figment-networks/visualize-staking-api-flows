@@ -3,13 +3,11 @@ import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "/styles/Home.module.css";
-import { useRouter } from "next/router";
 import { Button, Modal, ConfigProvider } from "antd";
 
 import { useAppState } from "@utilities/appState";
 
 export default function DecodeAndSignPayload({ operation }) {
-  const router = useRouter();
 
   const { appState, setAppState } = useAppState();
 
@@ -79,10 +77,6 @@ export default function DecodeAndSignPayload({ operation }) {
     setIsLoading(false);
   };
 
-  const handleNextPage = async () => {
-    router.push(`/operations/${operation}/broadcast-transaction`);
-  };
-
   const handleSignature = async () => {
     // Note: This is NOT a production-grade pattern to provide
     // the private key for signing. This is only being done as
@@ -132,7 +126,7 @@ export default function DecodeAndSignPayload({ operation }) {
           <ul>
             <br />
             <li>
-              Follow the guide on{" "}
+              For more information, refer to the guide {" "}
               <Link
                 target="_blank"
                 rel="noopener noreferrer"
@@ -141,6 +135,7 @@ export default function DecodeAndSignPayload({ operation }) {
                 Signing Transactions with Figment&apos;s npm Package
               </Link>
             </li>
+            <br/>
             <li>
               If you&apos;re signing with a custodial solution such as
               Fireblocks, read{" "}
@@ -154,6 +149,20 @@ export default function DecodeAndSignPayload({ operation }) {
             </li>
 
             <br />
+
+            <li>
+              The unsigned transaction payload can be found in the response from the Staking API after submitting data to a flow. Learn more in the <Link target="_blank" rel="noopener noreferrer" href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data">Figment Docs</Link>
+            </li>
+
+            <br />
+
+            <li>
+              For any network, the payload can be signed by applying the correct signing algorithm and a valid private key. This can be accomplished by using the Figment npm package <b>@figmentio/slate</b>, or hand-rolling a solution using a library intended for a specific network (ex. Solana&apos;s web3.js, Avalanche.js, Polkadot.js, etc.)
+            </li>
+            <br />
+            <li>
+              When the signature is applied to the payload, it can then be returned to the Staking API in its signed state. This allows the Staking API to submit the signed payload to the blockchain and complete the flow. 
+            </li>
           </ul>
         </Modal>
 
@@ -185,23 +194,10 @@ export default function DecodeAndSignPayload({ operation }) {
 
         <div className="row">
           <div className="column">
-            <p>
-              {" "}
-              Current Flow ID: <b>{flowId}</b> <br />
-              Flow State: <b>{flowState}</b>
-              <br />
-              Delegator Address: <b>{accountAddress}</b>
-              <br />
-              Delegator Public Key: <b>{accountPublicKey}</b>
-              <br />
-              Validator Address: <b>{validatorAddress}</b>
-              <br />
-              Amount: <b>{delegateAmount}</b>
-            </p>
 
             <form onSubmit={handleDecode} method="post">
               <label htmlFor="transaction_payload">
-                Unsigned Transaction Payload (Provide the Transaction Payload)
+                Unsigned Transaction Payload
               </label>
               <textarea
                 id="transaction_payload"
@@ -218,7 +214,7 @@ export default function DecodeAndSignPayload({ operation }) {
                 type="primary"
                 htmlType="submit"
               >
-                Decode Transaction Payload
+                Decode Transaction Payload with @figmentio/slate
               </Button>
             </form>
           </div>
@@ -228,6 +224,19 @@ export default function DecodeAndSignPayload({ operation }) {
 
             {decodedTransactionPayload && !isLoading ? (
               <>
+              <p align="left">
+              {" "}
+              Current Flow ID: <b>{flowId}</b> <br />
+              Flow State: <b>{flowState}</b>
+              <br />
+              Delegator Address: <b>{accountAddress}</b>
+              <br />
+              Delegator Public Key: <b>{accountPublicKey}</b>
+              <br />
+              Validator Address: <b>{validatorAddress}</b>
+              <br />
+              Amount: <b>{delegateAmount}</b>
+            </p>
                 <p>Decoded Transaction Payload</p>
                 <pre className="payload">
                   {JSON.stringify(decodedTransactionPayload, null, 2)}
@@ -246,10 +255,10 @@ export default function DecodeAndSignPayload({ operation }) {
               ""
             )}
 
-            <p> Signed Transaction Payload (click to copy) </p>
-            <br />
+            {signedTransactionPayload ? (<>
+              <p> Signed Transaction Payload </p>
+              <br />
 
-            {signedTransactionPayload ? (
               <div
                 className="payload"
                 onClick={() =>
@@ -258,7 +267,7 @@ export default function DecodeAndSignPayload({ operation }) {
               >
                 {signedTransactionPayload}
               </div>
-            ) : (
+              </>) : (
               ""
             )}
 
