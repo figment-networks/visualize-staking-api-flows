@@ -16,7 +16,7 @@ export default function IndexPage() {
   return (
     <>
       <Head>
-        <title>Staking API Walkthrough</title>
+        <title>Figment Staking API Flows</title>
         <meta
           name="description"
           content="Learn how to Navigate Figment's Staking API Flows"
@@ -26,7 +26,7 @@ export default function IndexPage() {
       <div className={styles.container}>
         <main className={styles.main}>
           <h1 className={styles.title}>
-            Figment{" "}
+            Visualize {" "}
             <Link
               target="_blank"
               rel="noopener noreferrer"
@@ -34,7 +34,7 @@ export default function IndexPage() {
             >
               Staking API
             </Link>{" "}
-            Walkthrough
+            Flows
           </h1>
 
           <p className={styles.intro}>Proof of Stake Made Easy!</p>
