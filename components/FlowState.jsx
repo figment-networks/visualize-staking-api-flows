@@ -1,9 +1,11 @@
+
+import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useAppState } from "@utilities/appState";
-import { Button, Modal } from "antd";
+import { Button, Modal, ConfigProvider } from "antd";
 
-import styles from "/styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 
 export default function FlowState({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -44,6 +46,15 @@ export default function FlowState({ operation }) {
 
   return (
     <div className="container">
+
+<ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#034d77",
+            },
+          }}
+        >
+
       <h1 className={styles.title}>Get Flow State</h1>
 
       <p className={styles.description}>
@@ -109,6 +120,7 @@ export default function FlowState({ operation }) {
       <div className="footer">
         <Link href="/">Return to Main Page</Link>
       </div>
+      </ConfigProvider>
     </div>
   );
 }

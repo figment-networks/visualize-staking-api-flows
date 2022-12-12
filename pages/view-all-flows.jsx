@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import {useState} from "react";
 import styles from "/styles/Home.module.css";
-import { Button, Modal } from "antd";
+import { Button, Modal, ConfigProvider } from "antd";
 
 import { useAppState } from "../utilities/appState";
 
@@ -75,6 +75,15 @@ export default function ViewAllFlows() {
 
   return (
     <div className="container">
+
+<ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#034d77",
+            },
+          }}
+        >
+
       <Modal
         title="Details"
         width="45%"
@@ -128,11 +137,10 @@ export default function ViewAllFlows() {
           rel="noopener noreferrer"
           href="https://docs.figment.io/api-reference/staking-api/near#get%20flow%20status"
         >
-          sending a GET request to the <code>api/v1/flows</code> endpoint.
+          sending a GET request to the <code>api/v1/flows</code> endpoint, without specifying a Flow ID.
         </Link>
         <br />
         <br />
-        Congratulations, you&apos;ve completed the walkthrough!{" "}
         <Link href="/">Return to the Main Page</Link>
       </p>
 
@@ -185,6 +193,7 @@ export default function ViewAllFlows() {
         <br />
         <br />
       </div>
+      </ConfigProvider>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import FlowState from "@components/FlowState";
+import React from "react";
 
 export default function flowState() {
-  return <FlowState />;
+  return <FlowState operation="staking"/>;
 }

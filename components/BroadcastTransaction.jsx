@@ -1,7 +1,9 @@
+
+import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import styles from "/styles/Home.module.css";
-import { Button, Modal } from "antd";
+import { Button, Modal, ConfigProvider } from "antd";
 
 import { useAppState } from "@utilities/appState";
 
@@ -68,6 +70,15 @@ export default function BroadcastTransaction({ operation }) {
   return (
     <>
       <div className="container">
+
+      <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#034d77",
+            },
+          }}
+        >
+
         <Modal
           title="Details"
           width="45%"
@@ -167,8 +178,10 @@ export default function BroadcastTransaction({ operation }) {
             )}
           </div>
         </div>
-
+              <div className="footer">
         <Link href="/">Return to Main Page</Link>
+</div>
+        </ConfigProvider>
       </div>
     </>
   );

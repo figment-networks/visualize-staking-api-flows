@@ -1,9 +1,10 @@
+import React from "react";
 import Link from "next/link";
-import { FormEvent, useState, useEffect } from "react";
-import { Button, Modal } from "antd";
+import { useState, useEffect } from "react";
+import { Button, Modal, ConfigProvider } from "antd";
 import { useAppState } from "@utilities/appState";
 
-import styles from "/styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 
 export default function InitializeFlow({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -82,7 +83,6 @@ export default function InitializeFlow({ operation }) {
         label: flowLabels[index],
       }));
 
-    // @ts-ignore
     setAppState({ inputs: inputs });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flowResponse, flowInputs, flowLabels]);
@@ -124,6 +124,15 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
   return (
     <>
       <div className="container">
+
+      <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#034d77",
+            },
+          }}
+        >
+
         <Modal
           title="Details"
           width="45%"
@@ -460,6 +469,7 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
         <div className="footer">
           <Link href="/">Return to Main Page</Link>
         </div>
+        </ConfigProvider>
       </div>
     </>
   );

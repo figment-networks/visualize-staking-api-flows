@@ -35,6 +35,7 @@ export default function AccountCard(props) {
                 <p
                   className="secret"
                   onClick={() =>
+                    // @ts-ignore
                     navigator.clipboard.writeText(props.accountPrivateKey)
                   }
                 >

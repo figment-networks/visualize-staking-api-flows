@@ -1,7 +1,8 @@
+import React from "react";
 import Link from "next/link";
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "/styles/Home.module.css";
-import { Button, Modal } from "antd";
+import { Button, Modal, ConfigProvider } from "antd";
 
 import { useAppState } from "@utilities/appState";
 
@@ -160,6 +161,15 @@ export default function SubmitData({ operation }) {
   return (
     <>
       <div className="container">
+
+      <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#034d77",
+            },
+          }}
+        >
+
         <Modal
           title="Details"
           width="40%"
@@ -427,6 +437,7 @@ export default function SubmitData({ operation }) {
         <div className="footer">
           <Link href="/">Return to Main Page</Link>
         </div>
+        </ConfigProvider>
       </div>
     </>
   );
