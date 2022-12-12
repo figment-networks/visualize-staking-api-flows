@@ -171,7 +171,7 @@ export default function ViewAllFlows() {
         ""
       )}
 
-      {responseData.page && !isLoading ? (
+      {responseData?.page && !isLoading ? (
         <>
           <p>
             {responseData?.data.length} results per page. &mdash; Viewing page{" "}
