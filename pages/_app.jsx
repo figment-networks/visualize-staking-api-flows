@@ -1,3 +1,4 @@
+import React from "react";
 import ErrorBoundary from "../components/ErrorBoundary";
 import AppStateProvider from "../utilities/appState";
 import "../styles/globals.css";

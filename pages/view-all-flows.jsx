@@ -1,5 +1,7 @@
+// @ts-nocheck
+import React from "react";
 import Link from "next/link";
-import { FormEvent, useState, useEffect } from "react";
+import {useState} from "react";
 import styles from "/styles/Home.module.css";
 import { Button, Modal } from "antd";
 
