@@ -87,7 +87,19 @@ export default function BroadcastTransaction({ operation }) {
           onCancel={handleCancel}
         >
           <ul>
-            <li>...</li>
+            <li><b>Once the signed transaction payload is sent to the Staking API, it is then broadcast to the network</b></li>
+            <br />
+            <li>
+              The flow state will change from <code>delegate_tx_broadcasting</code> to <code>delegated</code> once the transaction is confirmed on-chain
+            </li>
+            <br />
+            <li>
+              Learn how to set up webhooks to be notified of Staking API actions in the <Link target="_blank" rel="noopener noreferrer" href="https://github.com/figment-networks/figment-apis-demo-app#figment-apis-demo-app">Figment APIs Demo App Tutorial</Link> (specifically in <Link target="_blank" rel="noopener noreferrer" href="https://github.com/figment-networks/figment-apis-demo-app/blob/tutorial/tutorial.md#step-6-staking-api-webhooks">Step 6</Link>)
+            </li>
+            <br />
+            <li>
+              Learn more about webhooks in the guide <Link target="_blank" rel="noopener noreferrer" href="https://docs.figment.io/guides/staking-api/staking-api-webhooks">Staking API Webhooks</Link>
+            </li>
           </ul>
         </Modal>
 
@@ -115,10 +127,7 @@ export default function BroadcastTransaction({ operation }) {
 
         <div className="row">
           <div className="column">
-            <p>
-              Current Flow ID: <b>{flowId}</b>
-            </p>
-
+  
             {/* TODO: Make the actions dynamic */}
             <form onSubmit={handleSubmit} method="post">
               <label htmlFor="action">Action:</label>
@@ -138,12 +147,12 @@ export default function BroadcastTransaction({ operation }) {
               <textarea
                 id="signed_payload"
                 name="signed_payload"
-                rows={15}
+                rows={8}
                 cols={80}
                 required
                 defaultValue={signedTransactionPayload}
               />
-              <br />
+              <br /><br />
 
               <Button
                 style={{ width: "auto" }}
@@ -156,13 +165,14 @@ export default function BroadcastTransaction({ operation }) {
           </div>{" "}
           {/* column */}
           <div className="column">
-            <p> Flow State </p>
-
-            <br />
 
             {flowState ? (
               <>
-                <div className="payload">{flowState}</div>
+              <p>
+              Current Flow ID: <b>{flowId}</b>
+            </p>
+            <p>Current Flow State: <b>{flowState}</b> </p>
+            <br />
                 <br />
                 <br />
                 <Button
