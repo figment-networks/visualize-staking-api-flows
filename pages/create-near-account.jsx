@@ -83,7 +83,7 @@ export default function CreateNEARAccountPage() {
 
         <Modal
           title="Details"
-          width="75%"
+          width="50%"
           footer={null}
           open={isModalOpen}
           onCancel={handleCancel}

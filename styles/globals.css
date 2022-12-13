@@ -124,6 +124,26 @@ button:hover {
   background-color: #034D76;
 }
 
+details {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  width: 82%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+details summary { 
+  cursor: pointer;
+}
+
+details summary > * {
+  display: inline;
+}
+
+textarea {
+  resize: none;
+}
+
 .footer {
   margin: -5px 0px 10px 0px;
   padding-top: 25px;
@@ -315,6 +335,21 @@ pre.payload {
   overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
+.responseFixedAllFlows {
+  background-color: rgba(100,100,100,0.5);
+  border-radius: 15px;
+  width: 100%;
+  max-height: 70px;
+  display: block;
+  padding: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: left;
+  font-weight: bold;
+  overflow: scroll;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
 .detailcode {
   background-color: rgba(100,100,100,0.5);
   border-radius: 6px;
@@ -326,7 +361,6 @@ pre.payload {
   text-align: left;
   font-weight: bold;
 }
-
 
 .accordion {
   background-color: rgba(17, 150, 190, 0.5);
@@ -434,27 +468,7 @@ h1.tutorial-title {
   text-align: left;
 }
 
-details summary { 
-  cursor: pointer;
-}
-
-details summary > * {
-  display: inline;
-}
-
-textarea {
-  resize: none;
-}
-
 /* Used by the ErrorBoundary component */
 .errorButton {
   width: 25%;
-}
-
-details {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  width: 82%;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }

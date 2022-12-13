@@ -114,7 +114,7 @@ export default function ViewAllFlows() {
                 <summary>Click here to expand code snippet</summary>
                 <pre className="detailcode">{codeSnippet}</pre>
         
-                <p>&nbsp;Based on the current page of flows being viewed, such a filter returns the <code>delegated</code> flows:</p>
+                <p>&nbsp;Based on the current page being viewed, such a filter returns any <code>delegated</code> flows:</p>
 
                 <pre className="detailcode">
                 {responseData?.data && responseData?.data.length > 1
@@ -179,11 +179,11 @@ export default function ViewAllFlows() {
         <div className="row">
         <p className={styles.description}>
           To check the state of all flows that were created using your API key,
-          send a GET request to the <code>api/v1/flows</code> endpoint without a
-          flowId. <br />
-          Data from this query is paginated, page 1 being displayed by default.
-          If they exist, additional pages can be accessed via the query
-          parameter <code>?page=</code>.<br />
+          send a GET request to the <code>api/v1/flows</code> endpoint without
+          specifying a flowId. <br /><br />
+          Data from this query is paginated in groups of 20, with page 1 being displayed by default.
+          If they exist, additional pages can be accessed<br /> via the query
+          parameter <code>?page=</code>.
           For example: <code>api/v1/flows?page=2</code>.<br />
           <br />
           <p align="center">
@@ -227,7 +227,7 @@ export default function ViewAllFlows() {
               <b>{responseData?.data.length}</b> results per page &mdash; Viewing page{" "}
               <b>{responseData?.page}</b> of <b>{responseData?.pages}</b>
             </p>
-            <pre className="responseFixed" style={{width: "800px"}}>
+            <pre className="responseFixedAllFlows" style={{width: "800px"}}>
               {JSON.stringify(responseData, null, 2)}
             </pre>
             <br />
