@@ -100,6 +100,9 @@ export default function ViewAllFlows() {
               <code>data</code> array.
             </li>
             <li>
+              Each object in the <code>data</code> array is the most recent response for that flowId.
+            </li>
+            <li>
               Pagination is currently fixed to <code>responseData.data.length</code> &rarr; <b>20</b> flows per page.<br />
               Access individual results (in this context) with <code>responseData.data[0]</code>{" "}
               through <code>responseData.data[19]</code>. 
@@ -224,7 +227,7 @@ export default function ViewAllFlows() {
               <b>{responseData?.data.length}</b> results per page &mdash; Viewing page{" "}
               <b>{responseData?.page}</b> of <b>{responseData?.pages}</b>
             </p>
-            <pre className="response">
+            <pre className="responseFixed" style={{width: "800px"}}>
               {JSON.stringify(responseData, null, 2)}
             </pre>
             <br />
@@ -232,14 +235,6 @@ export default function ViewAllFlows() {
         ) : (
           ""
         )}
-
-        <div className="footer">
-          <Link href="/view-all-flows#top">Go to Top</Link>
-          <br />
-          <br />
-          <Link href="/">Return to the Main Page</Link>
-        </div>
-
       </ConfigProvider>
     </div>
   );
