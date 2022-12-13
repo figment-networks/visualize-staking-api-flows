@@ -2,10 +2,10 @@
 import React from "react";
 import Link from "next/link";
 import { useState } from "react";
-import styles from "/styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 import { Button, Modal, ConfigProvider } from "antd";
 
-import { useAppState } from "../utilities/appState";
+import { useAppState } from "@utilities/appState";
 
 export default function ViewAllFlows() {
   const { appState, setAppState, clearAppState } = useAppState();
@@ -114,10 +114,10 @@ export default function ViewAllFlows() {
                 <p>&nbsp;Based on the current page of flows being viewed, such a filter returns the <code>delegated</code> flows:</p>
 
                 <pre className="detailcode">
-                {responseData?.data
+                {responseData?.data && responseData?.data.length > 1
                 ? (
                   Object?.keys(responseData.data).map((index) => (<>
-                     {responseData?.data[index].state === 'delegated' 
+                     {responseData?.data[index].state === 'delegated'
                      ? (
                       <pre className="responseFixed" key={responseData?.data[index]}>
                       {responseData?.data[index].id.toString() + ' ' + responseData?.data[index].state.toString()}
@@ -125,13 +125,13 @@ export default function ViewAllFlows() {
                       ) 
                      : "" }
                   </>))
-                ) : ""}
+                ) : "Select a page of results - input a number and click Get Page of Flows"}
                 </pre>
 
                 <p>&nbsp;Or filter by <code>responseData?.data[index].state === &apos;initialized&apos;</code>:</p>
 
                 <pre className="detailcode">
-                {responseData?.data
+                {responseData?.data && responseData?.data.length > 1
                 ? (
                   Object?.keys(responseData.data).map((index) => (<>
                      {responseData?.data[index].state === 'initialized' 
@@ -142,7 +142,7 @@ export default function ViewAllFlows() {
                       ) 
                      : "" }
                   </>))
-                ) : ""}
+                ) : "Select a page of results - input a number and click Get Page of Flows"}
 
                 </pre>
               </details>
@@ -160,6 +160,7 @@ export default function ViewAllFlows() {
             </li>
           </ul>
         </Modal>
+
         <div id="top">
           <h1 className={styles.title}>View All Flows</h1>
         </div>
@@ -192,7 +193,7 @@ export default function ViewAllFlows() {
           <label htmlFor="page">Select Page</label>
           <input type="number" id="page" name="page" defaultValue="1" min="1" />
           <Button type="primary" htmlType="submit">
-            Get Flows
+            Get Page of Flows
           </Button>
           <br />
           <Button danger type="primary" htmlType="button" onClick={handleReset}>
@@ -221,7 +222,7 @@ export default function ViewAllFlows() {
           <>
             <p>
               <b>{responseData?.data.length}</b> results per page &mdash; Viewing page{" "}
-              <b>{responseData?.page}</b>
+              <b>{responseData?.page}</b> of <b>{responseData?.pages}</b>
             </p>
             <pre className="response">
               {JSON.stringify(responseData, null, 2)}
