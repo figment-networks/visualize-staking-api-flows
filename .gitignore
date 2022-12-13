@@ -3,4 +3,4 @@ node_modules
 .next
 .vscode
 .DS_Store
-staking-api-walkthrough.code-workspace
+visualize-staking-api-flows.code-workspace
