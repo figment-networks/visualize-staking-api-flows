@@ -88,19 +88,32 @@ export default function BroadcastTransaction({ operation }) {
           onCancel={handleCancel}
         >
           <ul>
+            <li>The <code>action</code> at this point of the flow is <code>sign_delegate_tx</code> &mdash; indicating that we need to supply the signed transaction payload.</li>
+            <br />
+
+            <li>It is sometimes useful to get an updated transaction payload, for which there is another <code>action</code> called <code>refresh_delegate_tx</code>, which generates a new unsigned transaction payload. 
+            <br />
+            <b>Note</b>: This is useful for situations where a nonce value has increased, or when dealing with flows for <b>Solana</b>, where there is a relatively short signing window of around <b>90 seconds</b></li>
+            <br />
+
             <li><b>Once the signed transaction payload is sent to the Staking API, it is then broadcast to the network</b></li>
             <br />
+
             <li>
               The flow state will change from <code>delegate_tx_broadcasting</code> to <code>delegated</code> once the transaction is confirmed on-chain
             </li>
             <br />
+
             <li>
               Learn how to set up webhooks to be notified of Staking API actions in the <Link target="_blank" rel="noopener noreferrer" href="https://github.com/figment-networks/figment-apis-demo-app#figment-apis-demo-app">Figment APIs Demo App Tutorial</Link> (specifically in <Link target="_blank" rel="noopener noreferrer" href="https://github.com/figment-networks/figment-apis-demo-app/blob/tutorial/tutorial.md#step-6-staking-api-webhooks">Step 6</Link>)
             </li>
             <br />
+
             <li>
               Learn more about webhooks in the guide <Link target="_blank" rel="noopener noreferrer" href="https://docs.figment.io/guides/staking-api/staking-api-webhooks">Staking API Webhooks</Link>
             </li>
+            <br />
+
           </ul>
         </Modal>
 
@@ -176,13 +189,15 @@ export default function BroadcastTransaction({ operation }) {
             <br />
                 <br />
                 <br />
-                <Button
+                {flowState === 'delegate_tx_broadcasting' ? (
+                  <Button
                   type="primary"
                   htmlType="button"
                   href={`/operations/${operation}/flow-state`}
                 >
                   Proceed to the next step &rarr;
                 </Button>
+                ) : ""}
               </>
             ) : (
               ""

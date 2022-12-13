@@ -8,7 +8,7 @@ import { Button, Modal, ConfigProvider } from "antd";
 import styles from "@styles/Home.module.css";
 
 export default function FlowState({ operation }) {
-  const { appState, setAppState } = useAppState();
+  const { appState, setAppState, backupAppState } = useAppState();
 
   // Destructure state variables
   const {
@@ -107,10 +107,15 @@ export default function FlowState({ operation }) {
         >
           Check current flow state
         </Button>
+        {flowState === 'delegated'
+        ? (<>
         {" "}or{" "}
         <Button style={{ width: "auto" }} type="primary" href="/view-all-flows">
           View All Flows
         </Button>
+        </>)
+        : ""
+        }
         <br />
 
         {isLoading 
@@ -144,7 +149,7 @@ export default function FlowState({ operation }) {
         </div>    
 
         <div className="footer">
-          <Link href="/">Return to Main Page</Link>
+          <Link href="/" onClick={backupAppState}>Return to Main Page</Link>
         </div>
       </ConfigProvider>
     </div>

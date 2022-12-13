@@ -39,13 +39,17 @@ export default function SubmitData({ operation }) {
     max_gas: null,
   };
 
-  useEffect(() => {
-    localStorage.setItem("INPUTS", JSON.stringify(formData));
-    console.log(
-      "Saved Inputs to localStorage: ",
-      localStorage.getItem("INPUTS")
-    );
-  }, [formData]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("appState")) {
+  //     const tempState = localStorage.getItem("appState") 
+  //     setAppState({accountAddress: accountAddress, accountPublicKey: accountPublicKey})
+  //     console.log("Loaded appState from localStorage.")
+  //   }
+  //   console.log(
+  //     "Saved Inputs to localStorage: ",
+  //     localStorage.getItem("INPUTS")
+  //   );
+  // }, [appState, setAppState]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,7 +67,16 @@ export default function SubmitData({ operation }) {
       },
     };
     setFormData(data);
+    setInputsSent(false)
   };
+
+  useEffect(() => {
+    localStorage.setItem("INPUTS", JSON.stringify(formData));
+    console.log(
+      "Saved Inputs to localStorage: ",
+      localStorage.getItem("INPUTS")
+    );
+  }, [formData]);
 
   const handleStakingAPI = async () => {
     console.log("handleStakingAPI formData: ", formData);
@@ -104,7 +117,7 @@ export default function SubmitData({ operation }) {
 
   const handleClearFormData = async () => {
     setFormData(undefined);
-    setAppState({unsignedTransactionPayload: undefined});
+    // setAppState({unsignedTransactionPayload: undefined});
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -417,7 +430,7 @@ export default function SubmitData({ operation }) {
                   <code>inputs</code>:{" "}
                 </p>
                 <div
-                  className="payload"
+                  className="response"
                   onClick={() =>
                     navigator.clipboard.writeText(unsignedTransactionPayload)
                   }
@@ -433,22 +446,7 @@ export default function SubmitData({ operation }) {
                   Proceed to the next step &rarr;
                 </Button>
                 <br />
-                <br /><br />
-                <Button
-                  danger
-                  style={{
-                    width: "auto",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                  }}
-                  type="primary"
-                  htmlType="button"
-                  onClick={handleClearFormData}
-                  icon={<WarningOutlined />}
-                >
-                  Reset Inputs Payload
-                </Button>
-
+                <br />
               </>
             ) : (
               ""

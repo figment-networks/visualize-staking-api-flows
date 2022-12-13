@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from "react";
+// @ts-nocheck
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const initialState = {
   flowId: "",
@@ -17,12 +18,14 @@ const initialState = {
   signedTransactionPayload: "",
   validatorAddress: "",
   delegateAmount: "",
+  stepCompleted: "",
 };
 
 const AppStateContext = createContext({
   appState: initialState,
   setAppState: undefined,
   clearAppState: undefined,
+  backupAppState: initialState,
 });
 
 export default function AppStateProvider({ children }) {
@@ -33,7 +36,16 @@ export default function AppStateProvider({ children }) {
       ...appState,
       ...data,
     };
-    localStorage.setItem("appState", JSON.stringify(update));
+    saveState("appState", JSON.stringify(update));
+    _setAppState({ ...update });
+  }
+
+  function backupAppState(data) {
+    const update = {
+      ...appState,
+      ...data,
+    };
+    saveState("appStateBackup", JSON.stringify(update));
     _setAppState({ ...update });
   }
 
@@ -58,6 +70,7 @@ export default function AppStateProvider({ children }) {
         appState,
         setAppState,
         clearState,
+        backupAppState
       }}
     >
       {children}
