@@ -131,6 +131,7 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
           theme={{
             token: {
               colorPrimary: "#034d77",
+              colorError: "#C90000",
             },
           }}
         >

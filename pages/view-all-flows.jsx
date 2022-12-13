@@ -55,12 +55,19 @@ export default function ViewAllFlows() {
     setIsLoading(false);
   };
 
-  const codeSnippet = `
-  {Object.keys(responseData.data).map((index: any) => (
-    <>
-      <pre className="responseFixed" key={responseData.data[index]}>{JSON.stringify(responseData.data[index])}</pre>
-    </>)
-  )}`;
+  const codeSnippet = `{responseData?.data
+  ? (
+    Object?.keys(responseData.data).map((index) => (<>
+        {responseData?.data[index].state === 'delegated' 
+        ? (
+        <pre className="responseFixed" key={responseData?.data[index]}>
+        {JSON.stringify(responseData?.data[index].id, null, 2) + JSON.stringify(responseData?.data[index].state, null, 2)}
+        </pre>
+        ) 
+        : "" }
+      
+    </>))
+  ) : ""}`;
 
   return (
     <div className="container">
@@ -68,8 +75,7 @@ export default function ViewAllFlows() {
         theme={{
           token: {
             colorPrimary: "#034d77",
-            colorError: "#C95d30",
-            colorWarning: "#C9C9F4"
+            colorError: "#C90000",
           },
         }}
       >
@@ -94,16 +100,63 @@ export default function ViewAllFlows() {
               <code>data</code> array.
             </li>
             <li>
-              Access individual results with <code>responseData.data[0]</code>{" "}
-              to <code>responseData.data[19]</code>
+              Pagination is currently fixed to <code>responseData.data.length</code> &rarr; <b>20</b> flows per page.<br />
+              Access individual results (in this context) with <code>responseData.data[0]</code>{" "}
+              through <code>responseData.data[19]</code>. 
             </li>
             <li>
-              Try using <code>.map()</code> to filter flows by their state.
+              Use <code>.map()</code> to filter a page of flows by their state (for example, <code>delegated</code>):
               <br />
               <details>
                 <summary>Click here to expand code snippet</summary>
                 <pre className="detailcode">{codeSnippet}</pre>
+        
+                <p>&nbsp;Based on the current page of flows being viewed, such a filter returns the <code>delegated</code> flows:</p>
+
+                <pre className="detailcode">
+                {responseData?.data
+                ? (
+                  Object?.keys(responseData.data).map((index) => (<>
+                     {responseData?.data[index].state === 'delegated' 
+                     ? (
+                      <pre className="responseFixed" key={responseData?.data[index]}>
+                      {responseData?.data[index].id.toString() + ' ' + responseData?.data[index].state.toString()}
+                      </pre>
+                      ) 
+                     : "" }
+                  </>))
+                ) : ""}
+                </pre>
+
+                <p>&nbsp;Or filter by <code>responseData?.data[index].state === &apos;initialized&apos;</code>:</p>
+
+                <pre className="detailcode">
+                {responseData?.data
+                ? (
+                  Object?.keys(responseData.data).map((index) => (<>
+                     {responseData?.data[index].state === 'initialized' 
+                     ? (
+                      <pre className="responseFixed" key={responseData?.data[index]}>
+                      {responseData?.data[index].id.toString() + ' ' + responseData?.data[index].state.toString()}
+                      </pre>
+                      ) 
+                     : "" }
+                  </>))
+                ) : ""}
+
+                </pre>
               </details>
+            </li>
+            <li>
+              Check the Figment{" "}
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.figment.io/api-reference/staking-api/near#get%20flow%20status"
+              >
+                API Reference
+              </Link>{" "}
+              for details.
             </li>
           </ul>
         </Modal>
@@ -119,20 +172,21 @@ export default function ViewAllFlows() {
           Details
         </Button>
 
+        <div className="row">
         <p className={styles.description}>
-          Get complete information on all flows that you have created by{" "}
-          <Link
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://docs.figment.io/api-reference/staking-api/near#get%20flow%20status"
-          >
-            sending a GET request to the <code>api/v1/flows</code> endpoint,
-            without specifying a Flow ID.
-          </Link>
+          To check the state of all flows that were created using your API key,
+          send a GET request to the <code>api/v1/flows</code> endpoint without a
+          flowId. <br />
+          Data from this query is paginated, page 1 being displayed by default.
+          If they exist, additional pages can be accessed via the query
+          parameter <code>?page=</code>.<br />
+          For example: <code>api/v1/flows?page=2</code>.<br />
           <br />
-          <br />
-          <Link href="/">Return to the Main Page</Link>
+          <p align="center">
+            <Link href="/">Return to the Main Page</Link>
+          </p>
         </p>
+        </div>
 
         <form method="post" onSubmit={handleSubmit}>
           <label htmlFor="page">Select Page</label>
@@ -151,7 +205,9 @@ export default function ViewAllFlows() {
 
         {responseData && !responseData.page && !isLoading ? (
           <>
-            <p>Recent flow:</p>
+            <p>
+              Recent flow: <b>{flowId}</b>
+            </p>
             <pre className="response">
               {JSON.stringify(responseData, null, 2)}
             </pre>
@@ -164,8 +220,8 @@ export default function ViewAllFlows() {
         {responseData?.page && !isLoading ? (
           <>
             <p>
-              {responseData?.data.length} results per page. &mdash; Viewing page{" "}
-              {responseData?.page}
+              <b>{responseData?.data.length}</b> results per page &mdash; Viewing page{" "}
+              <b>{responseData?.page}</b>
             </p>
             <pre className="response">
               {JSON.stringify(responseData, null, 2)}
@@ -177,13 +233,12 @@ export default function ViewAllFlows() {
         )}
 
         <div className="footer">
-          <br />
-          <br />
           <Link href="/view-all-flows#top">Go to Top</Link>
           <br />
           <br />
           <Link href="/">Return to the Main Page</Link>
         </div>
+
       </ConfigProvider>
     </div>
   );

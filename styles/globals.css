@@ -450,3 +450,11 @@ textarea {
 .errorButton {
   width: 25%;
 }
+
+details {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  width: 82%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

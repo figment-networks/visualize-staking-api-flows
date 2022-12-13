@@ -23,6 +23,16 @@ export default function FlowState({ operation }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const handleGetState = async () => {
     const data = {
       flow_id: flowId,
@@ -52,50 +62,65 @@ export default function FlowState({ operation }) {
           },
         }}
       >
-        <h1 className={styles.title}>Get Flow State</h1>
 
+        <Modal
+          title="Details"
+          width="45%"
+          footer={null}
+          open={isModalOpen}
+          onCancel={handleCancel}
+        >
+          <ul>
+          <li>Once a flow state becomes <code>delegated</code>, that flow is complete and the tokens have successfully been staked.</li>
+          </ul>
+        </Modal>
+
+        <div className="row">
+          <h1 className={styles.title}>Get Flow State</h1>
+        </div>
+        <Button
+          style={{ width: "auto", marginTop: "20px" }}
+          type="primary"
+          onClick={showModal}
+        >
+          Details
+        </Button>
+
+        <div className="row">
         <p className={styles.description}>
-          After broadcasting the signed transaction, you can check on the state
-          of the flow with a GET request.
-          <br />
-          <br />
-          This can be done manually as in the example below, or by using{" "}
-          <Link
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://docs.figment.io/guides/staking-api/staking-api-endpoints#managing-webhooks"
-          >
-            Staking API Webhooks
-          </Link>
-          .
+          After submitting the signed transaction, check the final state of the flow with a GET request to the <code>api/v1/flows</code> endpoint,<br />
+          specifying the flowId you want to query. For example <code>/api/v1/flows/3937f7e8-987e-4e46-a149-30d3f3765b82</code>
         </p>
-        <p>
-          Current Flow ID: <b>{flowId}</b>
-        </p>
+        </div>
 
+        <div className="row">
+          <div className="column">
+
+          <p>
+            Current Flow ID: <b>{flowId}</b>
+          </p>
         <Button
           style={{ width: "auto" }}
           type="primary"
           htmlType="button"
           onClick={handleGetState}
         >
-          Get current flow state
+          Check current flow state
         </Button>
-
-        <br />
-
+        {" "}or{" "}
         <Button style={{ width: "auto" }} type="primary" href="/view-all-flows">
           View All Flows
         </Button>
-
         <br />
-        {isLoading ? "Loading..." : ""}
 
-        {responseData && flowState === "delegated" ? (
+        {isLoading 
+        ? "Loading..." 
+        : (<>
+          {responseData && flowState === "delegated" ? (
           <>
             <p>
               {" "}
-              Flow State is <b>{flowState}</b> &rarr;{" "}
+              Flow State is now <b>{flowState}</b> &rarr;{" "}
               <Link
                 target="_blank"
                 rel="noopener noreferrer"
@@ -113,6 +138,10 @@ export default function FlowState({ operation }) {
             Flow State: <div className="payload">{flowState}</div>
           </>
         )}
+        </>)}
+
+          </div>
+        </div>    
 
         <div className="footer">
           <Link href="/">Return to Main Page</Link>

@@ -169,6 +169,7 @@ export default function SubmitData({ operation }) {
           theme={{
             token: {
               colorPrimary: "#034d77",
+              colorError: "#C90000",
             },
           }}
         >

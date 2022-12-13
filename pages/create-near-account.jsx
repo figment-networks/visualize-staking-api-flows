@@ -76,6 +76,7 @@ export default function CreateNEARAccountPage() {
           theme={{
             token: {
               colorPrimary: "#034d77",
+              colorError: "#C90000",
             },
           }}
         >
