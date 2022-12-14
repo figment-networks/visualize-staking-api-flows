@@ -87,14 +87,10 @@ export default function IndexPage() {
             </p>
 
             <p className={styles.card}>
-              <p>
-                All values ❌ means the state is not set (no user interaction),
-                or has been cleared manually.
-              </p>
-              <br />
-              <p>
-                All values ✅ means the state is set, user has completed at
-                least one flow.
+              <p className={styles.description}>
+                ❌ indicates the state is not set (no user interaction), or has
+                been cleared manually.
+                <br />✅ indicates the value is set in appState
               </p>
               <br />
               <code>flowId</code>: {flowId ? "✅" : "❌"}
