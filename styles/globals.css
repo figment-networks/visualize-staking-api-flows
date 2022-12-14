@@ -254,7 +254,6 @@ p.secret:hover {
 .column {
   flex: 50%;
   text-align: center;
-  border: 1px solid black;
 }
 
 .column p {
