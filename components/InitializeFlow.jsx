@@ -117,7 +117,7 @@ export default function InitializeFlow({ operation }) {
     setAppState({ flowResponse: undefined });
     setFormData(undefined);
     alert(
-      `Reset formData and current flowId! 
+      `Reset request body and current flowId! 
 Flow ${flowId} is still initialized.
 Refer to the page 'View All Flows' at the end of the walkthrough for details.`
     );
@@ -126,8 +126,7 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
   return (
     <>
       <div className="container">
-
-      <ConfigProvider
+        <ConfigProvider
           theme={{
             token: {
               colorPrimary: "#034d77",
@@ -135,345 +134,346 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
             },
           }}
         >
-
-        <Modal
-          title="Details"
-          width="45%"
-          footer={null}
-          open={isModalOpen}
-          onCancel={handleCancel}
-        >
-          <ul>
-            <li>
-              Find the list of supported networks and operations in the{" "}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://docs.figment.io/guides/staking-api/figment-signing-transactions#operations-and-transaction-types"
-              >
-                Staking API Guides
-              </Link>
-            </li>
-            <br />
-            <li>
-              The most common operations are <code>staking</code>,{" "}
-              <code>unstaking</code> and <code>transfer</code>.
-            </li>
-            <br />
-            <li>
-              Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
-              <code>unstaking</code> operation.
-              <br /> For Avalanche and Cosmos, this is due to how delegations
-              are handled on those networks.
-              <br />
-              <b>Note</b>:{" "}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://ethereum.org/en/upgrades/merge/#merge-and-shanghai"
-              >
-                Unstaking on Ethereum
-              </Link>{" "}
-              will become possible in the future, after the Shanghai upgrade.
-            </li>
-            <br />
-            <li>
-              Polkadot has <code>add_proxy</code> and <code>remove_proxy</code>{" "}
-              operations, which are useful for managing staking nominations.
-            </li>
-            <br />
-            <li>
-              Solana has a <code>split_stake_account</code> operation, which is
-              useful when a user wants to break a stake account balance into two
-              separate accounts.
-            </li>
-            <br />
-            <li>
-              All networks support operations on <b>mainnet</b> (
-              <code>chain_code</code> = <code>mainnet</code>).
-            </li>
-            <br />
-            <li>
-              Polkadot&apos;s <b>testnet</b> is called Westend (
-              <code>chain_code</code> = <code>westend</code>).
-            </li>
-            <br />
-            <li>
-              Solana has both a <b>testnet</b> (<code>chain_code</code> ={" "}
-              <code>testnet</code>) and a <b>devnet</b>, (
-              <code>chain_code</code> = <code>devnet</code>).
-            </li>
-            <br />
-            <li>
-              Check out{" "}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://docs.figment.io/api-reference/staking-api/near#create%20new%20delegation%20flow"
-              >
-                Create New Delegation Flow on NEAR
-              </Link>{" "}
-              for sample request and response data.
-            </li>
-          </ul>
-        </Modal>
-        <div className="row">
-          <h1 className={styles.title}>Initialize a Flow</h1>
-        </div>
-        <Button
-          style={{ width: "auto", marginTop: "20px" }}
-          type="primary"
-          onClick={showModal}
-        >
-          Details
-        </Button>
-        <div className="row">
-          <p className={styles.description}>
-            The Staking API supports several networks. Each network has a set of
-            available operations. A flow can operate on testnet or mainnet.
-            <br />
-            <br />
-            When initializing a flow, provide the <code>network</code>,
-            <code>chain_code</code>, <code>operation</code> and Staking API{" "}
-            <code>version</code>.
-            <br />
-            <br />
-            The form below can be used to create a JSON request body which is
-            sent to the Staking API for the purpose of initializing a new flow.
-            <br />
-            <br />
-            <b>Note</b>: To provide a seamless experience, this walkthrough is
-            currently limited to the Staking flow on NEAR testnet.
-          </p>
-        </div>{" "}
-        {/* row */}
-        <div className="row">
-          <div className="column">
-            <p>
-              Click <b>Create JSON Request Body</b> to continue.
-            </p>
-
-            <form className="flowForm" onSubmit={handleSubmit} method="post">
-              <label htmlFor="network_code">Network</label>
-              <select
-                id="network_code"
-                name="networkCode"
-                required
-                defaultValue="near"
-                onChange={handleFormChange}
-              >
-                <option disabled value="avalanche">
-                  Avalanche
-                </option>
-                <option disabled value="cosmos">
-                  Cosmos
-                </option>
-                <option disabled value="ethereum">
-                  Ethereum
-                </option>
-                <option value="near">NEAR</option>
-                <option disabled value="polkadot">
-                  Polkadot
-                </option>
-                <option disabled value="polygon">
-                  Polygon
-                </option>
-                <option disabled value="solana">
-                  Solana
-                </option>
-              </select>
-
-              <label htmlFor="chain_code">Chain Code</label>
-              <select
-                id="chain_code"
-                name="chainCode"
-                required
-                defaultValue="testnet"
-              >
-                <option disabled value="mainnet">
-                  Mainnet
-                </option>
-                {selectedNetwork === "polkadot" ? (
-                  <option value="westend">Westend</option>
-                ) : (
-                  <option value="testnet">Testnet</option>
-                )}
-                {selectedNetwork === "solana" ? (
-                  <option value="devnet">Devnet</option>
-                ) : (
-                  ""
-                )}
-              </select>
-
-              {/* Networks support different operations, 
-              so we are using conditional rendering to make the form dynamic. */}
-              <label htmlFor="operation">Operation</label>
-              <select
-                id="operation"
-                name="operation"
-                required
-                defaultValue="staking"
-              >
-                <option value="staking">Staking</option>
-                {selectedNetwork === "solana" ||
-                selectedNetwork === "near" ||
-                selectedNetwork === "polkadot" ||
-                selectedNetwork === "polygon" ||
-                !selectedNetwork ? (
-                  <option value="unstaking" disabled>
-                    Unstaking
-                  </option>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "solana" ||
-                selectedNetwork === "near" ||
-                selectedNetwork === "polkadot" ||
-                selectedNetwork === "cosmos" ||
-                !selectedNetwork ? (
-                  <option value="transfer" disabled>
-                    Transfer
-                  </option>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "polkadot" ? (
-                  <>
-                    <option value="add_proxy">Add Proxy</option>
-                    <option value="remove_proxy">Remove Proxy</option>
-                  </>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "polygon" ? (
-                  <option value="claim_rewards">Claim Rewards</option>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "solana" ? (
-                  <option value="split_stake_account">
-                    Split Stake Account
-                  </option>
-                ) : (
-                  ""
-                )}
-              </select>
-
-              <label htmlFor="version">Version</label>
-              <select id="version" name="version" required defaultValue="v1">
-                <option value="v1">v1</option>
-              </select>
-              {/* Clicking this button does not fetch from the Staking API,
-                it only populates the display of the JSON payload. */}
-              <Button
-                style={{ width: "auto" }}
-                type="primary"
-                htmlType="submit"
-              >
-                Create JSON Request Body
-              </Button>
-            </form>
-          </div>{" "}
-          {/* column */}
-          <br />
-          <div className="column">
-            {flowResponse ? (
-              <>
-                <p>
-                  Flow <b>{flowResponse?.state}</b> on{" "}
-                  <b>{flowResponse?.network_code}</b>{" "}
-                  <b>{flowResponse?.chain_code}</b>
-                  <br />
-                  Flow ID: <b>{flowResponse?.id}</b>.
-                  <br />
-                  Here is the complete Staking API response:
-                </p>
-                <pre className="responseFixed">
-                  {JSON.stringify(flowResponse, null, 2)}
-                </pre>{" "}
-                <Button
-                  type="primary"
-                  href={`/operations/${operation}/submit-data`}
+          <Modal
+            title="Details"
+            width="45%"
+            footer={null}
+            open={isModalOpen}
+            onCancel={handleCancel}
+          >
+            <ul>
+              <li>
+                Find the list of supported networks and operations in the{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.figment.io/guides/staking-api/figment-signing-transactions#operations-and-transaction-types"
                 >
-                  Proceed to the next step &rarr;
-                </Button>
+                  Staking API Guides
+                </Link>
+              </li>
+              <br />
+              <li>
+                The most common operations are <code>staking</code>,{" "}
+                <code>unstaking</code> and <code>transfer</code>.
+              </li>
+              <br />
+              <li>
+                Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
+                <code>unstaking</code> operation.
+                <br /> For Avalanche and Cosmos, this is due to how delegations
+                are handled on those networks.
                 <br />
-                <br />
+                <b>Note</b>:{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://ethereum.org/en/upgrades/merge/#merge-and-shanghai"
+                >
+                  Unstaking on Ethereum
+                </Link>{" "}
+                will become possible in the future, after the Shanghai upgrade.
+              </li>
+              <br />
+              <li>
+                Polkadot has <code>add_proxy</code> and{" "}
+                <code>remove_proxy</code> operations, which are useful for
+                managing staking nominations.
+              </li>
+              <br />
+              <li>
+                Solana has a <code>split_stake_account</code> operation, which
+                is useful when a user wants to break a stake account balance
+                into two separate accounts.
+              </li>
+              <br />
+              <li>
+                All networks support operations on <b>mainnet</b> (
+                <code>chain_code</code> = <code>mainnet</code>).
+              </li>
+              <br />
+              <li>
+                Polkadot&apos;s <b>testnet</b> is called Westend (
+                <code>chain_code</code> = <code>westend</code>).
+              </li>
+              <br />
+              <li>
+                Solana has both a <b>testnet</b> (<code>chain_code</code> ={" "}
+                <code>testnet</code>) and a <b>devnet</b>, (
+                <code>chain_code</code> = <code>devnet</code>).
+              </li>
+              <br />
+              <li>
+                Check out{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.figment.io/api-reference/staking-api/near#create%20new%20delegation%20flow"
+                >
+                  Create New Delegation Flow on NEAR
+                </Link>{" "}
+                for sample request and response data.
+              </li>
+            </ul>
+          </Modal>
+          <div className="row">
+            <h1 className={styles.title}>Initialize a Flow</h1>
+          </div>
+          <Button
+            style={{ width: "auto", marginTop: "20px" }}
+            type="primary"
+            onClick={showModal}
+          >
+            Details
+          </Button>
+          <div className="row">
+            <p className={styles.description}>
+              The Staking API supports several networks. Each network has a set
+              of available operations. A flow can operate on testnet or mainnet.
+              <br />
+              <br />
+              When initializing a flow, provide the <code>network</code>,
+              <code>chain_code</code>, <code>operation</code> and Staking API{" "}
+              <code>version</code>.
+              <br />
+              <br />
+              The form below can be used to create a JSON request body which is
+              sent to the Staking API for the purpose of initializing a new
+              flow.
+              <br />
+              <br />
+              <b>Note</b>: To provide a seamless experience, this walkthrough is
+              currently limited to the Staking flow on NEAR testnet.
+            </p>
+          </div>{" "}
+          {/* row */}
+          <div className="row">
+            <div className="column">
+              <p>
+                Click <b>Create JSON Request Body</b> to continue.
+              </p>
+
+              <form className="flowForm" onSubmit={handleSubmit} method="post">
+                <label htmlFor="network_code">Network</label>
+                <select
+                  id="network_code"
+                  name="networkCode"
+                  required
+                  defaultValue="near"
+                  onChange={handleFormChange}
+                >
+                  <option disabled value="avalanche">
+                    Avalanche
+                  </option>
+                  <option disabled value="cosmos">
+                    Cosmos
+                  </option>
+                  <option disabled value="ethereum">
+                    Ethereum
+                  </option>
+                  <option value="near">NEAR</option>
+                  <option disabled value="polkadot">
+                    Polkadot
+                  </option>
+                  <option disabled value="polygon">
+                    Polygon
+                  </option>
+                  <option disabled value="solana">
+                    Solana
+                  </option>
+                </select>
+
+                <label htmlFor="chain_code">Chain Code</label>
+                <select
+                  id="chain_code"
+                  name="chainCode"
+                  required
+                  defaultValue="testnet"
+                >
+                  <option disabled value="mainnet">
+                    Mainnet
+                  </option>
+                  {selectedNetwork === "polkadot" ? (
+                    <option value="westend">Westend</option>
+                  ) : (
+                    <option value="testnet">Testnet</option>
+                  )}
+                  {selectedNetwork === "solana" ? (
+                    <option value="devnet">Devnet</option>
+                  ) : (
+                    ""
+                  )}
+                </select>
+
+                {/* Networks support different operations, 
+              so we are using conditional rendering to make the form dynamic. */}
+                <label htmlFor="operation">Operation</label>
+                <select
+                  id="operation"
+                  name="operation"
+                  required
+                  defaultValue="staking"
+                >
+                  <option value="staking">Staking</option>
+                  {selectedNetwork === "solana" ||
+                  selectedNetwork === "near" ||
+                  selectedNetwork === "polkadot" ||
+                  selectedNetwork === "polygon" ||
+                  !selectedNetwork ? (
+                    <option value="unstaking" disabled>
+                      Unstaking
+                    </option>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "solana" ||
+                  selectedNetwork === "near" ||
+                  selectedNetwork === "polkadot" ||
+                  selectedNetwork === "cosmos" ||
+                  !selectedNetwork ? (
+                    <option value="transfer" disabled>
+                      Transfer
+                    </option>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "polkadot" ? (
+                    <>
+                      <option value="add_proxy">Add Proxy</option>
+                      <option value="remove_proxy">Remove Proxy</option>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "polygon" ? (
+                    <option value="claim_rewards">Claim Rewards</option>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "solana" ? (
+                    <option value="split_stake_account">
+                      Split Stake Account
+                    </option>
+                  ) : (
+                    ""
+                  )}
+                </select>
+
+                <label htmlFor="version">Version</label>
+                <select id="version" name="version" required defaultValue="v1">
+                  <option value="v1">v1</option>
+                </select>
+                {/* Clicking this button does not fetch from the Staking API,
+                it only populates the display of the JSON payload. */}
                 <Button
-                  danger
                   style={{ width: "auto" }}
                   type="primary"
-                  htmlType="button"
-                  onClick={handleReset}
-                  icon={<WarningOutlined />}
+                  htmlType="submit"
                 >
-                  Reset Form Data & Current Flow
+                  Create JSON Request Body
                 </Button>
-                <br />
-                <br />
-              </>
-            ) : (
-              <>
-                {!formData ? (
-                  <>
-                    <p>
-                      The request body will appear when you click{" "}
-                      <b>Create Flow Payload</b>.
-                      <br />
-                      <br />{" "}
-                      {/* 
+              </form>
+            </div>{" "}
+            {/* column */}
+            <br />
+            <div className="column">
+              {flowResponse ? (
+                <>
+                  <p>
+                    Flow <b>{flowResponse?.state}</b> on{" "}
+                    <b>{flowResponse?.network_code}</b>{" "}
+                    <b>{flowResponse?.chain_code}</b>
+                    <br />
+                    Flow ID: <b>{flowResponse?.id}</b>.
+                    <br />
+                    Here is the complete Staking API response:
+                  </p>
+                  <pre className="responseFixed">
+                    {JSON.stringify(flowResponse, null, 2)}
+                  </pre>{" "}
+                  <Button
+                    type="primary"
+                    href={`/operations/${operation}/submit-data`}
+                  >
+                    Proceed to the next step &rarr;
+                  </Button>
+                  <br />
+                  <br />
+                  <Button
+                    danger
+                    style={{ width: "auto" }}
+                    type="primary"
+                    htmlType="button"
+                    onClick={handleReset}
+                    icon={<WarningOutlined />}
+                  >
+                    Reset Flow
+                  </Button>
+                  <br />
+                  <br />
+                </>
+              ) : (
+                <>
+                  {!formData ? (
+                    <>
+                      <p>
+                        The request body will appear when you click{" "}
+                        <b>Create Flow Payload</b>.
+                        <br />
+                        <br />{" "}
+                        {/* 
                   These two linebreaks are the margin between the text and the spacer box 
                   TODO: Fix the styling
                   */}
-                    </p>
-                    <p className="spacer">
-                      {/* This spacer intentionally left empty */}
-                    </p>
-                  </>
-                ) : (
-                  ""
-                )}
+                      </p>
+                      <p className="spacer">
+                        {/* This spacer intentionally left empty */}
+                      </p>
+                    </>
+                  ) : (
+                    ""
+                  )}
 
-                {formData && !flowResponse ? (
-                  <>
-                    <p>
-                      This is the JSON request body to initialize a Staking API
-                      flow:
-                    </p>
-                    <pre className="payload">
-                      {JSON.stringify(formData, null, 2)}
-                    </pre>
-                    <br />
-                    <Button
-                      style={{ width: "auto" }}
-                      type="primary"
-                      htmlType="button"
-                      onClick={handleInitializeFlow}
-                    >
-                      Initialize Flow with Staking API
-                    </Button>
-                    <br />
-                    <Button
-                      danger
-                      style={{ width: "auto" }}
-                      type="primary"
-                      htmlType="button"
-                      onClick={handleClearFormData}
-                      icon={<WarningOutlined />}
-                    >
-                      Clear Form Data
-                    </Button>
-                  </>
-                ) : (
-                  ""
-                )}
-              </>
-            )}
+                  {formData && !flowResponse ? (
+                    <>
+                      <p>
+                        This is the JSON request body to initialize a Staking
+                        API flow:
+                      </p>
+                      <pre className="payload">
+                        {JSON.stringify(formData, null, 2)}
+                      </pre>
+                      <br />
+                      <Button
+                        style={{ width: "auto" }}
+                        type="primary"
+                        htmlType="button"
+                        onClick={handleInitializeFlow}
+                      >
+                        Initialize Flow with Staking API
+                      </Button>
+                      <br />
+                      <Button
+                        danger
+                        style={{ width: "auto" }}
+                        type="primary"
+                        htmlType="button"
+                        onClick={handleClearFormData}
+                        icon={<WarningOutlined />}
+                      >
+                        Clear JSON Request Body
+                      </Button>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="footer">
-          <Link href="/">Return to Main Page</Link>
-        </div>
+          <div className="footer">
+            <Link href="/">Return to Main Page</Link>
+          </div>
         </ConfigProvider>
       </div>
     </>

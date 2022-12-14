@@ -1,3 +1,4 @@
+/** Fonts */
 @font-face {
   font-family: "Jungka";
   font-weight: normal;
@@ -10,16 +11,18 @@
   src: url("../fonts/Jungka/Jungka-Medium.otf") format("opentype");
 }
 
+/** Body & Elements */
 html,
 body {
   padding: 0;
   margin: 0;
   font-size: 1.075rem;
   line-height: 1.55rem;
-  font-family: "Jungka", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  background-color: #F6F8FB;
-  background-image: url("../public/img/background-image.png")
+  font-family: "Jungka", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: #f6f8fb;
+  background-image: url("../public/img/background-image.png");
 }
 
 p > code,
@@ -29,8 +32,8 @@ td > code {
   background: #3b3b3b;
   word-wrap: break-word;
   box-decoration-break: clone;
-  padding: .1rem .3rem .2rem;
-  border-radius: .2rem;
+  padding: 0.1rem 0.3rem 0.2rem;
+  border-radius: 0.2rem;
   width: auto;
 }
 
@@ -87,7 +90,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #034D76;
+  border-color: #034d76;
 }
 
 select {
@@ -102,7 +105,7 @@ select {
 
 select:focus {
   outline: none;
-  border-color: #034D76;
+  border-color: #034d76;
   border-width: 1px;
   border-style: solid;
 }
@@ -115,13 +118,13 @@ button {
   border-radius: 0.25rem;
   box-sizing: border-box;
   margin-bottom: 1.5rem;
-  background-color: #034D76;
+  background-color: #034d76;
   color: #fff;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #034D76;
+  background-color: #034d76;
 }
 
 details {
@@ -132,7 +135,7 @@ details {
   margin-bottom: 10px;
 }
 
-details summary { 
+details summary {
   cursor: pointer;
 }
 
@@ -142,6 +145,50 @@ details summary > * {
 
 textarea {
   resize: none;
+}
+
+/** Typography Classes */
+h2.address {
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+h3.pubkey {
+  text-align: left;
+  padding: 0.5rem;
+}
+
+p.secret {
+  word-wrap: break-word;
+  color: transparent;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.75);
+  background-color: rgba(100, 100, 100, 0.5);
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: medium;
+  text-align: center;
+}
+
+p.secret:hover {
+  color: #000;
+  text-shadow: 0 2 1px 0px #000;
+  background-color: rgba(100, 0, 0, 0.5);
+}
+
+/** Classes */
+.blur {
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.blur:hover {
+  color: #000;
+  text-shadow: 0 2 1px 0px #000;
+}
+
+/* Used by the ErrorBoundary component */
+.errorButton {
+  width: 25%;
 }
 
 .footer {
@@ -156,22 +203,12 @@ textarea {
   box-sizing: border-box;
   margin-bottom: 2.5rem;
   margin-top: 1.5rem;
-  background-color: #034D76;
+  background-color: #034d76;
   color: #fff;
   cursor: pointer;
   align-items: center;
   text-align: center;
   width: auto;
-}
-
-.blur {
-  color: transparent;
-   text-shadow: 0 0 5px rgba(0,0,0,0.5);
-}
-
-.blur:hover {
-  color: #000;
-  text-shadow: 0 2 1px 0px #000;
 }
 
 .container {
@@ -192,12 +229,12 @@ textarea {
   text-align: left;
   color: inherit;
   text-decoration: none;
-  border: 3px solid #C7E0E7;
+  border: 3px solid #c7e0e7;
   border-radius: 24px;
   transition: color 0.15s ease, border-color 0.15s ease;
   min-width: 33%;
   min-height: 150px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .row {
@@ -206,7 +243,7 @@ textarea {
 }
 
 .row h1 {
-  color: #034D76;
+  color: #034d76;
 }
 
 .row details {
@@ -215,52 +252,17 @@ textarea {
 }
 
 .column {
-  flex: 75%;
+  flex: 50%;
   text-align: center;
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 
 .column p {
-  margin: 20px;
+  margin: 10px;
 }
 
 .column pre {
   margin: 20px;
-}
-
-h2.address {
-  text-align: left;
-  margin-top: 0.5rem;
-}
-
-h3.pubkey {
-  text-align: left;
-  padding: 0.5rem;
-}
-
-p.secret {
-  word-wrap: break-word;
-  color: transparent;
-  text-shadow: 0 0 6px rgba(0,0,0,0.75);
-  background-color: rgba(100,100,100,0.5);
-  padding: 0.5rem;
-  border-radius: 6px;
-  font-size: medium;
-  text-align: center;
-}
-
-p.secret:hover {
-  color: #000;
-  text-shadow: 0 2 1px 0px #000;
-  background-color: rgba(100,0,0,0.5);
-}
-
-p.spacer {
-  background-color: rgba(100,100,100,0.5);
-  border-radius: 6px;
-  padding: 5px;
-  min-height: 400px;
-  width: 95%;
 }
 
 .ext_link {
@@ -283,9 +285,8 @@ p.spacer {
   display: inline-block;
 }
 
-
 .payload {
-  background-color: rgba(100,100,100,0.5);
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 6px;
   width: auto;
   max-width: 800px;
@@ -298,9 +299,9 @@ p.spacer {
 }
 
 pre.payload {
-  background-color: rgba(100,100,100,0.5);
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 6px;
-  width: 95%;
+  width: auto;
   display: inline-block;
   /* padding: 10px; */
   word-wrap: break-word;
@@ -308,8 +309,17 @@ pre.payload {
   font-weight: bold;
 }
 
+p.spacer {
+  display: inline-block;
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 6px;
+  min-height: 300px;
+  min-width: 710px;
+  width: auto;
+}
+
 .response {
-  background-color: rgba(100,100,100,0.5);
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 6px;
   max-width: 800px;
   display: block;
@@ -321,7 +331,8 @@ pre.payload {
 }
 
 .responseFixed {
-  background-color: rgba(100,100,100,0.5);
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 15px;
   width: 100%;
   max-height: 385px;
@@ -332,11 +343,11 @@ pre.payload {
   text-align: left;
   font-weight: bold;
   overflow: scroll;
-  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 .responseFixedAllFlows {
-  background-color: rgba(100,100,100,0.5);
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 15px;
   width: 100%;
   max-height: 70px;
@@ -347,11 +358,10 @@ pre.payload {
   text-align: left;
   font-weight: bold;
   overflow: scroll;
-  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 .detailcode {
-  background-color: rgba(100,100,100,0.5);
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 6px;
   max-width: 650px;
   display: block;
@@ -364,7 +374,7 @@ pre.payload {
 
 .accordion {
   background-color: rgba(17, 150, 190, 0.5);
-  max-width: 100%; 
+  max-width: 100%;
   min-width: 100%;
   padding: 20px;
   border-radius: 16px;
@@ -372,7 +382,7 @@ pre.payload {
 
 .in-accordion {
   background-color: rgba(255, 255, 255, 0.5);
-  max-width: 100%; 
+  max-width: 100%;
   min-width: 100%;
   padding-top: -20px;
   padding-bottom: 10px;
@@ -382,7 +392,7 @@ pre.payload {
 }
 
 .txn-search {
-  background-color: rgba(100,100,100,0.5);
+  background-color: rgba(100, 100, 100, 0.5);
   border-radius: 6px;
   max-width: 50%;
   max-height: 300px;
@@ -390,7 +400,7 @@ pre.payload {
   padding: 10px;
   word-wrap: break-word;
   font-weight: bold;
-  overflow: scroll
+  overflow: scroll;
 }
 
 .tutorial-container {
@@ -398,17 +408,17 @@ pre.payload {
   border-radius: 24px;
   border-style: solid;
   border-width: 3px;
-  border-color: #C7E0E7;
+  border-color: #c7e0e7;
   padding: 1rem;
   top: 20px;
   margin: 25px auto;
   width: 75%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 h1.tutorial-title {
   text-align: justify;
-  color: #034D76;
+  color: #034d76;
 }
 
 .tutorial-content {
@@ -417,7 +427,7 @@ h1.tutorial-title {
   padding-left: 1.5rem;
   padding-bottom: 4rem;
   margin-bottom: 4rem;
-  background-color: #F6F8FB;
+  background-color: #f6f8fb;
 }
 
 .tutorialFooter {
@@ -430,13 +440,13 @@ h1.tutorial-title {
 .prevPageLink {
   padding: 5px;
   text-align: justify;
-  background-color: #FFFFFF; 
+  background-color: #ffffff;
 }
 
 .nextPageLink {
   padding: 5px;
   text-align: justify;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .homePageLink {
@@ -444,7 +454,7 @@ h1.tutorial-title {
   margin: auto;
   padding: 5px;
   text-align: justify;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .autoButton {
@@ -456,19 +466,15 @@ h1.tutorial-title {
 }
 
 .flowForm {
-  width: 95%;
+  min-width: 500px;
+  max-width: 500px;
   background: #fff;
   border-radius: 16px;
-  border-color: rgba(0,0,0,0.75);
+  border-color: rgba(0, 0, 0, 0.75);
   border-style: solid;
   border-width: 2px;
 }
 
 .flowForm label {
-  text-align: left;
-}
-
-/* Used by the ErrorBoundary component */
-.errorButton {
-  width: 25%;
+  text-align: left; /** Align dynamic form labels to the left */
 }

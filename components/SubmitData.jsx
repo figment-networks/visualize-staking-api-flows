@@ -41,7 +41,7 @@ export default function SubmitData({ operation }) {
 
   // useEffect(() => {
   //   if (localStorage.getItem("appState")) {
-  //     const tempState = localStorage.getItem("appState") 
+  //     const tempState = localStorage.getItem("appState")
   //     setAppState({accountAddress: accountAddress, accountPublicKey: accountPublicKey})
   //     console.log("Loaded appState from localStorage.")
   //   }
@@ -67,7 +67,7 @@ export default function SubmitData({ operation }) {
       },
     };
     setFormData(data);
-    setInputsSent(false)
+    setInputsSent(false);
   };
 
   useEffect(() => {
@@ -177,8 +177,7 @@ export default function SubmitData({ operation }) {
   return (
     <>
       <div className="container">
-
-      <ConfigProvider
+        <ConfigProvider
           theme={{
             token: {
               colorPrimary: "#034d77",
@@ -186,277 +185,285 @@ export default function SubmitData({ operation }) {
             },
           }}
         >
-
-        <Modal
-          title="Details"
-          width="40%"
-          footer={null}
-          open={isModalOpen}
-          onCancel={handleCancel}
-        >
-          <ul>
-            <li>
-              Flow ID: <b>{flowId}</b>
-            </li>
-            <li>
-              Flow State: <b>{flowState}</b>
-            </li>
-            <br />
-            <li>
-              The flow <code>actions</code>
-              {" , "}
-              <code>inputs</code> and labels used to build the form come from
-              the Staking API response.
+          <Modal
+            title="Details"
+            width="40%"
+            footer={null}
+            open={isModalOpen}
+            onCancel={handleCancel}
+          >
+            <ul>
+              <li>
+                Flow ID: <b>{flowId}</b>
+              </li>
+              <li>
+                Flow State: <b>{flowState}</b>
+              </li>
               <br />
-              In this context, they&apos;re set in the app state by the{" "}
-              <code>handleInitializeFlow</code> function in{" "}
-              <code>components/InitializeFlow.jsx</code>
-            </li>
-            <br />
-            <li>
-              Flow Action(s): <b>{flowActions}</b>
-            </li>
-            <li>
-              Action Inputs: <b>{flowInputs.join(", ")}</b>
-            </li>
-            <li>
-              Action Labels: <b>{flowLabels.join(", ")}</b>
-            </li>
-            <h3>Default Values (Staking flow only)</h3>
-            <li>
-              Delegator Address: <b>{accountAddress}</b>
-            </li>
-            <li>
-              Delegator Public Key: <b>{accountPublicKey}</b>
-            </li>
-            <li>
-              Validator Address: <b>legends.pool.f863973.m0</b>
-            </li>
-            <li>
-              Amount: <b>10.0</b>
-            </li>
-            <li>
-              Max Gas: This value is <i>optional</i>, so it&apos;s OK to leave
-              it empty! Read more about{" "}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://docs.near.org/concepts/basics/transactions/gas"
-              >
-                gas costs on NEAR
-              </Link>
-              . Setting max gas can be useful when running transactions on
-              mainnet.
-            </li>
-            <br />
-            <li>
-              Find the parameters and response for a staking flow on NEAR in the
-              guide{" "}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data"
-              >
-                Submit Delegate Data
-              </Link>
-            </li>
-            <br />
-
-            <li>
-              Consult the block explorer to find a{" "}
-              <Link href="https://explorer.testnet.near.org/nodes/validators">
-                list of NEAR testnet validators
-              </Link>
-            </li>
-            <br />
-
-            <li>
-              To build a form for collecting inputs using the Staking API
-              response values, consider the following JSX code:
-              <details>
-                <summary>Click here to expand code snippet</summary>
-                <pre className="detailcode">{codeSnippet}</pre>
-              </details>
+              <li>
+                The flow <code>actions</code>
+                {" , "}
+                <code>inputs</code> and labels used to build the form come from
+                the Staking API response.
+                <br />
+                In this context, they&apos;re set in the app state by the{" "}
+                <code>handleInitializeFlow</code> function in{" "}
+                <code>components/InitializeFlow.jsx</code>
+              </li>
               <br />
-              By iterating over all of the <code>actions</code> and{" "}
-              <code>inputs</code> from the Staking API response, we can quickly
-              build the dynamic forms we need to capture the data.
-            </li>
-            <li>
-              If you&apos;re using React for this, remember to supply a unique{" "}
-              <code>key</code> for each item in a list!
-            </li>
-          </ul>
-        </Modal>
+              <li>
+                Flow Action(s): <b>{flowActions}</b>
+              </li>
+              <li>
+                Action Inputs: <b>{flowInputs.join(", ")}</b>
+              </li>
+              <li>
+                Action Labels: <b>{flowLabels.join(", ")}</b>
+              </li>
+              <h3>Default Values (Staking flow only)</h3>
+              <li>
+                Delegator Address: <b>{accountAddress}</b>
+              </li>
+              <li>
+                Delegator Public Key: <b>{accountPublicKey}</b>
+              </li>
+              <li>
+                Validator Address: <b>legends.pool.f863973.m0</b>
+              </li>
+              <li>
+                Amount: <b>10.0</b>
+              </li>
+              <li>
+                Max Gas: This value is <i>optional</i>, so it&apos;s OK to leave
+                it empty! Read more about{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.near.org/concepts/basics/transactions/gas"
+                >
+                  gas costs on NEAR
+                </Link>
+                . Setting max gas can be useful when running transactions on
+                mainnet.
+              </li>
+              <br />
+              <li>
+                Find the parameters and response for a staking flow on NEAR in
+                the guide{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data"
+                >
+                  Submit Delegate Data
+                </Link>
+              </li>
+              <br />
 
-        <div className="row">
-          <h1 className={styles.title}>Submit Data to the Staking API</h1>
-        </div>
+              <li>
+                Consult the block explorer to find a{" "}
+                <Link href="https://explorer.testnet.near.org/nodes/validators">
+                  list of NEAR testnet validators
+                </Link>
+              </li>
+              <br />
 
-        <Button
-          style={{ width: "auto", marginTop: "20px" }}
-          type="primary"
-          onClick={showModal}
-        >
-          Details
-        </Button>
+              <li>
+                To build a form for collecting inputs using the Staking API
+                response values, consider the following JSX code:
+                <details>
+                  <summary>Click here to expand code snippet</summary>
+                  <pre className="detailcode">{codeSnippet}</pre>
+                </details>
+                <br />
+                By iterating over all of the <code>actions</code> and{" "}
+                <code>inputs</code> from the Staking API response, we can
+                quickly build the dynamic forms we need to capture the data.
+              </li>
+              <li>
+                If you&apos;re using React for this, remember to supply a unique{" "}
+                <code>key</code> for each item in a list!
+              </li>
+            </ul>
+          </Modal>
 
-        <div className="row">
-          <p className={styles.description}>
-            After initializing a flow, the next step is to parse the response to
-            understand which actions are available, and which data needs to be
-            provided to continue the flow.
-            <br />
-            Click &quot;Details&quot; above for more information.
-          </p>
-        </div>
-        <div className="row">
-          <div className="column">
-            <p>
-              Click <b>Create Inputs Payload</b> to continue.
-            </p>
-            {/* This form is explained in the Details modal when viewing the page */}
-            <form className="flowForm" onSubmit={handleSubmit} method="post">
-              <label htmlFor="actions">Actions:</label>
-              <select
-                id="actions"
-                name="actions"
-                required
-                defaultValue={flowActions}
-                key="actions"
-              >
-                {Object.keys(flowActions).map((key) => (
-                  <>
-                    <option key={flowActions[key]} value={flowActions[key]}>
-                      {flowActions[key]}
-                    </option>
-                  </>
-                ))}
-              </select>
-
-              {inputs.map(({ name, label }, index) => {
-                return (
-                  <span key={name}>
-                    <label htmlFor={name}>{label}</label>
-                    <input
-                      key={name}
-                      type="text"
-                      id={name}
-                      name={name}
-                      defaultValue={defaultValues[name]}
-                    />
-                  </span>
-                );
-              })}
-              <Button
-                style={{
-                  width: "auto",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                }}
-                type="primary"
-                htmlType="submit"
-              >
-                Create Inputs Payload
-              </Button>
-            </form>{" "}
-            {/* <-- This is the closing tag of the dynamic form  */}
+          <div className="row">
+            <h1 className={styles.title}>Submit Data to the Staking API</h1>
           </div>
 
-          <div className="column">
-            {formData ? (
-              <>
-                <p>
+          <Button
+            style={{ width: "auto", marginTop: "20px" }}
+            type="primary"
+            onClick={showModal}
+          >
+            Details
+          </Button>
+
+          <div className="row">
+            <p className={styles.description}>
+              After initializing a flow, the next step is to parse the response
+              to understand which actions are available, and which data needs to
+              be provided to continue the flow.
+              <br />
+              Click &quot;Details&quot; above for more information.
+            </p>
+          </div>
+          <div className="row">
+            <div className="column">
+              <p>
+                Click <b>Create Inputs Payload</b> to continue.
+              </p>
+              {/* This form is explained in the Details modal when viewing the page */}
+              <form className="flowForm" onSubmit={handleSubmit} method="post">
+                <label htmlFor="actions">Actions:</label>
+                <select
+                  id="actions"
+                  name="actions"
+                  required
+                  defaultValue={flowActions}
+                  key="actions"
+                >
+                  {Object.keys(flowActions).map((key) => (
+                    <>
+                      <option key={flowActions[key]} value={flowActions[key]}>
+                        {flowActions[key]}
+                      </option>
+                    </>
+                  ))}
+                </select>
+
+                {inputs.map(({ name, label }, index) => {
+                  return (
+                    <span key={name}>
+                      <label htmlFor={name}>{label}</label>
+                      <input
+                        key={name}
+                        type="text"
+                        id={name}
+                        name={name}
+                        defaultValue={defaultValues[name]}
+                      />
+                    </span>
+                  );
+                })}
+                <Button
+                  style={{
+                    width: "auto",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Create Inputs Payload
+                </Button>
+              </form>{" "}
+              {/* <-- This is the closing tag of the dynamic form  */}
+            </div>
+
+            <div className="column">
+              {formData ? (
+                <>
+                  <p>
+                    Send this JSON request body to the Staking API to continue
+                    with the flow:
+                  </p>
+
+                  <pre className="payload">
+                    {JSON.stringify(formData, null, 2)}
+                  </pre>
+
+                  <br />
+
+                  {!inputsSent ? (
+                    <>
+                      <Button
+                        style={{
+                          width: "auto",
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                        }}
+                        type="primary"
+                        htmlType="button"
+                        onClick={handleStakingAPI}
+                      >
+                        Submit Data to Staking API
+                      </Button>
+                      <br />
+                      <br />
+                      <br />
+                      <Button
+                        danger
+                        style={{
+                          width: "auto",
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                        }}
+                        type="primary"
+                        htmlType="button"
+                        onClick={handleClearFormData}
+                        icon={<WarningOutlined />}
+                      >
+                        Reset Inputs Payload
+                      </Button>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </>
+              ) : (
+                <>
+                  <p>
+                    Request body shown after clicking{" "}
+                    <b>Create Inputs Payload</b>
+                  </p>
+
+                  {/* <p>
                   Send this JSON request body to the Staking API to continue
                   with the flow:
-                </p>
+                </p> */}
+                  <p className="spacer">
+                    {/* This spacer intentionally left blank */}
+                  </p>
+                </>
+              )}
 
-                <div className="payload">
-                  {JSON.stringify(formData, null, 2)}
-                </div>
-
-                <br />
-                {!inputsSent
-                ? (<>
-
+              {unsignedTransactionPayload && inputsSent ? (
+                <>
+                  <p>
+                    The unsigned transaction payload is created by the Staking
+                    API,
+                    <br /> based on the <code>action</code> and{" "}
+                    <code>inputs</code>:{" "}
+                  </p>
+                  <div
+                    className="response"
+                    onClick={() =>
+                      navigator.clipboard.writeText(unsignedTransactionPayload)
+                    }
+                  >
+                    {unsignedTransactionPayload}
+                  </div>{" "}
+                  <br />
+                  <br />
                   <Button
-                  style={{
-                    width: "auto",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                  }}
-                  type="primary"
-                  htmlType="button"
-                  onClick={handleStakingAPI}
-                >
-                  Submit Data to Staking API
-                </Button>
-                  <br/><br/><br/>
-                  <Button
-                  danger
-                  style={{
-                    width: "auto",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                  }}
-                  type="primary"
-                  htmlType="button"
-                  onClick={handleClearFormData}
-                  icon={<WarningOutlined />}
-                >
-                  Reset Inputs Payload
-                </Button>
-                </>)
-                : ""
-                }
-              </>
-            ) : (
-              <>
-                <p>
-                  This is where the request body will appear when you click{" "}
-                  <b>Create Inputs Payload</b>
-                </p>
-                <p className="spacer">
-                  {/* This spacer intentionally left blank */}
-                </p>
-              </>
-            )}
-
-            {unsignedTransactionPayload && inputsSent ? (
-              <>
-                <p>
-                  The unsigned transaction payload is created by the Staking API,
-                  <br /> based on the <code>action</code> and{" "}
-                  <code>inputs</code>:{" "}
-                </p>
-                <div
-                  className="response"
-                  onClick={() =>
-                    navigator.clipboard.writeText(unsignedTransactionPayload)
-                  }
-                >
-                  {unsignedTransactionPayload}
-                </div>{" "}
-                <br />
-                <br />
-                <Button
-                  type="primary"
-                  href={`/operations/${operation}/sign-payload`}
-                >
-                  Proceed to the next step &rarr;
-                </Button>
-                <br />
-                <br />
-              </>
-            ) : (
-              ""
-            )}
+                    type="primary"
+                    href={`/operations/${operation}/sign-payload`}
+                  >
+                    Proceed to the next step &rarr;
+                  </Button>
+                  <br />
+                  <br />
+                </>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="footer">
-          <Link href="/">Return to Main Page</Link>
-        </div>
+          <div className="footer">
+            <Link href="/">Return to Main Page</Link>
+          </div>
         </ConfigProvider>
       </div>
     </>
