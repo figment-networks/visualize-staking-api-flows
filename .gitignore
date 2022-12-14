@@ -1,6 +1,7 @@
 node_modules
 .env
 .next
+.husky
 .vscode
 .DS_Store
 visualize-staking-api-flows.code-workspace
