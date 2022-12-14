@@ -431,7 +431,7 @@ export default function SubmitData({ operation }) {
               {unsignedTransactionPayload && inputsSent ? (
                 <>
                   <p>
-                    The unsigned transaction payload is created by the Staking
+                    An unsigned transaction payload is created by the Staking
                     API,
                     <br /> based on the <code>action</code> and{" "}
                     <code>inputs</code>:{" "}

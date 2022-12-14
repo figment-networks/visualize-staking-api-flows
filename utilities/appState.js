@@ -26,10 +26,12 @@ const AppStateContext = createContext({
   setAppState: undefined,
   clearAppState: undefined,
   backupAppState: initialState,
+  setBackupAppState: undefined,
 });
 
 export default function AppStateProvider({ children }) {
   const [appState, _setAppState] = useState({ ...initialState });
+  const [backupAppState, _setBackupAppState] = useState({ ...initialState });
 
   function setAppState(data) {
     const update = {
@@ -40,13 +42,13 @@ export default function AppStateProvider({ children }) {
     _setAppState({ ...update });
   }
 
-  function backupAppState(data) {
+  function setBackupAppState(data) {
     const update = {
       ...appState,
       ...data,
     };
     saveState("appStateBackup", JSON.stringify(update));
-    _setAppState({ ...update });
+    _setBackupAppState({ ...update });
   }
 
   function saveState(key, value) {
@@ -61,7 +63,7 @@ export default function AppStateProvider({ children }) {
     const dataString = localStorage.getItem("appState") || "{}";
     const dataObject = JSON.parse(dataString);
     setAppState({ ...initialState, ...dataObject });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -70,7 +72,8 @@ export default function AppStateProvider({ children }) {
         appState,
         setAppState,
         clearState,
-        backupAppState
+        backupAppState,
+        setBackupAppState,
       }}
     >
       {children}

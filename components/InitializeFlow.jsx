@@ -393,6 +393,7 @@ Refer to the page 'View All Flows' at the end of the walkthrough for details.`
                   </pre>{" "}
                   <Button
                     type="primary"
+                    onClick={setAppState({ stepCompleted: 1 })}
                     href={`/operations/${operation}/submit-data`}
                   >
                     Proceed to the next step &rarr;
