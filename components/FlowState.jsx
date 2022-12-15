@@ -119,6 +119,7 @@ export default function FlowState({ operation }) {
                 <Button
                   style={{ width: "auto" }}
                   type="primary"
+                  onClick={setAppState({ stepCompleted: 5 })}
                   href="/view-all-flows"
                 >
                   View All Flows

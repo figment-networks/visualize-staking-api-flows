@@ -448,6 +448,7 @@ export default function SubmitData({ operation }) {
                   <br />
                   <Button
                     type="primary"
+                    onClick={setAppState({ stepCompleted: 2 })}
                     href={`/operations/${operation}/sign-payload`}
                   >
                     Proceed to the next step &rarr;

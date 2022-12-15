@@ -61,7 +61,10 @@ export default function IndexPage() {
 
           <p className={styles.intro}>Proof of Stake Made Easy!</p>
 
-          <p className={styles.description}>Visualize the current appState</p>
+          <p className={styles.description}>
+            Visualize the current appState &mdash;{" "}
+            <Link href="/">Return to Main Page</Link>
+          </p>
           <div className={styles.grid}>
             <p className={styles.card}>
               Account address: {accountAddress ? "✅" : "❌"}

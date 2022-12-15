@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,6 +13,18 @@ export default function IndexPage() {
 
   // Destructure state variables
   const { accountPublicKey, accountAddress, accountPrivateKey } = appState;
+
+  const [isDevelopment, setIsDevelopment] = useState(false);
+
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_DEVELOPMENT) {
+      console.log("Development? ", process.env.NEXT_PUBLIC_DEVELOPMENT);
+      setIsDevelopment(false);
+    } else if (process.env.NEXT_PUBLIC_DEVELOPMENT === "true") {
+      console.log("Development? ", process.env.NEXT_PUBLIC_DEVELOPMENT);
+      setIsDevelopment(true);
+    }
+  }, [isDevelopment]);
 
   return (
     <>
@@ -71,10 +83,14 @@ export default function IndexPage() {
             <br />
             <br />
 
-            <Link href="/app-state" className={styles.card}>
-              <h2>App State &rarr;</h2>
-              <p>Explore/Reset the App State</p>
-            </Link>
+            {isDevelopment ? (
+              <Link href="/app-state" className={styles.card}>
+                <h2>appState &rarr;</h2>
+                <p>Explore/Reset the appState</p>
+              </Link>
+            ) : (
+              ""
+            )}
           </div>
         </main>
 
