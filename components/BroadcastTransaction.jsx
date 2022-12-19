@@ -248,6 +248,103 @@ export default function BroadcastTransaction({ operation }) {
               <br />
             </ul>
           </Modal>
+
+          <div className="row">
+            <h1 className={styles.title}>
+              Submit Signed Transaction for Broadcast
+            </h1>
+          </div>
+
+          <Button
+            style={{ width: "auto", marginTop: "20px" }}
+            type="primary"
+            onClick={showModal}
+          >
+            Details
+          </Button>
+
+          <div className="row">
+            <p className={styles.description}>
+              After signing the transaction, provide the signed{" "}
+              <code>transaction_payload</code>. <br /> The Staking API will then
+              validate and broadcast the transaction to the network.
+            </p>
+          </div>
+
+          <div className="row">
+            <div className="column">
+              {/* TODO: Make the actions dynamic */}
+              <form onSubmit={handleSubmit} method="post">
+                <label htmlFor="action">Action:</label>
+                <select
+                  id="action"
+                  name="flowAction"
+                  required
+                  defaultValue="sign_delegate_tx"
+                >
+                  <option value="sign_delegate_tx">sign_delegate_tx</option>
+                </select>
+
+                <br />
+
+                <label htmlFor="signed_payload">
+                  Signed Transaction Payload
+                </label>
+
+                <textarea
+                  id="signed_payload"
+                  name="signed_payload"
+                  rows={8}
+                  cols={80}
+                  required
+                  defaultValue={signedTransactionPayload}
+                />
+                <br />
+                <br />
+
+                <Button
+                  style={{ width: "auto" }}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Submit Signed Transaction Payload for Broadcast
+                </Button>
+              </form>
+            </div>{" "}
+            {/* column */}
+            <div className="column">
+              {flowState ? (
+                <>
+                  <p>
+                    Current Flow ID: <b>{flowId}</b>
+                  </p>
+                  <p>
+                    Current Flow State: <b>{flowState}</b>{" "}
+                  </p>
+                  <br />
+                  <br />
+                  <br />
+                  {flowState === "delegate_tx_broadcasting" ? (
+                    <Button
+                      type="primary"
+                      htmlType="button"
+                      onClick={setAppState({ stepCompleted: 4 })}
+                      href={`/operations/${operation}/flow-state`}
+                    >
+                      Proceed to the next step &rarr;
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                </>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+          <div className="footer">
+            <Link href="/">Return to Main Page</Link>
+          </div>
         </ConfigProvider>
       </div>
     </>

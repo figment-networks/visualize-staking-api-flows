@@ -295,7 +295,7 @@ export default function DecodeAndSignPayload({ operation }) {
                     style={{ width: "auto" }}
                     type="primary"
                     htmlType="button"
-                    onClick={() => setAppState({ stepCompleted: 3 })}
+                    onClick={() => () => setAppState({ stepCompleted: 3 })}
                     href={`/operations/${operation}/broadcast-transaction`}
                   >
                     Proceed to the next step &rarr;
