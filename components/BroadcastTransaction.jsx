@@ -165,7 +165,7 @@ export default function BroadcastTransaction({ operation }) {
           <Button
             style={{ width: "auto", marginTop: "20px" }}
             type="primary"
-            onClick={showModal}
+            onClick={() => showModal()}
           >
             Details
           </Button>
@@ -182,7 +182,9 @@ export default function BroadcastTransaction({ operation }) {
             <div className="column">
               {/* TODO: Make the actions dynamic */}
               <form onSubmit={handleSubmit} method="post">
-                <label htmlFor="action">Action:</label>
+                <label htmlFor="action" style={{ textAlign: "left" }}>
+                  Action:
+                </label>
                 <select
                   id="action"
                   name="flowAction"
@@ -222,24 +224,37 @@ export default function BroadcastTransaction({ operation }) {
             <div className="column">
               {flowState ? (
                 <>
+                  <br />
+                  <br />
+                  <br />
                   <p>
                     Current Flow ID: <b>{flowId}</b>
                   </p>
                   <p>
                     Current Flow State: <b>{flowState}</b>{" "}
                   </p>
-                  <br />
-                  <br />
-                  <br />
+
                   {flowState === "delegate_tx_broadcasting" ? (
-                    <Button
-                      type="primary"
-                      htmlType="button"
-                      onClick={setAppState({ stepCompleted: 4 })}
-                      href={`/operations/${operation}/flow-state`}
-                    >
-                      Proceed to the next step &rarr;
-                    </Button>
+                    <>
+                      <p className={styles.description}>
+                        When the signed payload is validated by the Staking API,
+                        the flow state changes from <code>initialized</code> to{" "}
+                        <code>delegate_tx_broadcasting</code>.<br />
+                        <br />
+                        At this point, the only action remaining is to check the
+                        flow state to ensure it is <code>delegated</code>.
+                      </p>
+                      <br />
+                      <br />
+                      <Button
+                        type="primary"
+                        htmlType="button"
+                        onClick={() => setAppState({ stepCompleted: 4 })}
+                        href={`/operations/${operation}/flow-state`}
+                      >
+                        Proceed to the next step &rarr;
+                      </Button>
+                    </>
                   ) : (
                     ""
                   )}

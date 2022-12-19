@@ -20,11 +20,26 @@ export default async function connection(req, res) {
     });
 
     if (response.status >= 400) {
-      res.status(200).json(await response.text());
+      const error = await response.text();
+
+      if (!process.env.API_KEY) {
+        res.status(200).send(error);
+        Error.stackTraceLimit = 0; // Prevent stack trace
+        throw new Error(
+          `\n Missing API key in .env!\n Paste a valid Figment API key in .env after API_KEY=, save the .env file, \n then restart the Next.js Development server: \n- Stop the server by pressing CTRL+C in this terminal \n- Restart it with the command "npm run dev"\n\nFor complete instructions, please refer to the README.md file in the root of this repository.`
+        );
+      }
+
+      res.status(200).send(error);
+      if (response.status === 401) {
+        Error.stackTraceLimit = 0; // Prevent stack trace
+        throw new Error(
+          `Status ${response.status}, response from server : ${error}`
+        );
+      }
+
       throw new Error(
-        `${response.status} response from server - ${JSON.stringify(
-          response.body
-        )}`
+        `Status ${response.status}, response from server : ${error}`
       );
     }
 

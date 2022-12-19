@@ -6,6 +6,7 @@ export default async function signPayload(req, res) {
      *  Signing with @figmentio/slate:
      * 
      *  - NEAR does not require any options, however networks like Polkadot and Cosmos do
+     *  - Refer to https://docs.figment.io/guides/staking-api/figment-signing-transactions for details
      * 
         exports.sign = async (network, version, payload, privateKeys, options = {}) => {
             const tx = new transactions[network].signing[version].Transaction(payload);
@@ -19,7 +20,7 @@ export default async function signPayload(req, res) {
     body.privateKey,
   ]);
 
-  console.log(signed);
+  console.log("Signature appended to transaction payload: ", signed);
 
   res.status(200).json(signed);
 }

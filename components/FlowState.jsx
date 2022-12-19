@@ -83,7 +83,7 @@ export default function FlowState({ operation }) {
         <Button
           style={{ width: "auto", marginTop: "20px" }}
           type="primary"
-          onClick={showModal}
+          onClick={() => showModal()}
         >
           Details
         </Button>
@@ -94,7 +94,7 @@ export default function FlowState({ operation }) {
             the flow with a GET request to the <code>api/v1/flows</code>{" "}
             endpoint,
             <br />
-            specifying the flowId you want to query. For example{" "}
+            specifying the flow ID you want to query. For example{" "}
             <code>/api/v1/flows/3937f7e8-987e-4e46-a149-30d3f3765b82</code>
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function FlowState({ operation }) {
               style={{ width: "auto" }}
               type="primary"
               htmlType="button"
-              onClick={handleGetState}
+              onClick={() => handleGetState()}
             >
               Check current flow state
             </Button>
@@ -119,7 +119,7 @@ export default function FlowState({ operation }) {
                 <Button
                   style={{ width: "auto" }}
                   type="primary"
-                  onClick={setAppState({ stepCompleted: 5 })}
+                  onClick={() => setAppState({ stepCompleted: 5 })}
                   href="/view-all-flows"
                 >
                   View All Flows
