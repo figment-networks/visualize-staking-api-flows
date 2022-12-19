@@ -83,7 +83,7 @@ export default function FlowState({ operation }) {
         <Button
           style={{ width: "auto", marginTop: "20px" }}
           type="primary"
-          onClick={showModal}
+          onClick={() => showModal()}
         >
           Details
         </Button>
@@ -108,7 +108,7 @@ export default function FlowState({ operation }) {
               style={{ width: "auto" }}
               type="primary"
               htmlType="button"
-              onClick={handleGetState}
+              onClick={() => handleGetState()}
             >
               Check current flow state
             </Button>
@@ -119,7 +119,7 @@ export default function FlowState({ operation }) {
                 <Button
                   style={{ width: "auto" }}
                   type="primary"
-                  onClick={setAppState({ stepCompleted: 5 })}
+                  onClick={() => setAppState({ stepCompleted: 5 })}
                   href="/view-all-flows"
                 >
                   View All Flows

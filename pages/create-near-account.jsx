@@ -72,6 +72,10 @@ export default function CreateNEARAccountPage() {
   const handleLoadAccount = async (event) => {
     event.preventDefault();
 
+    if (!localStorage.getItem("DEMO_NEAR_SECRET")) {
+      alert("No existing account found. Please generate a new account!");
+    }
+
     setIsLoading(true);
     setAppState({
       accountPrivateKey: localStorage.getItem("DEMO_NEAR_SECRET"),
@@ -79,6 +83,14 @@ export default function CreateNEARAccountPage() {
       accountAddress: localStorage.getItem("DEMO_NEAR_ADDRESS"),
     });
     setIsLoading(false);
+  };
+
+  const handleResetAccount = async () => {
+    setAppState({
+      accountPrivateKey: undefined,
+      accountPublicKey: undefined,
+      accountAddress: undefined,
+    });
   };
 
   return (
@@ -197,7 +209,6 @@ export default function CreateNEARAccountPage() {
                 accountPrivateKey={accountPrivateKey}
                 accountAddress={accountAddress}
               />
-
               <Button
                 style={{ width: "auto" }}
                 type="primary"
@@ -205,8 +216,18 @@ export default function CreateNEARAccountPage() {
                 disabled={isLoading ? true : false}
               >
                 Create a New Account
+              </Button>{" "}
+              or{" "}
+              <Button
+                danger
+                style={{ width: "auto", marginTop: "20px" }}
+                type="primary"
+                htmlType="button"
+                onClick={handleResetAccount}
+                disabled={isLoading ? true : false}
+              >
+                Reset Account (clear appState only)
               </Button>
-
               <Link href="/">Return to Main Page</Link>
             </>
           ) : null}

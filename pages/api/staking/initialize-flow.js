@@ -24,8 +24,9 @@ export default async function connection(req, res) {
 
       if (!process.env.API_KEY) {
         res.status(200).send(error);
+        Error.stackTraceLimit = 0; // Prevent stack trace
         throw new Error(
-          `Missing API key in .env! Please add a valid Figment API key to .env, then restart the Next.js Development server to continue.`
+          `\n Missing API key in .env!\n Paste a valid Figment API key in .env after API_KEY=, save the .env file, \n then restart the Next.js Development server: \n- Stop the server by pressing CTRL+C in this terminal \n- Restart it with the command "npm run dev"\n\nFor complete instructions, please refer to the README.md file in the root of this repository.`
         );
       }
 

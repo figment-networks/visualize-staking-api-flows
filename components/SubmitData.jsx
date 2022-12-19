@@ -26,29 +26,35 @@ export default function SubmitData({ operation }) {
     validatorAddress,
   } = appState;
 
+  const handleLoadExistingNearAccount = async () => {
+    if (!localStorage.getItem("DEMO_NEAR_SECRET")) {
+      alert(
+        "No existing account found. Please generate a new account or load an existing account!"
+      );
+    }
+
+    setAppState({
+      accountPrivateKey: localStorage.getItem("DEMO_NEAR_SECRET"),
+      accountPublicKey: localStorage.getItem("DEMO_NEAR_PUBKEY"),
+      accountAddress: localStorage.getItem("DEMO_NEAR_ADDRESS"),
+    });
+  };
+
   const [inputsSent, setInputsSent] = useState(false);
   const [formData, setFormData] = useState();
 
   // These defaults will be used when generating the input collection form
   const defaultValues = {
-    delegator_address: accountAddress,
-    delegator_pubkey: accountPublicKey,
+    delegator_address: accountAddress
+      ? accountAddress
+      : "Please generate an account first!",
+    delegator_pubkey: accountPublicKey
+      ? accountPublicKey
+      : "Please generate an account first!",
     validator_address: "legends.pool.f863973.m0",
     amount: 10,
     max_gas: null,
   };
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("appState")) {
-  //     const tempState = localStorage.getItem("appState")
-  //     setAppState({accountAddress: accountAddress, accountPublicKey: accountPublicKey})
-  //     console.log("Loaded appState from localStorage.")
-  //   }
-  //   console.log(
-  //     "Saved Inputs to localStorage: ",
-  //     localStorage.getItem("INPUTS")
-  //   );
-  // }, [appState, setAppState]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,14 +74,6 @@ export default function SubmitData({ operation }) {
     setFormData(data);
     setInputsSent(false);
   };
-
-  // useEffect(() => {
-  //   localStorage.setItem("INPUTS", JSON.stringify(formData));
-  //   console.log(
-  //     "Saved Inputs to localStorage: ",
-  //     localStorage.getItem("INPUTS")
-  //   );
-  // }, [formData]);
 
   const handleStakingAPI = async () => {
     console.log("handleStakingAPI formData: ", formData);
@@ -293,7 +291,7 @@ export default function SubmitData({ operation }) {
           <Button
             style={{ width: "auto", marginTop: "20px" }}
             type="primary"
-            onClick={showModal}
+            onClick={() => showModal()}
           >
             Details
           </Button>
@@ -309,55 +307,85 @@ export default function SubmitData({ operation }) {
           </div>
           <div className="row">
             <div className="column">
-              <p>
-                Click <b>Create Inputs Payload</b> to continue.
-              </p>
-              {/* This form is explained in the Details modal when viewing the page */}
-              <form className="flowForm" onSubmit={handleSubmit} method="post">
-                <label htmlFor="actions">Actions:</label>
-                <select
-                  id="actions"
-                  name="actions"
-                  required
-                  defaultValue={flowActions}
-                  key="actions"
-                >
-                  {Object.keys(flowActions).map((key) => (
-                    <>
-                      <option key={flowActions[key]} value={flowActions[key]}>
-                        {flowActions[key]}
-                      </option>
-                    </>
-                  ))}
-                </select>
+              {!accountAddress && !accountPublicKey ? (
+                <>
+                  <p>Please create an account first &rarr;</p>
+                  <Button
+                    style={{ width: "auto" }}
+                    type="primary"
+                    href="/create-near-account"
+                  >
+                    Create a .testnet account
+                  </Button>{" "}
+                  or{" "}
+                  <Button
+                    style={{ width: "auto" }}
+                    type="primary"
+                    onClick={() => handleLoadExistingNearAccount()}
+                  >
+                    Load an existing account
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <p>
+                    Click <b>Create Inputs Payload</b> to continue.
+                  </p>
+                  {/* This form is explained in the Details modal when viewing the page */}
+                  <form
+                    className="flowForm"
+                    onSubmit={handleSubmit}
+                    method="post"
+                  >
+                    <label htmlFor="actions">Actions:</label>
+                    <select
+                      id="actions"
+                      name="actions"
+                      required
+                      defaultValue={flowActions}
+                      key="actions"
+                    >
+                      {Object.keys(flowActions).map((key) => (
+                        <>
+                          <option
+                            key={flowActions[key]}
+                            value={flowActions[key]}
+                          >
+                            {flowActions[key]}
+                          </option>
+                        </>
+                      ))}
+                    </select>
 
-                {inputs.map(({ name, label }, index) => {
-                  return (
-                    <span key={name}>
-                      <label htmlFor={name}>{label}</label>
-                      <input
-                        key={name}
-                        type="text"
-                        id={name}
-                        name={name}
-                        defaultValue={defaultValues[name]}
-                      />
-                    </span>
-                  );
-                })}
-                <Button
-                  style={{
-                    width: "auto",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                  }}
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Create Inputs Payload
-                </Button>
-              </form>{" "}
-              {/* <-- This is the closing tag of the dynamic form  */}
+                    {inputs.map(({ name, label }, index) => {
+                      return (
+                        <span key={name}>
+                          <label htmlFor={name}>{label}</label>
+                          <input
+                            key={name}
+                            type="text"
+                            id={name}
+                            name={name}
+                            defaultValue={defaultValues[name]}
+                          />
+                        </span>
+                      );
+                    })}
+                    <Button
+                      style={{
+                        width: "auto",
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                      }}
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      Create Inputs Payload
+                    </Button>
+                  </form>{" "}
+                  {/* <-- This is the closing tag of the dynamic form  */}
+                </>
+              )}
             </div>
 
             <div className="column">
@@ -384,7 +412,7 @@ export default function SubmitData({ operation }) {
                         }}
                         type="primary"
                         htmlType="button"
-                        onClick={handleStakingAPI}
+                        onClick={() => handleStakingAPI()}
                       >
                         Submit Data to Staking API
                       </Button>
@@ -400,7 +428,7 @@ export default function SubmitData({ operation }) {
                         }}
                         type="primary"
                         htmlType="button"
-                        onClick={handleClearFormData}
+                        onClick={() => handleClearFormData()}
                         icon={<WarningOutlined />}
                       >
                         Reset Inputs Payload
@@ -430,10 +458,10 @@ export default function SubmitData({ operation }) {
               {unsignedTransactionPayload && inputsSent ? (
                 <>
                   <p>
-                    An unsigned transaction payload is created by the Staking
-                    API,
-                    <br /> based on the <code>action</code> and{" "}
-                    <code>inputs</code>:{" "}
+                    Based on the inputs above, an unsigned transaction payload
+                    is created by the Staking API,
+                    <br /> using the <code>action</code> and <code>inputs</code>
+                    :{" "}
                   </p>
                   <div
                     className="response"
@@ -444,10 +472,14 @@ export default function SubmitData({ operation }) {
                     {unsignedTransactionPayload}
                   </div>{" "}
                   <br />
+                  <p>
+                    This payload must be signed using the cryptographic private
+                    key of the delegator account.
+                  </p>
                   <br />
                   <Button
                     type="primary"
-                    onClick={setAppState({ stepCompleted: 2 })}
+                    onClick={() => setAppState({ stepCompleted: 2 })}
                     href={`/operations/${operation}/sign-payload`}
                   >
                     Proceed to the next step &rarr;

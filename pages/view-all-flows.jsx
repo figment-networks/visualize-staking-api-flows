@@ -89,21 +89,29 @@ export default function ViewAllFlows() {
         >
           <ul>
             <li>
-              <b>Note</b>: When this page loads, it will display the most recent
-              flow that you have completed by default.
+              To check the state of all flows created by your account, send a
+              GET request to the <code>api/v1/flows</code> endpoint (without
+              specifying a <code>flowId</code>).
             </li>
+            <br />
             <li>
               If you have created multiple flows, their state and all current
               information about them can be viewed by pages.
             </li>
+            <br />
+
             <li>
               Flow responses viewed in this way are paginated and returned in a{" "}
               <code>data</code> array.
             </li>
+            <br />
+
             <li>
               Each object in the <code>data</code> array is the most recent
               response for that flowId.
             </li>
+            <br />
+
             <li>
               Pagination is currently fixed to{" "}
               <code>responseData.data.length</code> &rarr; <b>20</b> flows per
@@ -113,6 +121,8 @@ export default function ViewAllFlows() {
               <code>responseData.data[0]</code> through{" "}
               <code>responseData.data[19]</code>.
             </li>
+            <br />
+
             <li>
               Use <code>.map()</code> to filter a page of flows by their state
               (for example, <code>delegated</code>):
@@ -177,6 +187,8 @@ export default function ViewAllFlows() {
                 </pre>
               </details>
             </li>
+            <br />
+
             <li>
               Check the Figment{" "}
               <Link
@@ -205,9 +217,10 @@ export default function ViewAllFlows() {
 
         <div className="row">
           <p className={styles.description}>
-            To check the state of all flows that were created using your API
-            key, send a GET request to the <code>api/v1/flows</code> endpoint
-            without specifying a flowId. <br />
+            <b>Note</b>: When this page loads, it will display the most recent
+            flow that you have completed by default. Click{" "}
+            <b>Get Page of Flows</b> to continue.
+            <br />
             <br />
             Data from this query is paginated in groups of 20, with page 1 being
             displayed by default. If they exist, additional pages can be
@@ -237,7 +250,7 @@ export default function ViewAllFlows() {
         {responseData && !responseData.page && !isLoading ? (
           <>
             <p>
-              Recent flow: <b>{flowId}</b>
+              Recent {flowState ? `${flowState}` : ""} flow: <b>{flowId}</b>
             </p>
             <pre className="response">
               {JSON.stringify(responseData, null, 2)}

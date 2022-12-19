@@ -496,3 +496,10 @@ h1.tutorial-title {
 .flowForm label {
   text-align: left; /** Align dynamic form labels to the left */
 }
+
+.callout {
+  background-color: rgba(100, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+}

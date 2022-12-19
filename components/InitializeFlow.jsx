@@ -18,6 +18,7 @@ export default function InitializeFlow({ operation }) {
     flowActions,
     flowInputs,
     flowLabels,
+    stepCompleted,
   } = appState;
 
   const [selectedNetwork, setSelectedNetwork] = useState("");
@@ -72,7 +73,6 @@ export default function InitializeFlow({ operation }) {
         );
       } else {
         console.log(result);
-        throw new Error(`${result?.message}`);
       }
     } catch (error) {
       console.log(error);
@@ -152,7 +152,12 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
           >
             <ul>
               <li>
-                Find the list of supported networks and operations in the{" "}
+                The most common operations are <code>staking</code>,{" "}
+                <code>unstaking</code> and <code>transfer</code>.
+              </li>
+              <br />
+              <li>
+                Find the full list of supported networks and operations in the{" "}
                 <Link
                   target="_blank"
                   rel="noopener noreferrer"
@@ -160,11 +165,6 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
                 >
                   Staking API Guides
                 </Link>
-              </li>
-              <br />
-              <li>
-                The most common operations are <code>staking</code>,{" "}
-                <code>unstaking</code> and <code>transfer</code>.
               </li>
               <br />
               <li>
@@ -212,6 +212,8 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
                 <code>chain_code</code> = <code>devnet</code>).
               </li>
               <br />
+              <hr />
+              <br />
               <li>
                 Check out{" "}
                 <Link
@@ -231,7 +233,7 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
           <Button
             style={{ width: "auto", marginTop: "20px" }}
             type="primary"
-            onClick={showModal}
+            onClick={() => showModal()}
           >
             Details
           </Button>
@@ -386,6 +388,16 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
             {/* column */}
             <br />
             <div className="column">
+              {stepCompleted === 1 ? (
+                <>
+                  <p className="callout">
+                    Step has already been completed. Please{" "}
+                    <b>proceed to the next step</b> or <b>reset the flow</b>.
+                  </p>
+                </>
+              ) : (
+                ""
+              )}
               {flowResponse ? (
                 <>
                   <p>
@@ -414,7 +426,7 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
                     style={{ width: "auto" }}
                     type="primary"
                     htmlType="button"
-                    onClick={handleReset}
+                    onClick={() => handleReset()}
                     icon={<WarningOutlined />}
                   >
                     Reset Flow
@@ -458,7 +470,7 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
                         style={{ width: "auto" }}
                         type="primary"
                         htmlType="button"
-                        onClick={handleInitializeFlow}
+                        onClick={() => handleInitializeFlow()}
                       >
                         Initialize Flow with Staking API
                       </Button>
@@ -468,7 +480,7 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
                         style={{ width: "auto" }}
                         type="primary"
                         htmlType="button"
-                        onClick={handleClearFormData}
+                        onClick={() => handleClearFormData()}
                         icon={<WarningOutlined />}
                       >
                         Clear JSON Request Body

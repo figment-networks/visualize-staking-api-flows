@@ -17,7 +17,6 @@ export default function IndexPage() {
     setBackupAppState,
   } = useAppState();
 
-  // Destructure state variables
   const {
     flowId,
     flowState,
@@ -142,10 +141,10 @@ export default function IndexPage() {
                   setAppState({
                     flowId: undefined,
                     flowState: undefined,
-                    flowActions: undefined,
-                    flowInputs: undefined,
-                    flowLabels: undefined,
-                    inputs: undefined,
+                    flowActions: [],
+                    flowInputs: [],
+                    flowLabels: [],
+                    inputs: [],
                     flowResponse: undefined,
                     responseData: undefined,
                     unsignedTransactionPayload: undefined,
@@ -153,6 +152,7 @@ export default function IndexPage() {
                     signedTransactionPayload: undefined,
                     validatorAddress: undefined,
                     delegateAmount: undefined,
+                    stepCompleted: undefined,
                   });
                 }}
               >
