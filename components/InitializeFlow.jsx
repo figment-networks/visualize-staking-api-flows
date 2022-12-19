@@ -10,26 +10,16 @@ import styles from "@styles/Home.module.css";
 
 export default function InitializeFlow({ operation }) {
   const { appState, setAppState } = useAppState();
-
-  const {
-    flowId,
-    flowResponse,
-    flowState,
-    flowActions,
-    flowInputs,
-    flowLabels,
-    stepCompleted,
-  } = appState;
-
+  const [formData, setFormData] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState("");
+
+  const { flowId, flowResponse, flowInputs, flowLabels, stepCompleted } =
+    appState;
 
   async function handleFormChange(event) {
     setSelectedNetwork(event.target.value);
   }
-
-  const [formData, setFormData] = useState();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -50,7 +40,9 @@ export default function InitializeFlow({ operation }) {
       });
       const result = await response.json();
 
-      if (!result.message && result.id && result.state && result.actions) {
+      const isErrorFree = !result.message;
+      const hasData = result.id && result.state && result.actions;
+      if (isErrorFree && hasData) {
         setAppState({
           ...appState,
           flowResponse: result,
@@ -126,9 +118,9 @@ export default function InitializeFlow({ operation }) {
     setAppState({ flowResponse: undefined });
     setFormData(undefined);
     alert(
-      `Reset request body and current flowId! 
-Flow ${flowId} is still initialized.
-Refer to /view-all-flows at the end of the walkthrough for details.`
+      `Reset request body and current flowId!\n` +
+        `Flow ${flowId} is still initialized.\n` +
+        `Refer to /view-all-flows at the end of the walkthrough for details.`
     );
   };
 

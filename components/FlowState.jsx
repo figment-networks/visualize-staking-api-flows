@@ -8,22 +8,12 @@ import { Button, Modal, ConfigProvider } from "antd";
 import styles from "@styles/Home.module.css";
 
 export default function FlowState({ operation }) {
-  const { appState, setAppState, backupAppState } = useAppState();
+  const { appState, setAppState } = useAppState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Destructure state variables
-  const {
-    flowId,
-    flowResponse,
-    responseData,
-    flowState,
-    flowActions,
-    flowInputs,
-    flowLabels,
-  } = appState;
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { flowId, responseData, flowState } = appState;
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -48,7 +38,6 @@ export default function FlowState({ operation }) {
     });
 
     const result = await response.json();
-    console.log(result);
     setAppState({ flowState: result.state, responseData: result });
     setIsLoading(false);
   };
@@ -112,7 +101,7 @@ export default function FlowState({ operation }) {
             >
               Check current flow state
             </Button>
-            {flowState === "delegated" ? (
+            {flowState === "delegated" && (
               <>
                 {" "}
                 or{" "}
@@ -125,11 +114,8 @@ export default function FlowState({ operation }) {
                   View All Flows
                 </Button>
               </>
-            ) : (
-              ""
             )}
             <br />
-
             {isLoading ? (
               "Loading..."
             ) : (
@@ -160,7 +146,6 @@ export default function FlowState({ operation }) {
             )}
           </div>
         </div>
-
         <div className="footer">
           <Link href="/">Return to Main Page</Link>
         </div>

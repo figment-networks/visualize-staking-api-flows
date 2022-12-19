@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "/styles/Home.module.css";
 import { Button, Modal, ConfigProvider } from "antd";
 
@@ -8,21 +8,10 @@ import { useAppState } from "@utilities/appState";
 
 export default function BroadcastTransaction({ operation }) {
   const { appState, setAppState } = useAppState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Destructure state variables
-  const {
-    flowId,
-    flowResponse,
-    flowState,
-    flowActions,
-    flowInputs,
-    flowLabels,
-    accountPublicKey,
-    accountAddress,
-    signedTransactionPayload,
-  } = appState;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { flowId, flowState, signedTransactionPayload } = appState;
 
   const showModal = () => {
     setIsModalOpen(true);

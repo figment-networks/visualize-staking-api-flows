@@ -7,27 +7,24 @@ export const explorerUrl = (address) =>
 export default function AccountCard(props) {
   return (
     <>
-      {props.accountAddress ? (
+      {props.accountAddress && (
         <>
           <div className="profile">
             <h2 className="address">
-              <Link href="/create-near-account">Account Address</Link>{" "}
-              &rarr;
+              <Link href="/create-near-account">Account Address</Link> &rarr;
             </h2>
             <Link className="ext_link" href={explorerUrl(props.accountAddress)}>
               {props.accountAddress}
             </Link>
 
-            {props.accountPubKey ? (
+            {props.accountPubKey && (
               <>
                 <h3 className="pubkey">Account Public Key &rarr;</h3>
                 <p>{props.accountPubKey}</p>
               </>
-            ) : (
-              ""
             )}
 
-            {props.accountPrivateKey ? (
+            {props.accountPrivateKey && (
               <>
                 <h3 className="pubkey">
                   Account Private Key (hover to reveal, click to copy) &rarr;
@@ -42,10 +39,10 @@ export default function AccountCard(props) {
                   {props.accountPrivateKey}
                 </p>
               </>
-            ) : null}
+            )}
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
 }

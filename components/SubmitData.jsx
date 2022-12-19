@@ -13,30 +13,25 @@ export default function SubmitData({ operation }) {
 
   const {
     flowId,
-    flowResponse,
     flowState,
     flowActions,
     flowInputs,
     flowLabels,
-    responseData,
     inputs,
     unsignedTransactionPayload,
     accountPublicKey,
     accountAddress,
-    validatorAddress,
   } = appState;
 
   const handleLoadExistingNearAccount = async () => {
-    if (!localStorage.getItem("DEMO_NEAR_SECRET")) {
+    if (!localStorage.getItem("accountBackup")) {
       alert(
         "No existing account found. Please generate a new account or load an existing account!"
       );
     }
 
     setAppState({
-      accountPrivateKey: localStorage.getItem("DEMO_NEAR_SECRET"),
-      accountPublicKey: localStorage.getItem("DEMO_NEAR_PUBKEY"),
-      accountAddress: localStorage.getItem("DEMO_NEAR_ADDRESS"),
+      ...JSON.parse(localStorage.getItem("accountBackup") || "{}"),
     });
   };
 

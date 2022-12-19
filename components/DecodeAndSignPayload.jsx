@@ -10,16 +10,14 @@ import { useAppState } from "@utilities/appState";
 
 export default function DecodeAndSignPayload({ operation }) {
   const { appState, setAppState } = useAppState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Destructure state variables
   const {
     flowId,
     flowResponse,
     flowState,
-    flowActions,
-    flowInputs,
-    flowLabels,
-    responseData,
     unsignedTransactionPayload,
     decodedTransactionPayload,
     signedTransactionPayload,
@@ -29,12 +27,6 @@ export default function DecodeAndSignPayload({ operation }) {
     validatorAddress,
     delegateAmount,
   } = appState;
-
-  const [formData, setFormData] = useState();
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -46,18 +38,15 @@ export default function DecodeAndSignPayload({ operation }) {
 
   const handleDecode = async (event) => {
     event.preventDefault();
-
     const form = event.target;
 
-    // The @figmentio/slate package defines a decode method which takes
-    // the following parameters (except flowId):
+    // for @figmentio/slate decode function
     const data = {
       transaction_payload: form.transaction_payload.value,
       network: "near",
       operation: "staking",
       version: "v1",
       transaction_name: "delegateTransaction",
-      flow_id: flowId,
     };
 
     setIsLoading(true);
@@ -70,10 +59,7 @@ export default function DecodeAndSignPayload({ operation }) {
     });
 
     const result = await response.json();
-
-    console.log(result);
     setAppState({ decodedTransactionPayload: result });
-    setFormData(data);
     setIsLoading(false);
   };
 
@@ -275,7 +261,7 @@ export default function DecodeAndSignPayload({ operation }) {
                 >
                   Decode Transaction Payload
                 </Button>
-                {decodedTransactionPayload ? (
+                {decodedTransactionPayload && (
                   <>
                     {" "}
                     or{" "}
@@ -289,16 +275,14 @@ export default function DecodeAndSignPayload({ operation }) {
                       Reset Decoded Transaction Payload
                     </Button>
                   </>
-                ) : (
-                  ""
                 )}
               </form>
             </div>
 
             <div className="column">
-              {isLoading ? <p>Loading...</p> : ""}
+              {isLoading && <p>Loading...</p>}
 
-              {!decodedTransactionPayload ? (
+              {!decodedTransactionPayload && (
                 <>
                   <p>
                     The decoded payload will appear here after you click{" "}
@@ -308,10 +292,8 @@ export default function DecodeAndSignPayload({ operation }) {
                     {/* This spacer intentionally left blank */}
                   </p>
                 </>
-              ) : (
-                ""
               )}
-              {decodedTransactionPayload && !isLoading ? (
+              {decodedTransactionPayload && !isLoading && (
                 <>
                   <p align="left">
                     {" "}
@@ -371,11 +353,9 @@ export default function DecodeAndSignPayload({ operation }) {
                     ""
                   )}
                 </>
-              ) : (
-                ""
               )}
 
-              {signedTransactionPayload ? (
+              {signedTransactionPayload && (
                 <>
                   <h3>
                     Signing method from <b>@figmentio/slate</b>
@@ -402,11 +382,9 @@ export default function DecodeAndSignPayload({ operation }) {
                     {signedTransactionPayload}
                   </pre>
                 </>
-              ) : (
-                ""
               )}
 
-              {signedTransactionPayload ? (
+              {signedTransactionPayload && (
                 <>
                   <br />
                   <br />
@@ -433,12 +411,9 @@ export default function DecodeAndSignPayload({ operation }) {
                     Clear Signed Payload
                   </Button>
                 </>
-              ) : (
-                ""
               )}
             </div>
           </div>
-
           <div className="footer">
             <Link href="/">Return to Main Page</Link>
           </div>
