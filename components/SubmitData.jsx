@@ -11,7 +11,6 @@ import { useAppState } from "@utilities/appState";
 export default function SubmitData({ operation }) {
   const { appState, setAppState } = useAppState();
 
-  // Destructure state variables
   const {
     flowId,
     flowResponse,
@@ -70,13 +69,13 @@ export default function SubmitData({ operation }) {
     setInputsSent(false);
   };
 
-  useEffect(() => {
-    localStorage.setItem("INPUTS", JSON.stringify(formData));
-    console.log(
-      "Saved Inputs to localStorage: ",
-      localStorage.getItem("INPUTS")
-    );
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("INPUTS", JSON.stringify(formData));
+  //   console.log(
+  //     "Saved Inputs to localStorage: ",
+  //     localStorage.getItem("INPUTS")
+  //   );
+  // }, [formData]);
 
   const handleStakingAPI = async () => {
     console.log("handleStakingAPI formData: ", formData);
@@ -89,9 +88,9 @@ export default function SubmitData({ operation }) {
       body: JSON.stringify(formData),
     });
 
-    setInputsSent(true);
-
     const result = await response.json();
+
+    setInputsSent(true);
 
     console.log("submit-data result: ", result);
 

@@ -53,6 +53,7 @@ export default function ViewAllFlows() {
   const handleReset = async (event) => {
     setAppState({ responseData: undefined });
     setIsLoading(false);
+    document.getElementById("page").value = "1";
   };
 
   const codeSnippet = `{responseData?.data
@@ -100,53 +101,79 @@ export default function ViewAllFlows() {
               <code>data</code> array.
             </li>
             <li>
-              Each object in the <code>data</code> array is the most recent response for that flowId.
+              Each object in the <code>data</code> array is the most recent
+              response for that flowId.
             </li>
             <li>
-              Pagination is currently fixed to <code>responseData.data.length</code> &rarr; <b>20</b> flows per page.<br />
-              Access individual results (in this context) with <code>responseData.data[0]</code>{" "}
-              through <code>responseData.data[19]</code>. 
+              Pagination is currently fixed to{" "}
+              <code>responseData.data.length</code> &rarr; <b>20</b> flows per
+              page.
+              <br />
+              Access individual results (in this context) with{" "}
+              <code>responseData.data[0]</code> through{" "}
+              <code>responseData.data[19]</code>.
             </li>
             <li>
-              Use <code>.map()</code> to filter a page of flows by their state (for example, <code>delegated</code>):
+              Use <code>.map()</code> to filter a page of flows by their state
+              (for example, <code>delegated</code>):
               <br />
               <details>
                 <summary>Click here to expand code snippet</summary>
                 <pre className="detailcode">{codeSnippet}</pre>
-        
-                <p>&nbsp;Based on the current page being viewed, such a filter returns any <code>delegated</code> flows:</p>
+
+                <p>
+                  &nbsp;Based on the current page being viewed, such a filter
+                  returns any <code>delegated</code> flows:
+                </p>
 
                 <pre className="detailcode">
-                {responseData?.data && responseData?.data.length > 1
-                ? (
-                  Object?.keys(responseData.data).map((index) => (<>
-                     {responseData?.data[index].state === 'delegated'
-                     ? (
-                      <pre className="responseFixed" key={responseData?.data[index]}>
-                      {responseData?.data[index].id.toString() + ' ' + responseData?.data[index].state.toString()}
-                      </pre>
-                      ) 
-                     : "" }
-                  </>))
-                ) : "Select a page of results - input a number and click Get Page of Flows"}
+                  {responseData?.data && responseData?.data.length > 1
+                    ? Object?.keys(responseData.data).map((index) => (
+                        <>
+                          {responseData?.data[index].state === "delegated" ? (
+                            <pre
+                              className="responseFixed"
+                              key={responseData?.data[index]}
+                            >
+                              {responseData?.data[index].id.toString() +
+                                " " +
+                                responseData?.data[index].state.toString()}
+                            </pre>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      ))
+                    : "Select a page of results first - input a number and click Get Page of Flows"}
                 </pre>
 
-                <p>&nbsp;Or filter by <code>responseData?.data[index].state === &apos;initialized&apos;</code>:</p>
+                <p>
+                  &nbsp;Or filter by{" "}
+                  <code>
+                    responseData?.data[index].state === &apos;initialized&apos;
+                  </code>
+                  :
+                </p>
 
                 <pre className="detailcode">
-                {responseData?.data && responseData?.data.length > 1
-                ? (
-                  Object?.keys(responseData.data).map((index) => (<>
-                     {responseData?.data[index].state === 'initialized' 
-                     ? (
-                      <pre className="responseFixed" key={responseData?.data[index]}>
-                      {responseData?.data[index].id.toString() + ' ' + responseData?.data[index].state.toString()}
-                      </pre>
-                      ) 
-                     : "" }
-                  </>))
-                ) : "Select a page of results - input a number and click Get Page of Flows"}
-
+                  {responseData?.data && responseData?.data.length > 1
+                    ? Object?.keys(responseData.data).map((index) => (
+                        <>
+                          {responseData?.data[index].state === "initialized" ? (
+                            <pre
+                              className="responseFixed"
+                              key={responseData?.data[index]}
+                            >
+                              {responseData?.data[index].id.toString() +
+                                " " +
+                                responseData?.data[index].state.toString()}
+                            </pre>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      ))
+                    : "Select a page of results first - input a number and click Get Page of Flows"}
                 </pre>
               </details>
             </li>
@@ -177,19 +204,19 @@ export default function ViewAllFlows() {
         </Button>
 
         <div className="row">
-        <p className={styles.description}>
-          To check the state of all flows that were created using your API key,
-          send a GET request to the <code>api/v1/flows</code> endpoint without
-          specifying a flowId. <br /><br />
-          Data from this query is paginated in groups of 20, with page 1 being displayed by default.
-          If they exist, additional pages can be accessed<br /> via the query
-          parameter <code>?page=</code>.
-          For example: <code>api/v1/flows?page=2</code>.<br />
-          <br />
-          <p align="center">
+          <p className={styles.description}>
+            To check the state of all flows that were created using your API
+            key, send a GET request to the <code>api/v1/flows</code> endpoint
+            without specifying a flowId. <br />
+            <br />
+            Data from this query is paginated in groups of 20, with page 1 being
+            displayed by default. If they exist, additional pages can be
+            accessed
+            <br /> via the query parameter <code>?page=</code>. For example:{" "}
+            <code>api/v1/flows?page=2</code>.<br />
+            <br />
             <Link href="/">Return to the Main Page</Link>
           </p>
-        </p>
         </div>
 
         <form method="post" onSubmit={handleSubmit}>
@@ -224,10 +251,11 @@ export default function ViewAllFlows() {
         {responseData?.page && !isLoading ? (
           <>
             <p>
-              <b>{responseData?.data.length}</b> results per page &mdash; Viewing page{" "}
-              <b>{responseData?.page}</b> of <b>{responseData?.pages}</b>
+              <code>data[]</code> <b>contains {responseData?.data.length}</b>{" "}
+              results per page &mdash; Viewing page <b>{responseData?.page}</b>{" "}
+              of <b>{responseData?.pages}</b>
             </p>
-            <pre className="responseFixedAllFlows" style={{width: "800px"}}>
+            <pre className="responseFixedAllFlows" style={{ width: "800px" }}>
               {JSON.stringify(responseData, null, 2)}
             </pre>
             <br />

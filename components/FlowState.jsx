@@ -94,7 +94,7 @@ export default function FlowState({ operation }) {
             the flow with a GET request to the <code>api/v1/flows</code>{" "}
             endpoint,
             <br />
-            specifying the flowId you want to query. For example{" "}
+            specifying the flow ID you want to query. For example{" "}
             <code>/api/v1/flows/3937f7e8-987e-4e46-a149-30d3f3765b82</code>
           </p>
         </div>

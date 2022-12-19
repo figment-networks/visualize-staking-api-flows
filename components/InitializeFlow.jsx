@@ -11,7 +11,6 @@ import styles from "@styles/Home.module.css";
 export default function InitializeFlow({ operation }) {
   const { appState, setAppState } = useAppState();
 
-  // Destructure state variables
   const {
     flowId,
     flowResponse,
@@ -21,16 +20,12 @@ export default function InitializeFlow({ operation }) {
     flowLabels,
   } = appState;
 
-  // selectedNetwork is the network_code selected in the form,
-  // this can be used to make the form dynamic.
   const [selectedNetwork, setSelectedNetwork] = useState("");
 
-  // Set the selected network when the form input changes.
   async function handleFormChange(event) {
     setSelectedNetwork(event.target.value);
   }
 
-  // formData are the values captured by the form.
   const [formData, setFormData] = useState();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,33 +39,45 @@ export default function InitializeFlow({ operation }) {
   };
 
   const handleInitializeFlow = async (event) => {
-    // Send the form data to our API and get a response
-    const response = await fetch(`/api/${operation}/initialize-flow`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch(`/api/${operation}/initialize-flow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json();
 
-    // Get the response data from server as JSON
-    const result = await response.json();
+      if (!result.message && result.id && result.state && result.actions) {
+        setAppState({
+          ...appState,
+          flowResponse: result,
+          flowId: result.id,
+          flowState: result.state,
+          flowActions: result.actions.map((action) => action.name),
+          flowInputs: result.actions.flatMap((action) =>
+            action.inputs.map((input) => input.name)
+          ),
+          flowLabels: result.actions.flatMap((action) =>
+            action.inputs.map((input) => input.display)
+          ),
+        });
+      }
 
-    // Retain the response, flow ID, flow state, actions,
-    // input names and labels in the app state
-    setAppState({
-      ...appState,
-      flowResponse: result,
-      flowId: result.id,
-      flowState: result.state,
-      flowActions: result.actions.map((action) => action.name),
-      flowInputs: result.actions.flatMap((action) =>
-        action.inputs.map((input) => input.name)
-      ),
-      flowLabels: result.actions.flatMap((action) =>
-        action.inputs.map((input) => input.display)
-      ),
-    });
+      if (result?.message === "No API key found in request") {
+        Error.stackTraceLimit = 0; // Prevent stack trace
+        throw new Error(
+          `${result?.message} - Please add a valid Figment API key to .env, then restart the Next.js Development server to continue`
+        );
+      } else {
+        console.log(result);
+        throw new Error(`${result?.message}`);
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
   };
 
   // To facilitate generating the form labels and input fields
@@ -119,7 +126,7 @@ export default function InitializeFlow({ operation }) {
     alert(
       `Reset request body and current flowId! 
 Flow ${flowId} is still initialized.
-Refer to the page 'View All Flows' at the end of the walkthrough for details.`
+Refer to /view-all-flows at the end of the walkthrough for details.`
     );
   };
 

@@ -18,10 +18,8 @@ export default function IndexPage() {
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_DEVELOPMENT) {
-      console.log("Development? ", process.env.NEXT_PUBLIC_DEVELOPMENT);
       setIsDevelopment(false);
     } else if (process.env.NEXT_PUBLIC_DEVELOPMENT === "true") {
-      console.log("Development? ", process.env.NEXT_PUBLIC_DEVELOPMENT);
       setIsDevelopment(true);
     }
   }, [isDevelopment]);
@@ -29,7 +27,7 @@ export default function IndexPage() {
   return (
     <>
       <Head>
-        <title>Figment Staking API Flows</title>
+        <title>Visualize Staking API Flows</title>
         <meta
           name="description"
           content="Learn how to Navigate Figment's Staking API Flows"
@@ -80,14 +78,15 @@ export default function IndexPage() {
               <p>Explore Figment&apos;s Staking API Flows</p>
             </Link>
 
-            <br />
-            <br />
-
             {isDevelopment ? (
-              <Link href="/app-state" className={styles.card}>
-                <h2>appState &rarr;</h2>
-                <p>Explore/Reset the appState</p>
-              </Link>
+              <>
+                <br />
+                <br />
+                <Link href="/app-state" className={styles.card}>
+                  <h2>appState &rarr;</h2>
+                  <p>Explore/Reset the appState</p>
+                </Link>
+              </>
             ) : (
               ""
             )}
