@@ -3,26 +3,15 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import AccountCard from "@components/AccountCard";
-import { Button } from "antd";
 import styles from "@styles/Home.module.css";
 
 import { useAppState } from "@utilities/appState";
 
 export default function IndexPage() {
-  const { appState, clearAppState } = useAppState();
+  const { appState } = useAppState();
 
   // Destructure state variables
-  const { accountPublicKey, accountAddress, accountPrivateKey } = appState;
-
-  const [isDevelopment, setIsDevelopment] = useState(false);
-
-  useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_DEVELOPMENT) {
-      setIsDevelopment(false);
-    } else if (process.env.NEXT_PUBLIC_DEVELOPMENT === "true") {
-      setIsDevelopment(true);
-    }
-  }, [isDevelopment]);
+  const { accountAddress } = appState;
 
   return (
     <>
@@ -77,19 +66,6 @@ export default function IndexPage() {
               <h2>Get into the Flow &rarr;</h2>
               <p>Explore Figment&apos;s Staking API Flows</p>
             </Link>
-
-            {isDevelopment ? (
-              <>
-                <br />
-                <br />
-                <Link href="/app-state" className={styles.card}>
-                  <h2>appState &rarr;</h2>
-                  <p>Explore/Reset the appState</p>
-                </Link>
-              </>
-            ) : (
-              ""
-            )}
           </div>
         </main>
 

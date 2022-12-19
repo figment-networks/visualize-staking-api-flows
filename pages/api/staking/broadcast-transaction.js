@@ -16,7 +16,7 @@ export default async function connection(req, res) {
         },
       }),
     });
-    console.log(`Response: ${response}`);
+
     if (response.status >= 400) {
       res.status(200).json(await response.text());
 

@@ -7,11 +7,12 @@ import { Button, Modal, ConfigProvider } from "antd";
 
 import { useAppState } from "@utilities/appState";
 
+// review - 168
 export default function ViewAllFlows() {
-  const { appState, setAppState, clearAppState } = useAppState();
+  const { appState, setAppState } = useAppState();
 
   // Destructure state variables
-  const { flowId, flowResponse, responseData, flowState } = appState;
+  const { flowId, responseData, flowState } = appState;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -164,7 +165,6 @@ export default function ViewAllFlows() {
                   </code>
                   :
                 </p>
-
                 <pre className="detailcode">
                   {responseData?.data && responseData?.data.length > 1
                     ? Object?.keys(responseData.data).map((index) => (

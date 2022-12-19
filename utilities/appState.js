@@ -25,34 +25,31 @@ const AppStateContext = createContext({
   appState: initialState,
   setAppState: undefined,
   clearAppState: undefined,
-  backupAppState: initialState,
-  setBackupAppState: undefined,
 });
 
 export default function AppStateProvider({ children }) {
   const [appState, _setAppState] = useState({ ...initialState });
-  const [backupAppState, _setBackupAppState] = useState({ ...initialState });
 
   function setAppState(data) {
     const update = {
       ...appState,
       ...data,
     };
-    saveState("appState", JSON.stringify(update));
+
+    localStorage.setItem("appState", JSON.stringify(update));
+
+    if (!localStorage.getItem("accountBackup") && !!data.accountAddress) {
+      localStorage.setItem(
+        "accountBackup",
+        JSON.stringify({
+          accountAddress: data.accountAddress,
+          accountPublicKey: data.accountPublicKey,
+          accountPrivateKey: data.accountPrivateKey,
+        })
+      );
+    }
+
     _setAppState({ ...update });
-  }
-
-  function setBackupAppState(data) {
-    const update = {
-      ...appState,
-      ...data,
-    };
-    saveState("appStateBackup", JSON.stringify(update));
-    _setBackupAppState({ ...update });
-  }
-
-  function saveState(key, value) {
-    localStorage.setItem(key, value);
   }
 
   function clearState() {
@@ -72,8 +69,6 @@ export default function AppStateProvider({ children }) {
         appState,
         setAppState,
         clearState,
-        backupAppState,
-        setBackupAppState,
       }}
     >
       {children}
