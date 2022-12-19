@@ -1,10 +1,9 @@
 // @ts-nocheck
-import React from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import styles from "/styles/Home.module.css";
+import React, { useState } from "react";
 import { Button, Modal, ConfigProvider } from "antd";
 import { WarningOutlined } from "@ant-design/icons";
+import styles from "/styles/Home.module.css";
 
 import { useAppState } from "@utilities/appState";
 
@@ -23,13 +22,10 @@ export default function SubmitData({ operation }) {
     accountAddress,
   } = appState;
 
-  const handleLoadExistingNearAccount = async () => {
+  const handleLoadAccountBackup = async () => {
     if (!localStorage.getItem("accountBackup")) {
-      alert(
-        "No existing account found. Please generate a new account or load an existing account!"
-      );
+      alert("No account backup found. Please generate a new account!");
     }
-
     setAppState({
       ...JSON.parse(localStorage.getItem("accountBackup") || "{}"),
     });
@@ -177,118 +173,21 @@ export default function SubmitData({ operation }) {
             },
           }}
         >
-          <Modal
-            title="Details"
-            width="40%"
-            footer={null}
-            open={isModalOpen}
-            onCancel={handleCancel}
-          >
-            <ul>
-              <li>
-                Flow ID: <b>{flowId}</b>
-              </li>
-              <li>
-                Flow State: <b>{flowState}</b>
-              </li>
-              <br />
-              <li>
-                The flow <code>actions</code>
-                {" , "}
-                <code>inputs</code> and labels used to build the form come from
-                the Staking API response.
-                <br />
-                In this context, they&apos;re set in the app state by the{" "}
-                <code>handleInitializeFlow</code> function in{" "}
-                <code>components/InitializeFlow.jsx</code>
-              </li>
-              <br />
-              <li>
-                Flow Action(s): <b>{flowActions}</b>
-              </li>
-              <li>
-                Action Inputs: <b>{flowInputs.join(", ")}</b>
-              </li>
-              <li>
-                Action Labels: <b>{flowLabels.join(", ")}</b>
-              </li>
-              <h3>Default Values (Staking flow only)</h3>
-              <li>
-                Delegator Address: <b>{accountAddress}</b>
-              </li>
-              <li>
-                Delegator Public Key: <b>{accountPublicKey}</b>
-              </li>
-              <li>
-                Validator Address: <b>legends.pool.f863973.m0</b>
-              </li>
-              <li>
-                Amount: <b>10.0</b>
-              </li>
-              <li>
-                Max Gas: This value is <i>optional</i>, so it&apos;s OK to leave
-                it empty! Read more about{" "}
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://docs.near.org/concepts/basics/transactions/gas"
-                >
-                  gas costs on NEAR
-                </Link>
-                . Setting max gas can be useful when running transactions on
-                mainnet.
-              </li>
-              <br />
-              <li>
-                Find the parameters and response for a staking flow on NEAR in
-                the guide{" "}
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data"
-                >
-                  Submit Delegate Data
-                </Link>
-              </li>
-              <br />
-
-              <li>
-                Consult the block explorer to find a{" "}
-                <Link href="https://explorer.testnet.near.org/nodes/validators">
-                  list of NEAR testnet validators
-                </Link>
-              </li>
-              <br />
-
-              <li>
-                To build a form for collecting inputs using the Staking API
-                response values, consider the following JSX code:
-                <details>
-                  <summary>Click here to expand code snippet</summary>
-                  <pre className="detailcode">{codeSnippet}</pre>
-                </details>
-                <br />
-                By iterating over all of the <code>actions</code> and{" "}
-                <code>inputs</code> from the Staking API response, we can
-                quickly build the dynamic forms we need to capture the data.
-              </li>
-              <li>
-                If you&apos;re using React for this, remember to supply a unique{" "}
-                <code>key</code> for each item in a list!
-              </li>
-            </ul>
-          </Modal>
-
           <div className="row">
             <h1 className={styles.title}>Submit Data to the Staking API</h1>
           </div>
 
           <Button
-            style={{ width: "auto", marginTop: "20px" }}
+            style={{
+              width: "auto",
+              marginTop: "20px",
+              paddingBottom: "10px",
+              fontWeight: "bold",
+            }}
             type="primary"
             onClick={() => showModal()}
           >
-            Details
+            Click Here For More Information
           </Button>
 
           <div className="row">
@@ -300,6 +199,7 @@ export default function SubmitData({ operation }) {
               Click &quot;Details&quot; above for more information.
             </p>
           </div>
+
           <div className="row">
             <div className="column">
               {!accountAddress && !accountPublicKey ? (
@@ -316,9 +216,9 @@ export default function SubmitData({ operation }) {
                   <Button
                     style={{ width: "auto" }}
                     type="primary"
-                    onClick={() => handleLoadExistingNearAccount()}
+                    onClick={() => handleLoadAccountBackup()}
                   >
-                    Load an existing account
+                    Load an account backup
                   </Button>
                 </>
               ) : (
@@ -491,6 +391,108 @@ export default function SubmitData({ operation }) {
           <div className="footer">
             <Link href="/">Return to Main Page</Link>
           </div>
+
+          <Modal
+            title="Details"
+            width="40%"
+            footer={null}
+            open={isModalOpen}
+            onCancel={handleCancel}
+          >
+            <ul>
+              <li>
+                Flow ID: <b>{flowId}</b>
+              </li>
+              <li>
+                Flow State: <b>{flowState}</b>
+              </li>
+              <br />
+              <li>
+                The flow <code>actions</code>
+                {" , "}
+                <code>inputs</code> and labels used to build the form come from
+                the Staking API response.
+                <br />
+                In this context, they&apos;re set in the app state by the{" "}
+                <code>handleInitializeFlow</code> function in{" "}
+                <code>components/InitializeFlow.jsx</code>
+              </li>
+              <br />
+              <li>
+                Flow Action(s): <b>{flowActions}</b>
+              </li>
+              <li>
+                Action Inputs: <b>{flowInputs.join(", ")}</b>
+              </li>
+              <li>
+                Action Labels: <b>{flowLabels.join(", ")}</b>
+              </li>
+              <h3>Default Values (Staking flow only)</h3>
+              <li>
+                Delegator Address: <b>{accountAddress}</b>
+              </li>
+              <li>
+                Delegator Public Key: <b>{accountPublicKey}</b>
+              </li>
+              <li>
+                Validator Address: <b>legends.pool.f863973.m0</b>
+              </li>
+              <li>
+                Amount: <b>10.0</b>
+              </li>
+              <li>
+                Max Gas: This value is <i>optional</i>, so it&apos;s OK to leave
+                it empty! Read more about{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.near.org/concepts/basics/transactions/gas"
+                >
+                  gas costs on NEAR
+                </Link>
+                . Setting max gas can be useful when running transactions on
+                mainnet.
+              </li>
+              <br />
+              <li>
+                Find the parameters and response for a staking flow on NEAR in
+                the guide{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data"
+                >
+                  Submit Delegate Data
+                </Link>
+              </li>
+              <br />
+
+              <li>
+                Consult the block explorer to find a{" "}
+                <Link href="https://explorer.testnet.near.org/nodes/validators">
+                  list of NEAR testnet validators
+                </Link>
+              </li>
+              <br />
+
+              <li>
+                To build a form for collecting inputs using the Staking API
+                response values, consider the following JSX code:
+                <details>
+                  <summary>Click here to expand code snippet</summary>
+                  <pre className="detailcode">{codeSnippet}</pre>
+                </details>
+                <br />
+                By iterating over all of the <code>actions</code> and{" "}
+                <code>inputs</code> from the Staking API response, we can
+                quickly build the dynamic forms we need to capture the data.
+              </li>
+              <li>
+                If you&apos;re using React for this, remember to supply a unique{" "}
+                <code>key</code> for each item in a list!
+              </li>
+            </ul>
+          </Modal>
         </ConfigProvider>
       </div>
     </>

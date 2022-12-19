@@ -77,55 +77,20 @@ export default function CreateNEARAccountPage() {
             },
           }}
         >
-          <Modal
-            title="Details"
-            width="50%"
-            footer={null}
-            open={isModalOpen}
-            onCancel={handleCancel}
-          >
-            <ul>
-              <li>
-                To view or remove keypairs:
-                <br />
-                <br /> &rarr; Press <code>F12</code> in most browsers to open
-                your browser tools
-                <br />
-                &rarr; Press <b>⌥ Option + ⌘ Command + I</b> on macOS
-                <br />
-                &rarr; Press <b>Ctrl + Shift + I</b> on Windows/Linux
-                <br />
-                <br />
-                Navigate to the Storage tab (in Firefox) or the Application tab
-                (in Chrome), then filter using the string{" "}
-                <b>near-api-js:keystore</b>.<br />
-              </li>
-              <Image
-                src="/img/localstorage_firefox.png"
-                alt="localStorage on Firefox"
-                width={900}
-                height={170}
-                className="inline_image"
-              />
-              <br />
-              <Image
-                src="/img/localstorage_chrome.png"
-                alt="localStorage on Chrome"
-                width={900}
-                height={440}
-                className="inline_image"
-              />
-            </ul>
-          </Modal>
           <div className="row">
             <h1 className={styles.title}>Create a NEAR .testnet account</h1>
           </div>
           <Button
-            style={{ width: "auto", marginTop: "20px" }}
+            style={{
+              width: "auto",
+              marginTop: "20px",
+              paddingBottom: "10px",
+              fontWeight: "bold",
+            }}
             type="primary"
-            onClick={showModal}
+            onClick={() => showModal()}
           >
-            Details
+            Click Here For More Information
           </Button>
           {!accountAddress ? (
             <>
@@ -175,7 +140,7 @@ export default function CreateNEARAccountPage() {
           </p>
           <br /> <br />
           {isLoading ? "Loading..." : ""}
-          {accountPublicKey ? (
+          {accountPublicKey && (
             <>
               <AccountCard
                 accountPubKey={accountPublicKey}
@@ -203,9 +168,49 @@ export default function CreateNEARAccountPage() {
               </Button>
               <Link href="/">Return to Main Page</Link>
             </>
-          ) : null}
+          )}
           <br />
           <br />
+          <Modal
+            title="Details"
+            width="50%"
+            footer={null}
+            open={isModalOpen}
+            onCancel={handleCancel}
+          >
+            <ul>
+              <li>
+                To view or remove keypairs:
+                <br />
+                <br /> &rarr; Press <code>F12</code> in most browsers to open
+                your browser tools
+                <br />
+                &rarr; Press <b>⌥ Option + ⌘ Command + I</b> on macOS
+                <br />
+                &rarr; Press <b>Ctrl + Shift + I</b> on Windows/Linux
+                <br />
+                <br />
+                Navigate to the Storage tab (in Firefox) or the Application tab
+                (in Chrome), then filter using the string{" "}
+                <b>near-api-js:keystore</b>.<br />
+              </li>
+              <Image
+                src="/img/localstorage_firefox.png"
+                alt="localStorage on Firefox"
+                width={900}
+                height={170}
+                className="inline_image"
+              />
+              <br />
+              <Image
+                src="/img/localstorage_chrome.png"
+                alt="localStorage on Chrome"
+                width={900}
+                height={440}
+                className="inline_image"
+              />
+            </ul>
+          </Modal>
         </ConfigProvider>
       </div>
     </>

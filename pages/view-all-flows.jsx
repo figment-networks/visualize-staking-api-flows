@@ -81,6 +81,83 @@ export default function ViewAllFlows() {
           },
         }}
       >
+        <div id="top">
+          <h1 className={styles.title}>View All Flows</h1>
+        </div>
+
+        <Button
+          style={{
+            width: "auto",
+            marginTop: "20px",
+            paddingBottom: "10px",
+            fontWeight: "bold",
+          }}
+          type="primary"
+          onClick={() => showModal()}
+        >
+          Click Here For More Information
+        </Button>
+
+        <div className="row">
+          <p className={styles.description}>
+            <b>Note</b>: When this page loads, it will display the most recent
+            flow that you have completed by default. Click{" "}
+            <b>Get Page of Flows</b> to continue.
+            <br />
+            <br />
+            Data from this query is paginated in groups of 20, with page 1 being
+            displayed by default. If they exist, additional pages can be
+            accessed
+            <br /> via the query parameter <code>?page=</code>. For example:{" "}
+            <code>api/v1/flows?page=2</code>.<br />
+            <br />
+            <Link href="/">Return to the Main Page</Link>
+          </p>
+        </div>
+
+        <form method="post" onSubmit={handleSubmit}>
+          <label htmlFor="page">Select Page</label>
+          <input type="number" id="page" name="page" defaultValue="1" min="1" />
+          <Button type="primary" htmlType="submit">
+            Get Page of Flows
+          </Button>
+          <br />
+          <Button danger type="primary" htmlType="button" onClick={handleReset}>
+            Reset
+          </Button>
+        </form>
+        <br />
+
+        {isLoading ? "Loading..." : ""}
+
+        {responseData && !responseData.page && !isLoading ? (
+          <>
+            <p>
+              Recent {flowState ? `${flowState}` : ""} flow: <b>{flowId}</b>
+            </p>
+            <pre className="response">
+              {JSON.stringify(responseData, null, 2)}
+            </pre>
+            <br />
+          </>
+        ) : (
+          ""
+        )}
+
+        {responseData?.page && !isLoading && (
+          <>
+            <p>
+              <code>data[]</code> <b>contains {responseData?.data.length}</b>{" "}
+              results per page &mdash; Viewing page <b>{responseData?.page}</b>{" "}
+              of <b>{responseData?.pages}</b>
+            </p>
+            <pre className="responseFixedAllFlows" style={{ width: "800px" }}>
+              {JSON.stringify(responseData, null, 2)}
+            </pre>
+            <br />
+          </>
+        )}
+
         <Modal
           title="Details"
           width="45%"
@@ -202,80 +279,6 @@ export default function ViewAllFlows() {
             </li>
           </ul>
         </Modal>
-
-        <div id="top">
-          <h1 className={styles.title}>View All Flows</h1>
-        </div>
-
-        <Button
-          style={{ width: "auto", marginTop: "20px" }}
-          type="primary"
-          onClick={showModal}
-        >
-          Details
-        </Button>
-
-        <div className="row">
-          <p className={styles.description}>
-            <b>Note</b>: When this page loads, it will display the most recent
-            flow that you have completed by default. Click{" "}
-            <b>Get Page of Flows</b> to continue.
-            <br />
-            <br />
-            Data from this query is paginated in groups of 20, with page 1 being
-            displayed by default. If they exist, additional pages can be
-            accessed
-            <br /> via the query parameter <code>?page=</code>. For example:{" "}
-            <code>api/v1/flows?page=2</code>.<br />
-            <br />
-            <Link href="/">Return to the Main Page</Link>
-          </p>
-        </div>
-
-        <form method="post" onSubmit={handleSubmit}>
-          <label htmlFor="page">Select Page</label>
-          <input type="number" id="page" name="page" defaultValue="1" min="1" />
-          <Button type="primary" htmlType="submit">
-            Get Page of Flows
-          </Button>
-          <br />
-          <Button danger type="primary" htmlType="button" onClick={handleReset}>
-            Reset
-          </Button>
-        </form>
-
-        <br />
-        {isLoading ? "Loading..." : ""}
-
-        {responseData && !responseData.page && !isLoading ? (
-          <>
-            <p>
-              Recent {flowState ? `${flowState}` : ""} flow: <b>{flowId}</b>
-            </p>
-            <pre className="response">
-              {JSON.stringify(responseData, null, 2)}
-            </pre>
-            <br />
-          </>
-        ) : (
-          ""
-        )}
-
-        {responseData?.page && !isLoading ? (
-          <>
-            <p>
-              <code>data[]</code> <b>contains {responseData?.data.length}</b>{" "}
-              results per page &mdash; Viewing page <b>{responseData?.page}</b>{" "}
-              of <b>{responseData?.pages}</b>
-            </p>
-            <pre className="responseFixedAllFlows" style={{ width: "800px" }}>
-              {JSON.stringify(responseData, null, 2)}
-            </pre>
-            <br />
-          </>
-        ) : (
-          ""
-        )}
       </ConfigProvider>
     </div>
   );

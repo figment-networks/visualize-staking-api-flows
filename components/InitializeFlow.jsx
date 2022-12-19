@@ -1,12 +1,11 @@
 // @ts-nocheck
-import React from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, ConfigProvider } from "antd";
 import { WarningOutlined } from "@ant-design/icons";
-import { useAppState } from "@utilities/appState";
-
 import styles from "@styles/Home.module.css";
+
+import { useAppState } from "@utilities/appState";
 
 export default function InitializeFlow({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -14,8 +13,14 @@ export default function InitializeFlow({ operation }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState("");
 
-  const { flowId, flowResponse, flowInputs, flowLabels, stepCompleted } =
-    appState;
+  const {
+    flowId,
+    flowState,
+    flowResponse,
+    flowInputs,
+    flowLabels,
+    stepCompleted,
+  } = appState;
 
   async function handleFormChange(event) {
     setSelectedNetwork(event.target.value);
@@ -72,13 +77,12 @@ export default function InitializeFlow({ operation }) {
     }
   };
 
-  // To facilitate generating the form labels and input fields
-  // for data collection in the next step, create an array of
-  // objects containing both:
-  // { name: "delegator_address", label: "Delegator Address" }
   useEffect(() => {
-    if (!!appState.inputs.length) return;
-
+    // To facilitate generating the form labels and input fields
+    // for data collection in the next step, create an array of
+    // objects containing both the input names and labels:
+    // { name: "delegator_address", label: "Delegator Address" }
+    if (!!appState.inputs.length) return; // Return early if the inputs are already defined
     const inputs = Array(flowInputs.length)
       .fill(null)
       .map((empty, index) => ({
@@ -88,7 +92,7 @@ export default function InitializeFlow({ operation }) {
 
     setAppState({ inputs: inputs });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flowResponse, flowInputs, flowLabels]);
+  }, []);
 
   const handleSubmit = async (event) => {
     // preventDefault is part of the React event system
@@ -106,7 +110,7 @@ export default function InitializeFlow({ operation }) {
       version: form.version.value,
     };
 
-    // Set state so we can display the data
+    // Set state variable so we can display the form data
     setFormData(data);
   };
 
@@ -119,8 +123,8 @@ export default function InitializeFlow({ operation }) {
     setFormData(undefined);
     alert(
       `Reset request body and current flowId!\n` +
-        `Flow ${flowId} is still initialized.\n` +
-        `Refer to /view-all-flows at the end of the walkthrough for details.`
+        `Flow ${flowId} is ${flowState}.\n` +
+        `Refer to /view-all-flows for details.`
     );
   };
 
@@ -135,99 +139,20 @@ export default function InitializeFlow({ operation }) {
             },
           }}
         >
-          <Modal
-            title="Details"
-            width="45%"
-            footer={null}
-            open={isModalOpen}
-            onCancel={handleCancel}
-          >
-            <ul>
-              <li>
-                The most common operations are <code>staking</code>,{" "}
-                <code>unstaking</code> and <code>transfer</code>.
-              </li>
-              <br />
-              <li>
-                Find the full list of supported networks and operations in the{" "}
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://docs.figment.io/guides/staking-api/figment-signing-transactions#operations-and-transaction-types"
-                >
-                  Staking API Guides
-                </Link>
-              </li>
-              <br />
-              <li>
-                Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
-                <code>unstaking</code> operation.
-                <br /> For Avalanche and Cosmos, this is due to how delegations
-                are handled on those networks.
-                <br />
-                <b>Note</b>:{" "}
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://ethereum.org/en/upgrades/merge/#merge-and-shanghai"
-                >
-                  Unstaking on Ethereum
-                </Link>{" "}
-                will become possible in the future, after the Shanghai upgrade.
-              </li>
-              <br />
-              <li>
-                Polkadot has <code>add_proxy</code> and{" "}
-                <code>remove_proxy</code> operations, which are useful for
-                managing staking nominations.
-              </li>
-              <br />
-              <li>
-                Solana has a <code>split_stake_account</code> operation, which
-                is useful when a user wants to break a stake account balance
-                into two separate accounts.
-              </li>
-              <br />
-              <li>
-                All networks support operations on <b>mainnet</b> (
-                <code>chain_code</code> = <code>mainnet</code>).
-              </li>
-              <br />
-              <li>
-                Polkadot&apos;s <b>testnet</b> is called Westend (
-                <code>chain_code</code> = <code>westend</code>).
-              </li>
-              <br />
-              <li>
-                Solana has both a <b>testnet</b> (<code>chain_code</code> ={" "}
-                <code>testnet</code>) and a <b>devnet</b>, (
-                <code>chain_code</code> = <code>devnet</code>).
-              </li>
-              <br />
-              <hr />
-              <br />
-              <li>
-                Check out{" "}
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://docs.figment.io/api-reference/staking-api/near#create%20new%20delegation%20flow"
-                >
-                  Create New Delegation Flow on NEAR
-                </Link>{" "}
-                for sample request and response data.
-              </li>
-            </ul>
-          </Modal>
           <div className="row">
             <h1 className={styles.title}>Initialize a Flow</h1>
           </div>
           <Button
-            style={{ width: "auto", marginTop: "20px" }}
+            style={{
+              width: "auto",
+              marginTop: "20px",
+              paddingBottom: "10px",
+              fontWeight: "bold",
+            }}
             type="primary"
             onClick={() => showModal()}
           >
-            Details
+            Click Here For More Information
           </Button>
           <div className="row">
             <p className={styles.description}>
@@ -488,6 +413,90 @@ export default function InitializeFlow({ operation }) {
           <div className="footer">
             <Link href="/">Return to Main Page</Link>
           </div>
+          <Modal
+            title="Details"
+            width="45%"
+            footer={null}
+            open={isModalOpen}
+            onCancel={handleCancel}
+          >
+            <ul>
+              <li>
+                The most common operations are <code>staking</code>,{" "}
+                <code>unstaking</code> and <code>transfer</code>.
+              </li>
+              <br />
+              <li>
+                Find the full list of supported networks and operations in the{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.figment.io/guides/staking-api/figment-signing-transactions#operations-and-transaction-types"
+                >
+                  Staking API Guides
+                </Link>
+              </li>
+              <br />
+              <li>
+                Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
+                <code>unstaking</code> operation.
+                <br /> For Avalanche and Cosmos, this is due to how delegations
+                are handled on those networks.
+                <br />
+                <b>Note</b>:{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://ethereum.org/en/upgrades/merge/#merge-and-shanghai"
+                >
+                  Unstaking on Ethereum
+                </Link>{" "}
+                will become possible in the future, after the Shanghai upgrade.
+              </li>
+              <br />
+              <li>
+                Polkadot has <code>add_proxy</code> and{" "}
+                <code>remove_proxy</code> operations, which are useful for
+                managing staking nominations.
+              </li>
+              <br />
+              <li>
+                Solana has a <code>split_stake_account</code> operation, which
+                is useful when a user wants to break a stake account balance
+                into two separate accounts.
+              </li>
+              <br />
+              <li>
+                All networks support operations on <b>mainnet</b> (
+                <code>chain_code</code> = <code>mainnet</code>).
+              </li>
+              <br />
+              <li>
+                Polkadot&apos;s <b>testnet</b> is called Westend (
+                <code>chain_code</code> = <code>westend</code>).
+              </li>
+              <br />
+              <li>
+                Solana has both a <b>testnet</b> (<code>chain_code</code> ={" "}
+                <code>testnet</code>) and a <b>devnet</b>, (
+                <code>chain_code</code> = <code>devnet</code>).
+              </li>
+              <br />
+              <hr />
+              <br />
+              <li>
+                Check out{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.figment.io/api-reference/staking-api/near#create%20new%20delegation%20flow"
+                >
+                  Create New Delegation Flow on NEAR
+                </Link>{" "}
+                for sample request and response data.
+              </li>
+            </ul>
+          </Modal>
         </ConfigProvider>
       </div>
     </>

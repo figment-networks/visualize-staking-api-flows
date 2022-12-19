@@ -1,11 +1,11 @@
 # Figment Staking API Walkthrough
 
-Welcome to the Figment Staking API Walkthrough. The goal is to provide you with a way to visualize and interact with Staking API flows, to better understand them. This is a predominantly visual walkthrough and does not require you to dive into the codebase, however you can still do so if you wish.
+Welcome to the Figment Staking API Walkthrough. The goal is to provide you with a way to visualize and interact with Staking API flows, to better understand them. This is intended as a visualization tool and does not require you to dive into the codebase, however you can still do so if you wish.
 
 ## Requirements
 
-- An up to date version of [git](https://git-scm.com)
-- [Node.js](https://nodejs.org/en/) v14+, which is bundled with the `npm` package manager
+- An up to date version of [git](https://git-scm.com).
+- [Node.js](https://nodejs.org/en/) v14+, which is bundled with the `npm` package manager.
 
 ## Walkthrough App
 
@@ -13,21 +13,23 @@ The application uses the Next.js framework to display information about each flo
 
 ### 1. Clone Repo
 
+#### Which Method Should I Use?
+
+The preferred method is to [add an SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account), if you do not already have one.
+
+Otherwise, clone the repo with the HTTPS method as a fallback.
+
 #### SSH Method
 
-`git clone git@github.com:figment-networks/staking-api-walkthrough.git`
+`git clone git@github.com:figment-networks/visualize-staking-api-flows.git`
 
 #### HTTPS Method
 
-`git clone https://github.com/figment-networks/staking-api-walkthrough.git`
-
-#### Which Method Should I Use?
-
-If you have set up SSH keys on your GitHub account, use the SSH method. Otherwise, use the HTTPS method.
+`git clone https://github.com/figment-networks/visualize-staking-api-flows.git`
 
 ### 2. Enter Directory
 
-`cd staking-api-walkthrough`
+`cd visualize-staking-api-flows`
 
 ### 3. Install Dependencies
 
@@ -35,9 +37,9 @@ If you have set up SSH keys on your GitHub account, use the SSH method. Otherwis
 
 ### 4. Add Figment API Key
 
-`cp .env.template .env` &rarr; Copies the file to `.env`
+`cp .env.template .env` &rarr; Copies the template file to `.env`.
 
-Paste a valid Figment API key in `.env`, after the variable `API_KEY=`
+Paste a valid Figment API key in `.env`, after the variable `API_KEY=` then save the file.
 
 If you don't already have an API key, reach out to Figment.
 

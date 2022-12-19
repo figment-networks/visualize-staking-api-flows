@@ -1,6 +1,6 @@
-import { KeyPair, connect } from "near-api-js";
-import nearConfig from "@utilities/nearConfig";
 import crypto from "crypto";
+import nearConfig from "@utilities/nearConfig";
+import { KeyPair, connect } from "near-api-js";
 
 export default async function createNearAccount(req, res) {
   const keypair = KeyPair.fromRandom("ed25519");

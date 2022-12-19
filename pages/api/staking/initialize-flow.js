@@ -2,6 +2,7 @@ export default async function connection(req, res) {
   const HOSTNAME = "near-slate.datahub.figment.io";
   const ENDPOINT = "/api/v1/flows";
   const body = req.body;
+
   try {
     const response = await fetch(`https://${HOSTNAME}${ENDPOINT}`, {
       method: "POST",

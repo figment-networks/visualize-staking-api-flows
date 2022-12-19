@@ -1,11 +1,10 @@
 // @ts-nocheck
-import React from "react";
 import Link from "next/link";
-import { useState } from "react";
-import { useAppState } from "@utilities/appState";
+import React, { useState } from "react";
 import { Button, Modal, ConfigProvider } from "antd";
-
 import styles from "@styles/Home.module.css";
+
+import { useAppState } from "@utilities/appState";
 
 export default function FlowState({ operation }) {
   const { appState, setAppState } = useAppState();

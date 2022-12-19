@@ -1,6 +1,5 @@
-import React from "react";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "/styles/Home.module.css";
 import { Button, Modal, ConfigProvider } from "antd";
 
@@ -8,31 +7,14 @@ import { useAppState } from "@utilities/appState";
 
 export default function BroadcastTransaction({ operation }) {
   const { appState, setAppState } = useAppState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Destructure state variables
   const { flowId, flowState, signedTransactionPayload } = appState;
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   const handleSubmit = async (event) => {
-    // Handle the submit event on form submit.
-    // Stop the form from submitting and refreshing the page.
     event.preventDefault();
-
-    // Cast the event target to an html form
     const form = event.target;
-
-    // Get data from the form.
     const data = {
       flow_id: flowId,
-      action: form.flowAction.value,
+      action: form.flow_action.value,
       signed_payload: form.signed_payload.value,
     };
 
@@ -43,7 +25,6 @@ export default function BroadcastTransaction({ operation }) {
       },
       body: JSON.stringify(data),
     });
-
     const result = await response.json();
 
     if (result.code) {
@@ -51,10 +32,19 @@ export default function BroadcastTransaction({ operation }) {
     }
 
     if (result.data) {
-      console.log("transaction state: ", result.state);
+      console.log("Transaction state: ", result.state);
       setAppState({ flowState: result.state });
     }
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <div className="container">
@@ -66,6 +56,120 @@ export default function BroadcastTransaction({ operation }) {
             },
           }}
         >
+          <div className="row">
+            <h1 className={styles.title}>
+              Submit Signed Transaction for Broadcast
+            </h1>
+          </div>
+
+          <Button
+            style={{
+              width: "auto",
+              marginTop: "20px",
+              paddingBottom: "10px",
+              fontWeight: "bold",
+            }}
+            type="primary"
+            onClick={() => showModal()}
+          >
+            Click Here For More Information
+          </Button>
+
+          <div className="row">
+            <p className={styles.description}>
+              After signing the transaction, provide the signed{" "}
+              <code>transaction_payload</code>.<br />
+              The Staking API will then validate and broadcast the transaction
+              to the network.
+            </p>
+          </div>
+
+          <div className="row">
+            <div className="column">
+              <form onSubmit={handleSubmit} method="post">
+                <label htmlFor="action" style={{ textAlign: "left" }}>
+                  Action:
+                </label>
+                <select
+                  id="action"
+                  name="flowAction"
+                  required
+                  defaultValue="sign_delegate_tx"
+                >
+                  <option value="sign_delegate_tx">sign_delegate_tx</option>
+                </select>
+
+                <br />
+
+                <label htmlFor="signed_payload">
+                  Signed Transaction Payload
+                </label>
+
+                <textarea
+                  id="signed_payload"
+                  name="signed_payload"
+                  rows={8}
+                  cols={80}
+                  required
+                  defaultValue={signedTransactionPayload}
+                />
+                <br />
+                <br />
+
+                <Button
+                  style={{ width: "auto" }}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Submit Signed Transaction Payload for Broadcast
+                </Button>
+              </form>
+            </div>
+
+            <div className="column">
+              {flowState && (
+                <>
+                  <br />
+                  <br />
+                  <br />
+                  <p>
+                    Current Flow ID: <b>{flowId}</b>
+                  </p>
+                  <p>
+                    Current Flow State: <b>{flowState}</b>{" "}
+                  </p>
+
+                  {flowState === "delegate_tx_broadcasting" && (
+                    <>
+                      <p className={styles.description}>
+                        When the signed payload is validated by the Staking API,
+                        the flow state changes from <code>initialized</code> to{" "}
+                        <code>delegate_tx_broadcasting</code>.<br />
+                        <br />
+                        At this point, the only action remaining is to check the
+                        flow state to ensure it is <code>delegated</code>.
+                      </p>
+                      <br />
+                      <br />
+                      <Button
+                        type="primary"
+                        htmlType="button"
+                        onClick={() => setAppState({ stepCompleted: 4 })}
+                        href={`/operations/${operation}/flow-state`}
+                      >
+                        Proceed to the next step &rarr;
+                      </Button>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="footer">
+            <Link href="/">Return to Main Page</Link>
+          </div>
+
           <Modal
             title="Details"
             width="45%"
@@ -144,118 +248,6 @@ export default function BroadcastTransaction({ operation }) {
               <br />
             </ul>
           </Modal>
-
-          <div className="row">
-            <h1 className={styles.title}>
-              Submit Signed Transaction for Broadcast
-            </h1>
-          </div>
-
-          <Button
-            style={{ width: "auto", marginTop: "20px" }}
-            type="primary"
-            onClick={() => showModal()}
-          >
-            Details
-          </Button>
-
-          <div className="row">
-            <p className={styles.description}>
-              After signing the transaction, provide the signed{" "}
-              <code>transaction_payload</code>. <br /> The Staking API will then
-              validate and broadcast the transaction to the network.
-            </p>
-          </div>
-
-          <div className="row">
-            <div className="column">
-              {/* TODO: Make the actions dynamic */}
-              <form onSubmit={handleSubmit} method="post">
-                <label htmlFor="action" style={{ textAlign: "left" }}>
-                  Action:
-                </label>
-                <select
-                  id="action"
-                  name="flowAction"
-                  required
-                  defaultValue="sign_delegate_tx"
-                >
-                  <option value="sign_delegate_tx">sign_delegate_tx</option>
-                </select>
-
-                <br />
-
-                <label htmlFor="signed_payload">
-                  Signed Transaction Payload
-                </label>
-
-                <textarea
-                  id="signed_payload"
-                  name="signed_payload"
-                  rows={8}
-                  cols={80}
-                  required
-                  defaultValue={signedTransactionPayload}
-                />
-                <br />
-                <br />
-
-                <Button
-                  style={{ width: "auto" }}
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Submit Signed Transaction Payload for Broadcast
-                </Button>
-              </form>
-            </div>{" "}
-            {/* column */}
-            <div className="column">
-              {flowState ? (
-                <>
-                  <br />
-                  <br />
-                  <br />
-                  <p>
-                    Current Flow ID: <b>{flowId}</b>
-                  </p>
-                  <p>
-                    Current Flow State: <b>{flowState}</b>{" "}
-                  </p>
-
-                  {flowState === "delegate_tx_broadcasting" ? (
-                    <>
-                      <p className={styles.description}>
-                        When the signed payload is validated by the Staking API,
-                        the flow state changes from <code>initialized</code> to{" "}
-                        <code>delegate_tx_broadcasting</code>.<br />
-                        <br />
-                        At this point, the only action remaining is to check the
-                        flow state to ensure it is <code>delegated</code>.
-                      </p>
-                      <br />
-                      <br />
-                      <Button
-                        type="primary"
-                        htmlType="button"
-                        onClick={() => setAppState({ stepCompleted: 4 })}
-                        href={`/operations/${operation}/flow-state`}
-                      >
-                        Proceed to the next step &rarr;
-                      </Button>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-          <div className="footer">
-            <Link href="/">Return to Main Page</Link>
-          </div>
         </ConfigProvider>
       </div>
     </>

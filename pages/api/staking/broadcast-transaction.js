@@ -2,6 +2,7 @@ export default async function connection(req, res) {
   const body = req.body;
   const HOSTNAME = "near-slate.datahub.figment.io";
   const ENDPOINT = `/api/v1/flows/${body?.flow_id}/next`;
+
   try {
     const response = await fetch(`https://${HOSTNAME}${ENDPOINT}`, {
       method: "PUT",
@@ -28,6 +29,7 @@ export default async function connection(req, res) {
         )}`
       );
     }
+
     if (response.status === 200) {
       res.status(200).json(await response.json());
     }
