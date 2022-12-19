@@ -85,6 +85,8 @@ export default function InitializeFlow({ operation }) {
   // objects containing both:
   // { name: "delegator_address", label: "Delegator Address" }
   useEffect(() => {
+    if (!!appState.inputs.length) return;
+
     const inputs = Array(flowInputs.length)
       .fill(null)
       .map((empty, index) => ({
@@ -400,7 +402,7 @@ Refer to /view-all-flows at the end of the walkthrough for details.`
                   </pre>{" "}
                   <Button
                     type="primary"
-                    onClick={setAppState({ stepCompleted: 1 })}
+                    onClick={() => setAppState({ stepCompleted: 1 })}
                     href={`/operations/${operation}/submit-data`}
                   >
                     Proceed to the next step &rarr;
