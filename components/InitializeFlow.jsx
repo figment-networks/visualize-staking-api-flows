@@ -115,7 +115,7 @@ export default function InitializeFlow({ operation }) {
   };
 
   const handleReset = async () => {
-    setAppState({ flowResponse: undefined });
+    setAppState({ flowResponse: undefined, stepCompleted: undefined });
     setFormData(undefined);
     alert(
       `Reset request body and current flowId!\n` +
@@ -380,11 +380,11 @@ export default function InitializeFlow({ operation }) {
             {/* column */}
             <br />
             <div className="column">
-              {stepCompleted === 1 ? (
+              {stepCompleted === 5 ? (
                 <>
                   <p className="callout">
-                    Step has already been completed. Please{" "}
-                    <b>proceed to the next step</b> or <b>reset the flow</b>.
+                    Flow has already been completed. Please{" "}
+                    <b>reset the flow</b> to continue.
                   </p>
                 </>
               ) : (

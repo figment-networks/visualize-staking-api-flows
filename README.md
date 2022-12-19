@@ -21,6 +21,10 @@ The application uses the Next.js framework to display information about each flo
 
 `git clone https://github.com/figment-networks/staking-api-walkthrough.git`
 
+#### Which Method Should I Use?
+
+If you have set up SSH keys on your GitHub account, use the SSH method. Otherwise, use the HTTPS method.
+
 ### 2. Enter Directory
 
 `cd staking-api-walkthrough`
