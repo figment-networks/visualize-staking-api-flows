@@ -173,11 +173,6 @@
   text-decoration: underline;
 }
 
-@media (max-width: 1500px) {
-  .header {
-  }
-}
-
 .stateDescription {
   display: block;
   margin: 0 auto;
