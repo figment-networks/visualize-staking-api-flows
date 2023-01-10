@@ -1,21 +1,5 @@
 /** Fonts */
-@font-face {
-  font-family: "Fira Code", monospace;
-  font-weight: normal;
-  src: url("https://fonts.googleapis.com/css?family=Fira+Code");
-}
-
-@font-face {
-  font-family: "Inter";
-  font-weight: 400;
-  src: url("https://fonts.googleapis.com/css?family=Inter");
-}
-
-@font-face {
-  font-family: "Inter";
-  font-weight: 700;
-  src: url("https://fonts.googleapis.com/css?family=Inter");
-}
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap");
 
 html,
 body {
@@ -28,6 +12,10 @@ body {
     sans-serif;
   background-color: #f6f8fb;
   background-image: url("../public/img/background-image.png");
+}
+
+body {
+  min-width: 1500px;
 }
 
 p {
