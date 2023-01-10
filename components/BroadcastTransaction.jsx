@@ -130,7 +130,7 @@ export default function BroadcastTransaction({ operation }) {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={styles.paddingBottom}>
           <Col span={12}>
             <form onSubmit={handleSubmit} method="post">
               <label htmlFor="action" className={styles.leftLabel}>

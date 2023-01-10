@@ -161,7 +161,7 @@ export default function ViewAllFlows() {
           </Col>
         </Row>
 
-        <Row justify="space-between">
+        <Row justify="space-between" className={styles.paddingBottom}>
           <Col span={2}>
             <form method="post" onSubmit={handleSubmit}>
               <label htmlFor="page" className={styles.centerLabel}>

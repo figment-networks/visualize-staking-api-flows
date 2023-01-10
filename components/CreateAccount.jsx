@@ -142,7 +142,7 @@ export default function CreateNEARAccountPage() {
           </Col>
         </Row>
 
-        <Row justify="center">
+        <Row justify="center" className={styles.paddingBottom}>
           <Col span={4} />
           <Col span={16}>
             <br />

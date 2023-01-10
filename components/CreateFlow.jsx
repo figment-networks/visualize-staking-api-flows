@@ -249,7 +249,7 @@ export default function CreateFlow({ operation }) {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={styles.paddingBottom}>
           <Col span={12}>
             <p className={styles.centerLabel}>
               Click <b>Create JSON Request Body</b> to continue.

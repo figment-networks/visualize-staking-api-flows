@@ -190,7 +190,7 @@ export default function DecodeAndSignPayload({ operation }) {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={styles.paddingBottom}>
           <Col span={12}>
             <form onSubmit={handleDecode} method="post">
               <h3>&darr; Unsigned Transaction Payload</h3>

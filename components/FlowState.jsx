@@ -157,7 +157,7 @@ export default function FlowState({ operation }) {
           </Col>
         </Row>
 
-        <Row justify="space-around">
+        <Row justify="space-around" className={styles.paddingBottom}>
           <Col span={10}>
             {flowState !== "delegated" ? (
               <Button

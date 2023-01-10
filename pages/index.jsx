@@ -50,7 +50,7 @@ export default function IndexPage() {
       </Row>
       <br />
       <br />
-      <Row justify="space-around">
+      <Row justify="space-around" className={styles.paddingBottom}>
         <Col span={6} />
         <Col span={12}>
           <p className={styles.intro}>

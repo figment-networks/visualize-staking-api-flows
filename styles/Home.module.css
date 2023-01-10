@@ -175,7 +175,6 @@
 
 @media (max-width: 1500px) {
   .header {
-    display: none !important;
   }
 }
 
@@ -196,7 +195,6 @@ pre.stateResponse {
   height: 400px;
   overflow: scroll;
   width: 600px;
-  margin-bottom: 100px;
 }
 
 pre.stateResponseCentered {
@@ -214,7 +212,6 @@ pre.stateResponseCentered {
   font-weight: bold;
   height: 400px;
   overflow-y: scroll;
-  margin-bottom: 100px;
 }
 
 pre.stateResponseViewAll {
@@ -233,7 +230,6 @@ pre.stateResponseViewAll {
   overflow: scroll;
   width: 100%;
   font-size: 1rem;
-  /* margin-bottom: 100px; */
 }
 
 .pageNumberInput {
@@ -291,4 +287,8 @@ pre.codeDetail {
 .detailsCentered {
   width: 100%;
   padding: 10px;
+}
+
+.paddingBottom {
+  padding-bottom: 100px;
 }

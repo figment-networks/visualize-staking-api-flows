@@ -296,7 +296,7 @@ const handleSubmit = async (event) => {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={styles.paddingBottom}>
           <Col span={10}>
             {!accountAddress && !accountPublicKey ? (
               <>
