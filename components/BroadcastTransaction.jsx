@@ -180,11 +180,9 @@ export default function BroadcastTransaction({ operation }) {
                 Submit Signed Transaction Payload
               </Button>
             </form>
-            {/* </div> */}
           </Col>
 
           <Col span={12}>
-            {/* <div className="column"> */}
             {flowState && (
               <>
                 <br />
@@ -233,8 +231,6 @@ export default function BroadcastTransaction({ operation }) {
                 )}
               </>
             )}
-            {/* </div> column */}
-            {/* </div> row */}
           </Col>
         </Row>
 
