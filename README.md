@@ -72,13 +72,13 @@ Ensure you have added a Figment API key to `.env` _before_ you run the server.
 
 ### 7. Get Started
 
-Navigate to [https://localhost:3000](https://localhost:3000) in your browser.
+Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
 
 From here you'll be guided through the entire process, from creating a NEAR testnet account to creating a flow and completing that flow. Most pages provide more detailed information, which can be accessed by clicking the clearly labeled "Click Here For More Information" button near the top of the page.
 
 ### Local Development & Testing
 
-**Note**: For local development or testing, please use `npm run dev`, which will start the Next.js server in development mode at [https://localhost:4000](https://localhost:4000).
+**Note**: For local development or testing, please use `npm run dev`, which will start the Next.js server in development mode at [http://localhost:3000](http://localhost:3000).
 
 ## Private Keys Disclaimer
 
