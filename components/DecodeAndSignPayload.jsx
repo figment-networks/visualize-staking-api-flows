@@ -198,6 +198,7 @@ export default function DecodeAndSignPayload({ operation }) {
                 style={{
                   padding: "10px",
                   borderRadius: "15px",
+                  width: "100%",
                   border: "2px solid #ccc;",
                   fontSize: "0.9rem",
                   background: "rgba(100,100,100,0.2)",
@@ -205,7 +206,6 @@ export default function DecodeAndSignPayload({ operation }) {
                 id="transaction_payload"
                 name="transaction_payload"
                 rows={8}
-                cols={80}
                 required
                 defaultValue={unsignedTransactionPayload}
               />

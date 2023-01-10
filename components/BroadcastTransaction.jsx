@@ -130,7 +130,7 @@ export default function BroadcastTransaction({ operation }) {
           </Col>
         </Row>
 
-        <Row className={styles.paddingBottom}>
+        <Row className={styles.paddingBottom} justify="space-between">
           <Col span={12}>
             <form onSubmit={handleSubmit} method="post">
               <label htmlFor="action" className={styles.leftLabel}>
@@ -159,12 +159,12 @@ export default function BroadcastTransaction({ operation }) {
                   borderRadius: "15px",
                   border: "2px solid #ccc;",
                   fontSize: "0.9rem",
+                  width: "100%",
                   background: "rgba(100,100,100,0.2)",
                 }}
                 id="signed_payload"
                 name="signed_payload"
                 rows={8}
-                cols={80}
                 required
                 defaultValue={signedTransactionPayload}
               />
