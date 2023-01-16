@@ -10,7 +10,7 @@ Check out the contents of the `components/`, `pages/api/staking` & `pages/operat
 
 If you would like to learn more about the Staking API, you can also check out the [Figment APIs Demo App](https://github.com/figment-networks/figment-apis-demo-app), which provides an integration tutorial.
 
-<img width="800" alt="Screen Shot 2023-01-09 at 1 36 57 PM" src="https://user-images.githubusercontent.com/2707197/211403357-3eda8249-c168-4675-8f99-077944104a2f.png">
+<img width="1024" alt="screenshot" src="https://user-images.githubusercontent.com/2707197/212780705-ea4934ab-07b1-4912-a014-85065750ce17.png">
 
 ## Requirements
 
