@@ -213,8 +213,8 @@ const handleSubmit = async (event) => {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#0D858B",
-            colorError: "#C90000",
+            colorPrimary: "#034d76", // Primary button color - #034d76 / #0D858B
+            colorError: "#C01005",
           },
         }}
       >

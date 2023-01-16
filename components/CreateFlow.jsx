@@ -43,11 +43,11 @@ export default function CreateFlow({ operation }) {
     setIsModalOpen(false);
   };
 
+  // To facilitate generating the form labels and input fields
+  // for data collection in the next step, create an array of
+  // objects containing both the input names and labels:
+  // { name: "delegator_address", label: "Delegator Address" }
   useEffect(() => {
-    // To facilitate generating the form labels and input fields
-    // for data collection in the next step, create an array of
-    // objects containing both the input names and labels:
-    // { name: "delegator_address", label: "Delegator Address" }
     if (!!appState.inputs.length) return; // Return early if the inputs are already defined
     const inputs = Array(flowInputs.length)
       .fill(null)
@@ -165,8 +165,8 @@ export default function CreateFlow({ operation }) {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#0D858B", // Primary button color
-            colorError: "#C90000", // Used when button has a danger property set
+            colorPrimary: "#034d76", // Primary button color - #034d76 / #0D858B
+            colorError: "#C01005", // Used when button has a danger property set
           },
         }}
       >

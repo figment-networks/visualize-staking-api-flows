@@ -54,8 +54,8 @@ export default function CreateNEARAccountPage() {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#0D858B",
-            colorError: "#C90000",
+            colorPrimary: "#034d76", // Primary button color - #034d76 / #0D858B
+            colorError: "#C01005", // Used when button has a danger property set
           },
         }}
       >

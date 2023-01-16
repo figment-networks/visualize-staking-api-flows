@@ -91,8 +91,8 @@ export default function ViewAllFlows() {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#0D858B",
-            colorError: "#C90000",
+            colorPrimary: "#034d76", // Primary button color - #034d76 / #0D858B
+            colorError: "#C01005", // Used when button has a danger property set
           },
         }}
       >
@@ -208,8 +208,9 @@ export default function ViewAllFlows() {
                   </>
                 )}
               </form>
-              When you are done here you can return to the main page, or stop
-              the Next.js server and close this browser tab to close the app.{" "}
+              When you are done here you can{" "}
+              <Link href="/">return to the main page</Link>, or stop the Next.js
+              server and close this browser tab to close the app.{" "}
               <b>
                 Thank you for taking the time to visualize Figment&apos;s
                 Staking API!
@@ -322,8 +323,11 @@ export default function ViewAllFlows() {
 
             <li>
               Pagination is currently <code>responseData.data.length</code>{" "}
-              &rarr; <b>{responseData?.data?.length}</b> flows per page (to a
-              max of 20).
+              &rarr;{" "}
+              <b>
+                {responseData?.data?.length ? responseData?.data?.length : "?"}
+              </b>{" "}
+              flows per page (to a max of 20).
               <br />
               Access individual results (in this context) with{" "}
               <code>responseData.data[0]</code> through{" "}

@@ -134,8 +134,8 @@ export default function DecodeAndSignPayload({ operation }) {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#0D858B",
-            colorError: "#C90000",
+            colorPrimary: "#034d76", // Primary button color - #034d76 / #0D858B
+            colorError: "#C01005", // Used when button has a danger property set
           },
         }}
       >
@@ -484,22 +484,42 @@ export default function DecodeAndSignPayload({ operation }) {
                     arrowPointAtCenter
                     className={styles.tooltipPayload}
                   >
-                    <span style={{ color: "#CEFCFF" }}>
+                    {/* payload highlight span - 
+                  
+                    The output unsignedTransactionPayload is given
+                    a contrasting color
+
+                    color: "#8FE2DD"
+                    color: "#CEFCFF"
+                    color: "#FEC70D"
+                    color: "#FFF29B"
+                    color: "#034d76"
+                  */}
+                    <span style={{ color: "#8FE2DD" }}>
                       {unsignedTransactionPayload}
                     </span>
                   </Tooltip>
-                  {/* signature highlight - 
-                  
-                    signature length for NEAR is 128 characters,
-                    appended to the unsigned payload. The output
-                    here is identical to signedTransactionPayload
-                  */}
+
                   <Tooltip
                     placement="left"
                     title={`The yellow text is the signature, created by signing the payload using the private key of the delegator account.`}
                     arrowPointAtCenter
                     className={styles.tooltipPayload}
                   >
+                    {/* signature highlight span - 
+                  
+                    signature length for NEAR is 128 characters,
+                    appended to the unsigned payload.
+                    This slice appended to the unsigned payload is
+                    identical to signedTransactionPayload
+
+                    color: "#8FE2DD"
+                    color: "#CEFCFF"
+                    color: "#FEC70D"
+                    color: "#FFF29B"
+                    color: "#034d76"
+
+                  */}
                     <span style={{ color: "#FFF29B" }}>
                       {signedTransactionPayload.slice(434, 562)}
                     </span>

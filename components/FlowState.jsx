@@ -38,8 +38,8 @@ export default function FlowState({ operation }) {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#0D858B",
-            colorError: "#C90000",
+            colorPrimary: "#034d76", // Primary button color - #034d76 / #0D858B
+            colorError: "#C01005", // Used when button has a danger property set
           },
         }}
       >
@@ -123,9 +123,9 @@ export default function FlowState({ operation }) {
               {flowState === "delegated" && (
                 <>
                   <p>
-                    Congratulations! Flow{" "}
-                    {flowId.toString().slice(0, -27) + "..."} state is{" "}
-                    <code>{flowState}</code>, the transaction status is{" "}
+                    Congratulations! Flow {flowId.toString().slice(0, -27)}
+                    &apos;s state is <code>{flowState}</code>, the transaction
+                    status is{" "}
                     <code>{responseData.data.delegate_transaction.status}</code>{" "}
                     and the staking flow is complete!
                     <br />
