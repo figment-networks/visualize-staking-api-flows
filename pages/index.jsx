@@ -39,6 +39,7 @@ export default function IndexPage() {
               target="_blank"
               rel="noopener noreferrer"
               href="https://docs.figment.io/guides/staking-api"
+              className={styles.titleLink}
             >
               Staking API
             </Link>

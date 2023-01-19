@@ -66,6 +66,7 @@
   margin: 0;
   line-height: 1.15;
   font-size: 3rem;
+  /* color: #0B703F; */
   color: #034d76;
   /* color: #0d858b; */
   text-align: center;
@@ -264,7 +265,6 @@ pre.stateResponseViewAll {
   white-space: pre-wrap;
   word-wrap: break-word;
   text-align: left;
-  font-weight: bold;
   font-size: 1rem;
 }
 
@@ -296,4 +296,11 @@ pre.codeDetail {
   width: 100%;
   margin: 0 auto;
   margin-bottom: 10px;
+}
+
+a.titleLink {
+  /* color: #034d76; */
+  /* color: #8FE2DD; */
+  /* color: #FFF29B; */
+  color: #0d858b;
 }

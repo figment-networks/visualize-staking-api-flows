@@ -26,6 +26,10 @@ p {
   font-size: 1rem;
 }
 
+p.medium {
+  font-size: medium;
+}
+
 /* Preformatted text, anywhere <code></code> is used to highlight a word */
 p > code,
 li > code,

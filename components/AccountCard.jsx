@@ -71,7 +71,10 @@ export default function AccountCard(props) {
               </Tooltip>
 
               {stepCompleted === 0 && (
-                <p className={styles.centerLabel}>Get into the flow &rarr;</p>
+                <>
+                  <br />
+                  <p className={styles.centerLabel}>Get into the flow &rarr;</p>
+                </>
               )}
 
               {stepCompleted && stepCompleted < 5 ? (
@@ -82,11 +85,13 @@ export default function AccountCard(props) {
                 ""
               )}
 
-              {stepCompleted && stepCompleted === 5 && (
+              {stepCompleted && stepCompleted === 5 ? (
                 <>
                   <br />
                   <p className={styles.centerLabel}>Start a new flow &rarr;</p>
                 </>
+              ) : (
+                ""
               )}
             </div>
           </Link>
@@ -106,7 +111,7 @@ export default function AccountCard(props) {
             {props.accountPublicKey && (
               <>
                 <h3 className="pubkey">Account Public Key &rarr;</h3>
-                <p>{props.accountPublicKey}</p>
+                <p style={{ fontSize: "medium" }}>{props.accountPublicKey}</p>
               </>
             )}
 
