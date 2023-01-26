@@ -16,12 +16,10 @@ export default function CreateFlow({ operation }) {
   const { appState, setAppState } = useAppState();
   const {
     flowId,
-    flowState,
     flowResponse,
     flowInputs,
     flowLabels,
     stepCompleted,
-    responseData,
     accountAddress,
     accountPublicKey,
     accountPrivateKey,

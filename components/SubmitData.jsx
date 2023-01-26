@@ -2,15 +2,14 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Modal, Steps, Tooltip } from "antd";
+import styles from "/styles/Home.module.css";
+import Footer from "@components/Footer";
+import { useAppState } from "@utilities/appState";
 import {
   WarningOutlined,
   SolutionOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import styles from "/styles/Home.module.css";
-import Footer from "@components/Footer";
-
-import { useAppState } from "@utilities/appState";
 
 export default function SubmitData({ operation }) {
   const { appState, setAppState } = useAppState();

@@ -4,19 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "@styles/Home.module.css";
 import { Row, Col, Button, Modal, Steps, Tooltip, Pagination } from "antd";
+import { useAppState } from "@utilities/appState";
+import Footer from "@components/Footer";
 import {
   WarningOutlined,
   SolutionOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
 
-import { useAppState } from "@utilities/appState";
-
-import Footer from "@components/Footer";
-
 export default function ViewAllFlows() {
   const { appState, setAppState } = useAppState();
-  const { flowId, responseData, flowState, pageItem } = appState;
+  const { flowId, responseData, pageItem } = appState;
 
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -5,21 +5,11 @@ import { Row, Col } from "antd";
 import AccountCard from "@components/AccountCard";
 import Footer from "@components/Footer";
 import styles from "@styles/Home.module.css";
-import { useRouter } from "next/router";
-
 import { useAppState } from "@utilities/appState";
 
 export default function IndexPage() {
   const { appState } = useAppState();
-
-  // Destructure state variables
   const { accountAddress, flowCompleted } = appState;
-
-  const [isIndexPage, setIsIndexPage] = useState(true);
-
-  useEffect(() => {
-    setIsIndexPage(true);
-  }, []);
 
   return (
     <>

@@ -4,19 +4,16 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { Tooltip } from "antd";
 import styles from "@styles/Home.module.css";
-
 import { useAppState } from "@utilities/appState";
 
 export const explorerUrl = (address) =>
   `https://explorer.testnet.near.org/accounts/${address}`;
 
 export default function AccountCard(props) {
-  const { appState, setAppState } = useAppState();
+  const { appState } = useAppState();
   const { stepCompleted, flowId } = appState;
-
   const router = useRouter();
   const [isIndexPage, setIsIndexPage] = useState(false);
-  console.log(router.pathname);
 
   useEffect(() => {
     setIsIndexPage(router.pathname === "/" ? true : false);

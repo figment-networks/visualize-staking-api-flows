@@ -9,7 +9,6 @@ import {
 } from "@ant-design/icons";
 import styles from "/styles/Home.module.css";
 import Footer from "@components/Footer";
-
 import { useAppState } from "@utilities/appState";
 
 export default function DecodeAndSignPayload({ operation }) {

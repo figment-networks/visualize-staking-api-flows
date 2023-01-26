@@ -5,7 +5,6 @@ import { Row, Col, Button, Steps, Tooltip } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
 import Footer from "@components/Footer";
-
 import { useAppState } from "@utilities/appState";
 
 export default function FlowState({ operation }) {

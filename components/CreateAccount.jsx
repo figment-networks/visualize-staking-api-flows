@@ -7,15 +7,12 @@ import { Col, Row, Button, Steps } from "antd";
 import { SolutionOutlined, WarningOutlined } from "@ant-design/icons";
 import AccountCard from "@components/AccountCard";
 import Footer from "@components/Footer";
-
 import { useAppState } from "@utilities/appState";
 
 export default function CreateNEARAccountPage() {
   const router = useRouter();
   const { appState, setAppState } = useAppState();
-
   const { accountPrivateKey, accountPublicKey, accountAddress } = appState;
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
