@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "next/link";
 import AccountCard from "@components/AccountCard";
-import Footer from "@components/Footer";
 import { useAppState } from "@utilities/appState";
 import Head from "@components/elements/Head";
 import Title from "@components/elements/Title";
 import Heading from "@components/elements/Heading";
 import Card from "@components/elements/Card";
+import Footer from "@components/elements/Footer";
 
 export default function IndexPage() {
   const {
@@ -17,7 +17,7 @@ export default function IndexPage() {
     <>
       <Head />
       <Title>
-        Visualize Figment's&nbsp;
+        Visualize Figment&apos;s&nbsp;
         <Link
           target="_blank"
           rel="noopener noreferrer"
@@ -27,7 +27,8 @@ export default function IndexPage() {
         </Link>
       </Title>
       <Heading>
-        Learn how to use Figment's Staking API in an intuitive, visual format
+        Learn how to use Figment&apos;s Staking API in an intuitive, visual
+        format
       </Heading>
 
       {!loaded && <></>}

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import styles from "/styles/Home.module.css";
 import { Col, Row, Button, Modal, Steps, Tooltip } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import Footer from "@components/Footer";
+import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 
 export default function BroadcastTransaction({ operation }) {

@@ -5,7 +5,7 @@ import { useState } from "react";
 import styles from "@styles/Home.module.css";
 import { Row, Col, Button, Modal, Steps, Tooltip, Pagination } from "antd";
 import { useAppState } from "@utilities/appState";
-import Footer from "@components/Footer";
+import Footer from "@components/elements/Footer";
 import {
   WarningOutlined,
   SolutionOutlined,

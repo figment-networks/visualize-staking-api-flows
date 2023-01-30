@@ -8,9 +8,11 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
-import Footer from "@components/Footer";
+import Footer from "@components/elements/Footer";
 
 import { useAppState } from "@utilities/appState";
+
+import Heading from "@components/elements/Heading";
 
 export default function CreateFlow({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -209,7 +211,7 @@ export default function CreateFlow({ operation }) {
         </Col>
       </Row>
 
-      <h1 className={styles.title}>Create a Flow</h1>
+      <Heading>Create a Flow</Heading>
 
       <Row justify="space-around">
         <Col span={10}>

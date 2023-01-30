@@ -6,8 +6,11 @@ import styles from "@styles/Home.module.css";
 import { Col, Row, Button, Steps } from "antd";
 import { SolutionOutlined, WarningOutlined } from "@ant-design/icons";
 import AccountCard from "@components/AccountCard";
-import Footer from "@components/Footer";
+import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
+
+import Heading from "@components/elements/Heading";
+import Description from "@components/elements/Description";
 
 export default function CreateNEARAccountPage() {
   const router = useRouter();
@@ -91,13 +94,13 @@ export default function CreateNEARAccountPage() {
         </Col>
       </Row>
 
-      <h1 className={styles.title}>Create Account</h1>
+      <Heading>Create Account</Heading>
 
       <Row justify="space-around">
         <Col span={12}>
           {!accountAddress && (
-            <>
-              <p className={styles.description}>
+            <Description>
+              <p>
                 Click the <b>Create Account</b> button to generate a random NEAR
                 testnet account ID and keypair, which is only intended for use
                 with this demo of Figment&apos;s Staking API.
@@ -105,8 +108,8 @@ export default function CreateNEARAccountPage() {
                 <br />
                 The private key of this keypair will be used to sign a
                 transaction payload during the flow.
+                <br />
               </p>
-              <br />
               <form onSubmit={handleSubmit} method="post">
                 <Button
                   size="large"
@@ -118,14 +121,13 @@ export default function CreateNEARAccountPage() {
                   Create Account
                 </Button>
               </form>
-            </>
+            </Description>
           )}
           {accountAddress && (
             <>
-              <p className={styles.description}>
+              <Description>
                 Your randomly generated account ID is <b>{accountAddress}</b>
-                <br />
-              </p>
+              </Description>
             </>
           )}
         </Col>

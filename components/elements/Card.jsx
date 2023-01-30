@@ -37,6 +37,10 @@ export default function Card({ children, maxWidth = 600, href = null }) {
         div > :global(a) {
           text-decoration: none;
         }
+
+        div > :global(h3) {
+          margin-top: 15px;
+        }
       `}</style>
       {children}
     </div>

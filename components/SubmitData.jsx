@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Modal, Steps, Tooltip } from "antd";
 import styles from "/styles/Home.module.css";
-import Footer from "@components/Footer";
+import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 import {
   WarningOutlined,
