@@ -21,6 +21,7 @@ const initialState = {
   stepCompleted: 0, // Which step has been completed
   flowCompleted: false, // Have all steps of a flow been completed
   pageItem: [], // Paginated flow data used on the View All Flows page
+  loaded: false, // loaded from localstorage
 };
 
 const AppStateContext = createContext({
@@ -69,7 +70,7 @@ export default function AppStateProvider({ children }) {
     const dataString =
       localStorage.getItem("visualize-staking-api-flows_appState") || "{}";
     const dataObject = JSON.parse(dataString);
-    setAppState({ ...initialState, ...dataObject });
+    setAppState({ ...initialState, ...dataObject, loaded: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

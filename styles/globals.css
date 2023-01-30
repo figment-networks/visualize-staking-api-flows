@@ -1,11 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap");
 
 html,
+:root {
+  font-size: 10px;
+}
+
+html,
 body {
   padding: 0;
   margin: 0;
-  font-size: 1.1rem;
-  line-height: 1.55rem;
+  font-size: 1rem;
+  line-height: 1.4rem;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -14,7 +19,6 @@ body {
 }
 
 body {
-  min-width: 1500px;
   box-sizing: border-box;
 }
 
@@ -22,408 +26,37 @@ body * {
   box-sizing: border-box;
 }
 
-p {
-  font-size: 1rem;
+h1 {
+  font-size: 7.2rem;
+  line-height: 8rem;
 }
 
-p.medium {
-  font-size: medium;
-}
-
-/* Preformatted text, anywhere <code></code> is used to highlight a word */
-p > code,
-li > code,
-dd > code,
-td > code {
-  background: #3b3b3b;
-  word-wrap: break-word;
-  box-decoration-break: clone;
-  padding: 0.1rem 0.3rem 0.2rem;
-  border-radius: 0.2rem;
-  width: auto;
-}
-
-code {
-  font-family: "Fira Code";
-  background-color: #3b3b3b;
-  color: #fff;
-  border-radius: 8px;
-  line-height: 1.5rem;
-  padding: 5px;
-}
-
-/* Preformatted codeblocks, anywhere <pre></pre> is used */
-pre {
-  overflow-x: hidden;
-  font-family: "Fira Code";
-  border-radius: 8px;
-  padding: 8px;
-  display: block;
-  background-color: #a2a2a2;
-}
-
-pre::-webkit-scrollbar {
-  width: 10px; /* Mostly for vertical scrollbars */
-  height: 10px; /* Mostly for horizontal scrollbars */
-}
-pre::-webkit-scrollbar-thumb {
-  /* Foreground */
-  background: #b1b1b1;
-  border-radius: 15px;
-}
-pre::-webkit-scrollbar-track {
-  /* Background */
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-}
-
-pre::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-}
-
-pre::-webkit-scrollbar-button {
-  /* Background */
-  background: #333;
-}
-
-pre::-webkit-scrollbar:horizontal {
-  display: none;
-}
-
-a {
-  color: inherit;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-a:hover {
-  color: #0d858b;
-}
-
-form {
-  display: table;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-label {
-  display: table;
-  width: 100%;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  color: #3b3b3b;
-  font-weight: 500;
-}
-
-input {
-  display: table;
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  margin-bottom: 1rem;
-  font-size: 0.8rem;
-}
-
-input:focus {
-  outline: none;
-  border-color: #034d76;
-}
-
-select {
-  display: table;
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  margin-bottom: 1rem;
-  font-size: 0.8rem;
-}
-
-select:focus {
-  outline: none;
-  border-color: #034d76;
-  border-width: 1px;
-  border-style: solid;
-}
-
-button {
-  display: table;
-  width: 100%;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  margin-bottom: 1.5rem;
-  background-color: #034d76;
-  color: #fff;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #034d76;
-}
-
-details {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  width: 70%;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding: 5px;
-}
-
-li details {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 5px;
-}
-
-details.appStateDetails {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-details summary {
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-details summary > * {
-  display: inline;
-}
-
-textarea {
-  resize: none;
-}
-
-h2.address {
-  text-align: left;
-  margin-top: 0.5rem;
+h2 {
+  font-size: 5.6rem;
+  line-height: 6.4rem;
 }
 
 h3 {
-  padding: 0.1rem;
+  font-size: 4rem;
+  line-height: 4.8rem;
 }
 
-h3.pubkey {
-  text-align: left;
-  padding: 0.5rem;
+h4 {
+  font-size: 3.2rem;
+  line-height: 4rem;
 }
 
-p.secret {
-  word-wrap: break-word;
-  color: transparent;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
-  background-color: rgba(100, 100, 100, 0.5);
-  padding: 0.5rem;
-  border-radius: 6px;
-  text-align: center;
-  font-size: medium !important;
-  /* width: auto !important; */
+h5 {
+  font-size: 2.4rem;
+  line-height: 3.2rem;
 }
 
-p.secret:hover {
-  color: #000;
-  background-color: rgba(100, 0, 0, 0.5);
-  font-size: medium;
+h6,
+caption {
+  font-size: 1.4rem;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  min-height: 50px;
-  max-height: 50px;
-  font-weight: bold;
-  border-top: 1px solid #024c76;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-footer a:hover {
-  color: #034d76;
-}
-
-.nextPage {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  margin-bottom: 2.5rem;
-  margin-top: 1.5rem;
-  background-color: #034d76;
-  color: #fff;
-  cursor: pointer;
-  align-items: center;
-  text-align: center;
-  width: auto;
-}
-
-.container {
-  position: relative;
-  min-height: 100vh;
-  padding: 0 0.25rem;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center; */
-  align-items: center;
-  height: auto;
-  width: 100%;
-}
-
-.profile {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 3px solid #c7e0e7;
-  border-radius: 24px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  min-width: 33%;
-  min-height: 150px;
-  background-color: #ffffff;
-}
-
-.inline_image {
-  border-radius: 4px;
-  box-shadow: -10px 10px 20px grey;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-}
-
-.payload {
-  font-family: "Fira Code", monospace;
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 6px;
-  width: 100%;
-  max-width: 660px;
-  display: inline-block;
-  padding: 10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  text-align: left;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-pre.payload {
-  font-family: "Fira Code", monospace;
-  width: auto;
-  margin: 25px auto;
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 6px;
-  display: inline-block;
-  /* padding: 10px; */
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  text-align: left;
-  font-weight: 500;
-  margin-top: 5px;
-}
-
-p.spacer {
-  display: inline-block;
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 15px;
-  min-height: 300px;
-  min-width: 710px;
-  width: auto;
-  text-align: center;
-  margin-top: 82px;
-  padding-top: 100px;
-  font-size: 1rem;
-}
-
-.response {
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 6px;
-  max-width: 800px;
-  display: block;
-  padding: 10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  text-align: left;
-  font-weight: bold;
-}
-
-.responseFixed::-webkit-scrollbar {
-  display: none;
-}
-
-.responseFixed {
-  overflow-x: hidden; /* Hide horizontal scrollbar */
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 15px;
-  width: 100%;
-  max-height: 385px;
-  display: block;
-  padding: 10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  text-align: left;
-  font-weight: bold;
-  overflow: scroll;
-}
-
-.responseFixedAllFlows::-webkit-scrollbar {
-  display: none;
-}
-
-.responseFixedAllFlows {
-  overflow-x: hidden; /* Hide horizontal scrollbar */
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 15px;
-  width: 100%;
-  max-height: 700px;
-  display: block;
-  padding: 10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  text-align: left;
-  font-weight: bold;
-  overflow: scroll;
-}
-
-/* Align dynamic form labels to the left */
-.flowForm label {
-  text-align: left;
-}
-
-/* Styling for dynamic form */
-.flowForm {
-  min-width: 550px;
-  max-width: 550px;
-  background: #fff;
-  border-radius: 16px;
-  border-style: solid;
-  border-width: 2px;
-}
-
-/* Used for mouseover on privatekey */
-.callout {
-  background-color: rgba(100, 0, 0, 0.3);
-  border-radius: 6px;
-  padding: 10px;
-  text-align: center;
-  max-width: 600px;
-}
-
-/* Used by the ErrorBoundary component */
-.errorButton {
-  width: 25%;
+p {
+  font-size: 1.8rem;
+  line-height: 2.6rem;
 }

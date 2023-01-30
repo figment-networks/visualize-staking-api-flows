@@ -1,126 +1,83 @@
 // @ts-nocheck
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
-import { Tooltip } from "antd";
-import styles from "@styles/Home.module.css";
+import React from "react";
 import { useAppState } from "@utilities/appState";
+import Card from "@components/elements/Card";
+import ToolTip from "@components/elements/ToolTip";
 
-export const explorerUrl = (address) =>
+const stepRoute = (step) =>
+  ({
+    0: "/operations/staking/create-flow",
+    2: "/operations/staking/submit-data",
+    3: "/operations/staking/sign-payload",
+    4: "/operations/staking/broadcast-transaction",
+    5: "/operations/staking/flow-state",
+    6: "/operations/staking/create-flow",
+    7: "/operations/staking/create-flow",
+  }[step]);
+
+const explorerUrl = (address) =>
   `https://explorer.testnet.near.org/accounts/${address}`;
 
-export default function AccountCard(props) {
-  const { appState } = useAppState();
-  const { stepCompleted, flowId } = appState;
-  const router = useRouter();
-  const [isIndexPage, setIsIndexPage] = useState(false);
+const isIndex = () => useRouter().pathname === "/";
 
-  useEffect(() => {
-    setIsIndexPage(router.pathname === "/" ? true : false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const NextStepLabel = ({ stepCompleted = 0, flowId }) => {
+  if (stepCompleted === 0) return <p>Get into the flow &rarr;</p>;
+  else if (stepCompleted < 5) return <p>Continue flow {flowId || ""} &rarr;</p>;
+  else if (stepCompleted === 5) return <p>Start a new flow &rarr;</p>;
+  else return <></>;
+};
 
-  // This function indicates the correct route
-  // based on which step has been completed
-  function whichRoute(stepCompleted) {
-    switch (stepCompleted) {
-      case 0:
-        return "/operations/staking/create-flow";
-      case 1:
-        return "/operations/staking/submit-data";
-      case 2:
-        return "/operations/staking/sign-payload";
-      case 3:
-        return "/operations/staking/broadcast-transaction";
-      case 4:
-        return "/operations/staking/flow-state";
-      case 5:
-        return "/operations/staking/create-flow";
-      default:
-        return "/operations/staking/create-flow";
-    }
-  }
+export default function AccountCard() {
+  const {
+    appState: {
+      flowId,
+      stepCompleted,
+      accountAddress,
+      accountPublicKey,
+      accountPrivateKey,
+    },
+  } = useAppState();
 
   return (
     <>
-      {props.accountAddress && isIndexPage ? (
-        <>
-          <Link
-            href={whichRoute(stepCompleted)}
-            style={{ textDecoration: "none" }}
-          >
-            <div className={styles.card} style={{ width: "300px" }}>
-              <Tooltip
-                placement="top"
-                className={styles.ttip}
-                title={`For your reference, this is a shortened version of the NEAR testnet address created by this app`}
-                arrowPointAtCenter
-              >
-                <p
-                  className={styles.centerLabel}
-                  style={{ fontSize: "0.85rem" }}
-                >
-                  {props.accountAddress.toString().slice(0, 6) +
-                    "..." +
-                    props.accountAddress.toString().slice(42, -8) +
-                    ".testnet"}
-                </p>
-              </Tooltip>
-
-              {stepCompleted === 0 && (
-                <>
-                  <br />
-                  <p className={styles.centerLabel}>Get into the flow &rarr;</p>
-                </>
-              )}
-
-              {stepCompleted && stepCompleted < 5 ? (
-                <p className={styles.centerLabel}>
-                  Continue flow {flowId ? flowId : ""} &rarr;
-                </p>
-              ) : (
-                ""
-              )}
-
-              {stepCompleted && stepCompleted === 5 ? (
-                <>
-                  <br />
-                  <p className={styles.centerLabel}>Start a new flow &rarr;</p>
-                </>
-              ) : (
-                ""
-              )}
-            </div>
-          </Link>
-          <br />
-        </>
+      {accountAddress && isIndex() ? (
+        <Card href={stepRoute(stepCompleted)}>
+          <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
+            <p>
+              {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
+                42,
+                -8
+              )}.testnet`}
+            </p>
+          </ToolTip>
+          <NextStepLabel stepCompleted={stepCompleted} flowId={flowId} />
+        </Card>
       ) : (
         <>
-          <div
-            className={styles.card}
-            style={{ width: "1100px", minWidth: "1000px" }}
-          >
+          <Card>
             <h2 className="address">Account Address &rarr;</h2>
-            <Link className="ext_link" href={explorerUrl(props.accountAddress)}>
-              {props.accountAddress}
+            <Link className="ext_link" href={explorerUrl(accountAddress)}>
+              {accountAddress}
             </Link>
 
-            {props.accountPublicKey && (
+            {accountPublicKey && (
               <>
                 <h3 className="pubkey">Account Public Key &rarr;</h3>
-                <p style={{ fontSize: "medium" }}>{props.accountPublicKey}</p>
+                <p>{accountPublicKey}</p>
               </>
             )}
 
-            {props.accountPrivateKey && (
+            {accountPrivateKey && (
               <>
                 <h3 className="pubkey">
                   Account Private Key (hover to reveal) &rarr;
                 </h3>
-                <p className="secret">{props.accountPrivateKey}</p>
+                <p className="secret">{accountPrivateKey}</p>
               </>
             )}
-          </div>
+          </Card>
         </>
       )}
     </>

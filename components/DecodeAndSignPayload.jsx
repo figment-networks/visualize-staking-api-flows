@@ -20,7 +20,6 @@ export default function DecodeAndSignPayload({ operation }) {
   const {
     flowId,
     flowResponse,
-    flowState,
     unsignedTransactionPayload,
     decodedTransactionPayload,
     signedTransactionPayload,
