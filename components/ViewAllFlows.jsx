@@ -5,12 +5,16 @@ import { useState } from "react";
 import styles from "@styles/Home.module.css";
 import { Row, Col, Button, Modal, Steps, Tooltip, Pagination } from "antd";
 import { useAppState } from "@utilities/appState";
-import Footer from "@components/elements/Footer";
 import {
   WarningOutlined,
   SolutionOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
+
+import Heading from "@components/elements/Heading";
+import ToolTip from "@components/elements/ToolTip";
+import Description from "@components/elements/Description";
+import Footer from "@components/elements/Footer";
 
 export default function ViewAllFlows() {
   const { appState, setAppState } = useAppState();
@@ -126,7 +130,7 @@ export default function ViewAllFlows() {
         </Col>
       </Row>
 
-      <h1 className={styles.title}>View All Flows</h1>
+      <Heading>View All Flows</Heading>
 
       <Row justify="space-around">
         <Col span={10}></Col>
@@ -134,7 +138,7 @@ export default function ViewAllFlows() {
 
       <Row justify="space-around">
         <Col span={10}>
-          <p className={styles.description}>
+          <Description maxWidth={900}>
             As you create new flows, their current state and response data can
             be viewed at any time in a paginated format. This works differently
             from querying details of a specific flow using its{" "}
@@ -204,7 +208,7 @@ export default function ViewAllFlows() {
             >
               Click Here For More Information
             </Button>
-          </p>
+          </Description>
         </Col>
       </Row>
 
@@ -213,7 +217,7 @@ export default function ViewAllFlows() {
         <Col span={10} justify="space-between">
           {responseData && !responseData.page && !isLoading && (
             <>
-              <h3>&darr; Recently completed flow</h3>
+              <h6>&darr; Recently completed flow</h6>
               <pre className={styles.stateResponseViewAll}>
                 {JSON.stringify(responseData, null, 2)}
               </pre>

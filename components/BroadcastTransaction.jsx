@@ -169,7 +169,7 @@ export default function BroadcastTransaction({ operation }) {
 
               {flowState === "delegate_tx_broadcasting" && (
                 <>
-                  <p className={styles.description} style={{ width: "700px" }}>
+                  <Description>
                     The signed payload has been broadcast to the NEAR network by
                     the Staking API,
                     <br />
@@ -178,7 +178,7 @@ export default function BroadcastTransaction({ operation }) {
                     <br />
                     At this point in the flow, the only action remaining is to
                     check the flow state to ensure it is <code>delegated</code>.
-                  </p>
+                  </Description>
                   <br />
                   <Button
                     size="large"

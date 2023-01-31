@@ -1,7 +1,6 @@
 import React from "react";
-import { Row, Col, Button, Modal, Steps, Tooltip } from "antd";
 
-export default function Description({ children }) {
+export default function Description({ children, maxWidth = 900 }) {
   return (
     <>
       <style jsx>{`
@@ -15,7 +14,7 @@ export default function Description({ children }) {
           margin-top: 50px;
           justify-content: center;
           align-items: center;
-          min-width: 800px;
+          max-width: ${maxWidth}px;
         }
       `}</style>
       <p>{children}</p>

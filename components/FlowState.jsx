@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState } from "react";
-import { Row, Col, Button, Steps, Tooltip } from "antd";
+import { Row, Col, Button, Steps } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
 import { useAppState } from "@utilities/appState";
@@ -92,27 +92,25 @@ export default function FlowState({ operation }) {
         </Col>
       </Row>
 
-      <h1 className={styles.title}>Get Flow State</h1>
+      <Heading>Get Flow State</Heading>
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description>
+          <Description maxWidth={900}>
             {flowState === "delegate_tx_broadcasting" && (
               <>
                 Once the signed transaction has been broadcast by the Staking
                 API, it will take a moment to be confirmed on the network. Check
                 the final state of the flow with a GET request to the{" "}
-                <Tooltip
+                <ToolTip
                   placement="right"
-                  className={styles.ttip}
                   title={`/api/v1/flows/${flowId} - Refer to the Figment Docs for more information.`}
-                  arrowPointAtCenter
                 >
                   Staking API endpoint
-                </Tooltip>{" "}
+                </ToolTip>{" "}
                 , specifying the flow ID you want to query.
                 <br />
-                <br /> For example <code>/api/v1/flows/{flowId}</code>
+                <br /> For example: GET <code>/api/v1/flows/{flowId}</code>
               </>
             )}
             {flowState === "delegated" && (
@@ -126,11 +124,9 @@ export default function FlowState({ operation }) {
                   <br />
                   <br />
                   If you&apos;re interested, you can{" "}
-                  <Tooltip
+                  <ToolTip
                     placement="top"
                     title={`Click here to view the transaction details in a new tab.`}
-                    arrowPointAtCenter
-                    className={styles.tooltip}
                   >
                     <Link
                       target="_blank"
@@ -139,7 +135,7 @@ export default function FlowState({ operation }) {
                     >
                       view the transaction
                     </Link>
-                  </Tooltip>{" "}
+                  </ToolTip>{" "}
                   on the NEAR Block Explorer.
                   <br />
                   <br />
@@ -195,7 +191,7 @@ export default function FlowState({ operation }) {
               )}
               {responseData && flowState === "delegated" && (
                 <>
-                  <h3>&darr; Staking API Response</h3>
+                  <h6>&darr; Staking API Response</h6>
                   <pre
                     className={styles.stateResponseCentered}
                     style={{ width: "850px" }}
