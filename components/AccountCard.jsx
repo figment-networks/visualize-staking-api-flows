@@ -45,12 +45,12 @@ export default function AccountCard() {
       {accountAddress && isIndex() ? (
         <Card href={stepRoute(stepCompleted)}>
           <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-            <p>
+            <code className="yellow">
               {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
                 42,
                 -8
               )}.testnet`}
-            </p>
+            </code>
           </ToolTip>
           <NextStepLabel stepCompleted={stepCompleted} flowId={flowId} />
         </Card>
