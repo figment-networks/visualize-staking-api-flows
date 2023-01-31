@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Tooltip, Steps } from "antd";
+import { Row, Col, Button, Modal, Steps } from "antd";
 import {
   WarningOutlined,
   SolutionOutlined,
@@ -13,6 +13,8 @@ import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 
 import Heading from "@components/elements/Heading";
+import ToolTip from "@components/elements/ToolTip";
+import Description from "@components/elements/Description";
 
 export default function CreateFlow({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -215,21 +217,18 @@ export default function CreateFlow({ operation }) {
 
       <Row justify="space-around">
         <Col span={10}>
-          <p className={styles.description}>
+          <Description>
+            <span></span>
             Figment&apos;s Staking API works with the concept of flows. When
             creating a flow, you must provide the <code>network</code>,{" "}
             <code>chain_code</code>, <code>operation</code> and Staking API{" "}
-            <code>version</code>.
-            <br />
-            <br />
+            <code>version</code>.<span />
             Each flow is given a unique ID, which is referenced when continuing
             that flow or querying its details.
-            <br />
-            <br />
+            <span />
             The form below creates a JSON request body, which you can send to
             the Staking API to create a new flow.
-            <br />
-            <br />
+            <span />
             <Button
               size="large"
               type="text"
@@ -238,7 +237,7 @@ export default function CreateFlow({ operation }) {
             >
               Click Here For More Information
             </Button>
-          </p>
+          </Description>
         </Col>
       </Row>
 
@@ -247,7 +246,11 @@ export default function CreateFlow({ operation }) {
           <p className={styles.centerLabel}>
             Click <b>Create JSON Request Body</b> to continue.
           </p>
-          <form className="flowForm" onSubmit={handleSubmit} method="post">
+          <form
+            className={styles.flowForm}
+            onSubmit={handleSubmit}
+            method="post"
+          >
             <label htmlFor="network_code">Network</label>
             <select
               id="network_code"
@@ -355,7 +358,6 @@ export default function CreateFlow({ operation }) {
             <select id="version" name="version" required defaultValue="v1">
               <option value="v1">v1</option>
             </select>
-            <br />
 
             {/* Submitting this form does not fetch from the Staking API,
                 it only populates the display of the JSON payload. */}
@@ -379,10 +381,9 @@ export default function CreateFlow({ operation }) {
                 Please <b>reset the flow</b> to continue.
               </p>
 
-              <Tooltip
+              <ToolTip
                 placement="bottomLeft"
                 title={`Click here to reset the current flow and appState`}
-                arrowPointAtCenter
               >
                 <Button
                   className={styles.resetButton}
@@ -393,7 +394,7 @@ export default function CreateFlow({ operation }) {
                 >
                   Reset Flow
                 </Button>
-              </Tooltip>
+              </ToolTip>
             </>
           )}
 
@@ -401,27 +402,23 @@ export default function CreateFlow({ operation }) {
             <>
               <p style={{ lineHeight: "2.5rem" }}>
                 Flow ID{" "}
-                <Tooltip
-                  className={styles.ttip}
+                <ToolTip
                   placement="top"
                   title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
-                  arrowPointAtCenter
                 >
                   <code>
                     <b>{flowResponse?.id}</b>
                   </code>
-                </Tooltip>{" "}
+                </ToolTip>{" "}
                 is{" "}
-                <Tooltip
-                  className={styles.ttip}
+                <ToolTip
                   placement="top"
                   title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until the transaction has been sent to the network.`}
-                  arrowPointAtCenter
                 >
                   <code>
                     <b>{flowResponse?.state}</b>
                   </code>
-                </Tooltip>{" "}
+                </ToolTip>{" "}
               </p>
               <br />
               <details>
@@ -459,14 +456,13 @@ export default function CreateFlow({ operation }) {
                 <>
                   <p className={styles.desc}>
                     Send this JSON request body to the{" "}
-                    <Tooltip
+                    <ToolTip
                       placement="top"
                       title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
-                      arrowPointAtCenter
                       className={styles.tooltip}
                     >
                       Staking API endpoint
-                    </Tooltip>{" "}
+                    </ToolTip>{" "}
                     to create a new flow:
                   </p>
                   <pre className="payload">

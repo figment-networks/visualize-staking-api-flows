@@ -10,13 +10,14 @@ export default function ToolTipComponent({
   return (
     <>
       <style jsx>{`
-        div {
-          cursor: default;
+        code {
+          cursor: help;
           text-decoration: underline;
+          color: #fff29b;
         }
       `}</style>
       <Tooltip placement={placement} title={title} arrowPointAtCenter>
-        {children}
+        <code>{children}</code>
       </Tooltip>
     </>
   );

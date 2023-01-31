@@ -8,8 +8,12 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import styles from "/styles/Home.module.css";
-import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
+
+import Heading from "@components/elements/Heading";
+import ToolTip from "@components/elements/ToolTip";
+import Description from "@components/elements/Description";
+import Footer from "@components/elements/Footer";
 
 export default function DecodeAndSignPayload({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -179,19 +183,17 @@ export default function DecodeAndSignPayload({ operation }) {
         </Col>
       </Row>
 
-      <h1 className={styles.title}>Decode & Sign Transaction Payloads</h1>
+      <Heading>Decode & Sign Transaction Payloads</Heading>
 
       <Row justify="space-around">
         <Col span={10}>
-          <p className={styles.description}>
+          <Description>
             After receiving the unsigned <code>transaction_payload</code>, the
             next step is to verify & sign it. Developers can write their own
             verification script, or leverage Figment’s npm package{" "}
-            <Tooltip
+            <ToolTip
               placement="bottom"
               title={`Click here to view the package details on npmjs.com in a new tab.`}
-              arrowPointAtCenter
-              className={styles.tooltip}
             >
               <Link
                 target="_blank"
@@ -200,7 +202,7 @@ export default function DecodeAndSignPayload({ operation }) {
               >
                 <b>@figmentio/slate</b>
               </Link>
-            </Tooltip>
+            </ToolTip>
             .
             <br />
             <Button
@@ -211,34 +213,25 @@ export default function DecodeAndSignPayload({ operation }) {
             >
               Click Here For More Information
             </Button>
-          </p>
+          </Description>
         </Col>
       </Row>
 
       <Row className={styles.paddingBottom}>
         <Col span={12}>
           <form onSubmit={handleDecode} method="post">
-            <h3>&darr; Unsigned Transaction Payload</h3>
+            <h6>&darr; Unsigned Transaction Payload</h6>
             <textarea
-              style={{
-                padding: "10px",
-                borderRadius: "15px",
-                width: "100%",
-                border: "2px solid #ccc",
-                fontSize: "medium",
-                background: "rgba(100,100,100,0.2)",
-              }}
+              className={styles.decodeTextArea}
               id="transaction_payload"
               name="transaction_payload"
-              rows={8}
-              required
               defaultValue={unsignedTransactionPayload}
+              required
             />
             <br />
             {!signedTransactionPayload && (
               <Button
                 disabled={decodedTransactionPayload}
-                style={{ width: "auto", marginTop: "20px" }}
                 type="primary"
                 htmlType="submit"
                 className={styles.submitButton}
@@ -254,7 +247,7 @@ export default function DecodeAndSignPayload({ operation }) {
 
           {!decodedTransactionPayload && stepCompleted === 2 && (
             <>
-              <p className="spacer">
+              <p className={styles.spacer}>
                 The decoded payload will appear here after you click{" "}
                 <b>Decode Transaction Payload</b>.
               </p>
@@ -268,74 +261,54 @@ export default function DecodeAndSignPayload({ operation }) {
                 {decodedTransactionPayload && !signedTransactionPayload && (
                   <>
                     <br />
-                    <h3>&darr; Decoding method from @figmentio/slate</h3>
-                    <pre className="payload">
+                    <h6>&darr; Decoding method from @figmentio/slate</h6>
+                    <pre className={styles.payload}>
                       const slate = require(&apos;@figmentio/slate&apos;);
                       <br />
                       <span style={{ lineHeight: "2.5rem" }}>
                         await slate.decode(
-                        <code>
-                          &quot;
-                          <Tooltip
-                            placement="top"
-                            title={`This parameter is the network_code used to create the flow.`}
-                            arrowPointAtCenter
-                            className={styles.tooltip}
-                          >
+                        <ToolTip
+                          placement="top"
+                          title={`This parameter is the network_code used to create the flow.`}
+                        >
+                          <code>
+                            &quot;
                             {flowResponse?.network_code}
-                          </Tooltip>
-                          &quot;
-                        </code>
+                            &quot;
+                          </code>
+                        </ToolTip>
                         ,{" "}
-                        <code>
-                          &quot;
-                          <Tooltip
-                            placement="top"
-                            title={`This parameter is the operation being used for this flow. NEAR supports staking, unstaking or transfer operations.`}
-                            arrowPointAtCenter
-                            className={styles.tooltip}
-                          >
+                        <ToolTip
+                          placement="top"
+                          title={`This parameter is the operation being used for this flow. NEAR supports staking, unstaking or transfer operations.`}
+                        >
+                          <code>
+                            &quot;
                             {operation}
-                          </Tooltip>
-                          &quot;
-                        </code>
+                            &quot;
+                          </code>
+                        </ToolTip>
                         ,{" "}
-                        <code>
-                          &quot;
-                          <Tooltip
-                            placement="top"
-                            title={`This parameter is the Staking API version used to create the flow.`}
-                            arrowPointAtCenter
-                            className={styles.tooltip}
-                          >
-                            v1
-                          </Tooltip>
-                          &quot;
-                        </code>
+                        <ToolTip
+                          placement="top"
+                          title={`This parameter is the Staking API version used to create the flow.`}
+                        >
+                          <code>&quot;v1&quot;</code>
+                        </ToolTip>
                         ,{" "}
-                        <code>
-                          &quot;
-                          <Tooltip
-                            placement="bottom"
-                            title={`This parameter is the transaction type, which relates to the operation being used. Refer to the Figment Docs for details.`}
-                            arrowPointAtCenter
-                            className={styles.tooltip}
-                          >
-                            delegateTransaction
-                          </Tooltip>
-                          &quot;
-                        </code>
+                        <ToolTip
+                          placement="bottom"
+                          title={`This parameter is the transaction type, which relates to the operation being used. Refer to the Figment Docs for details.`}
+                        >
+                          <code>&quot; delegateTransaction &quot;</code>
+                        </ToolTip>
                         ,{" "}
-                        <code>
-                          <Tooltip
-                            placement="bottom"
-                            title={`This parameter is the unsigned transaction payload to be decoded, shown on the left.`}
-                            arrowPointAtCenter
-                            className={styles.tooltip}
-                          >
-                            transaction_payload
-                          </Tooltip>
-                        </code>
+                        <ToolTip
+                          placement="bottom"
+                          title={`This parameter is the unsigned transaction payload to be decoded, shown on the left.`}
+                        >
+                          <code>transaction_payload</code>
+                        </ToolTip>
                         );
                       </span>
                     </pre>
@@ -344,8 +317,8 @@ export default function DecodeAndSignPayload({ operation }) {
                 <p>
                   These are the values you submitted to the Staking API for this
                   delegation in the previous step:
-                  <br />
-                  <br />
+                </p>
+                <p>
                   Delegator Address: <b>{accountAddress}</b>
                   <br />
                   Delegator Public Key: <b>{accountPublicKey}</b>
@@ -356,18 +329,16 @@ export default function DecodeAndSignPayload({ operation }) {
                   <br />
                   <br />
                   They{" "}
-                  <Tooltip
+                  <ToolTip
                     placement="left"
                     title={`You may notice that the Elliptic Curve Digital Signature Algorithm specifier "ed25519:" is missing from the public key in the decoded payload! This does not prevent the payload from being signed or broadcast. Behind the scenes, the NEAR JavaScript API and the NEAR network itself still recognize the value as a valid public key. Refer to the NEAR documentation for more information on Full Access keypairs.`}
-                    arrowPointAtCenter
-                    className={styles.tooltip}
                   >
                     should
-                  </Tooltip>{" "}
+                  </ToolTip>{" "}
                   match the decoded values below:
                 </p>
-                <h3>&darr; Decoded Transaction Payload</h3>
-                <pre className="payload">
+                <h6>&darr; Decoded Transaction Payload</h6>
+                <pre className={styles.payload}>
                   {JSON.stringify(decodedTransactionPayload, null, 2)}
                 </pre>
 
@@ -402,61 +373,61 @@ export default function DecodeAndSignPayload({ operation }) {
           {signedTransactionPayload && (
             <>
               <br />
-              <h3>
+              <h6>
                 &darr; Signing method from <b>@figmentio/slate</b>
-              </h3>
-              <pre className="payload" style={{ width: "100%" }}>
+              </h6>
+              <pre className={styles.payload}>
                 const slate = require(&apos;@figmentio/slate&apos;);
                 <br />
                 <br />
                 await slate.sign(
                 <code>
                   &quot;
-                  <Tooltip
+                  <ToolTip
                     placement="top"
                     title={`This parameter is the network_code used to create the flow.`}
                     arrowPointAtCenter
-                    className={styles.tooltip}
+                    className={styles.ToolTip}
                   >
                     {flowResponse?.network_code}
-                  </Tooltip>
+                  </ToolTip>
                   &quot;
                 </code>
                 ,{" "}
                 <code>
                   &quot;
-                  <Tooltip
+                  <ToolTip
                     placement="top"
                     title={`This parameter is the Staking API version used to create the flow.`}
                     arrowPointAtCenter
-                    className={styles.tooltip}
+                    className={styles.ToolTip}
                   >
                     v1
-                  </Tooltip>
+                  </ToolTip>
                   &quot;
                 </code>
                 ,{" "}
                 <code>
-                  <Tooltip
+                  <ToolTip
                     placement="top"
                     title={`This parameter is the unsigned transaction payload to be signed, shown on the left.`}
                     arrowPointAtCenter
-                    className={styles.tooltip}
+                    className={styles.ToolTip}
                   >
                     transaction_payload
-                  </Tooltip>
+                  </ToolTip>
                 </code>
                 ,{" "}
                 <code>
                   [
-                  <Tooltip
+                  <ToolTip
                     placement="top"
                     title={`This parameter is an array containing the private key of the delegator account, which is used to sign the transaction. If more than one signature is required, additional keys can be supplied.`}
                     arrowPointAtCenter
-                    className={styles.tooltip}
+                    className={styles.ToolTip}
                   >
                     privateKeys
-                  </Tooltip>
+                  </ToolTip>
                   ]
                 </code>
                 );
@@ -466,13 +437,11 @@ export default function DecodeAndSignPayload({ operation }) {
           {signedTransactionPayload && (
             <>
               <br />
-              <h3>&darr; Signed Transaction Payload</h3>
-              <pre className="payload">
+              <h6>&darr; Signed Transaction Payload</h6>
+              <pre className={styles.payload} style={{ width: "75%" }}>
                 <Tooltip
                   placement="left"
                   title={`The blue text is the unsigned transaction payload, also shown on the left.`}
-                  arrowPointAtCenter
-                  className={styles.tooltipPayload}
                 >
                   {/* payload highlight span - 
                   
@@ -493,8 +462,6 @@ export default function DecodeAndSignPayload({ operation }) {
                 <Tooltip
                   placement="left"
                   title={`The yellow text is the signature, created by signing the payload using the private key of the delegator account.`}
-                  arrowPointAtCenter
-                  className={styles.tooltipPayload}
                 >
                   {/* signature highlight span - 
                   

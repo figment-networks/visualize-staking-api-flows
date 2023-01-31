@@ -53,10 +53,159 @@ h5 {
 
 h6,
 caption {
-  font-size: 1.4rem;
+  font-size: 2.1rem;
 }
 
 p {
   font-size: 1.8rem;
   line-height: 2.6rem;
+}
+
+/* .. 01/30 .. */
+
+label {
+  display: table;
+  text-align: left;
+  font-size: 1.8rem;
+  margin: 10px 0px 10px;
+}
+
+p span {
+  display: table;
+}
+
+p span::before {
+  content: "\A";
+  white-space: pre;
+}
+
+textarea {
+  resize: none;
+}
+
+details {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  width: 725px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 5px;
+}
+
+li details {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  margin: 10px 10px;
+  padding: 15px;
+}
+
+details summary {
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+}
+
+details summary > * {
+  display: inline;
+}
+
+form {
+  display: table;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+input {
+  display: table;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #034d76;
+}
+
+select {
+  display: table;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #034d76;
+  border-width: 1px;
+  border-style: solid;
+}
+
+/* Preformatted text, anywhere <code></code> is used to highlight a word */
+p > code,
+li > code,
+dd > code,
+td > code {
+  background: #3b3b3b;
+  word-wrap: break-word;
+  box-decoration-break: clone;
+  padding: 0.1rem 0.3rem 0.2rem;
+  border-radius: 0.2rem;
+  width: auto;
+}
+
+code {
+  font-family: "Fira Code";
+  background-color: #3b3b3b;
+  color: #fff;
+  border-radius: 8px;
+  line-height: 3.2rem;
+  padding: 5px;
+}
+
+/* Preformatted codeblocks, anywhere <pre></pre> is used */
+pre {
+  overflow-x: hidden;
+  font-family: "Fira Code";
+  border-radius: 8px;
+  padding: 8px;
+  display: block;
+  background-color: #a2a2a2;
+}
+
+pre::-webkit-scrollbar {
+  width: 10px; /* Mostly for vertical scrollbars */
+  height: 10px; /* Mostly for horizontal scrollbars */
+}
+pre::-webkit-scrollbar-thumb {
+  /* Foreground */
+  background: #b1b1b1;
+  border-radius: 15px;
+}
+pre::-webkit-scrollbar-track {
+  /* Background */
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+pre::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+pre::-webkit-scrollbar-button {
+  /* Background */
+  background: #333;
+}
+
+pre::-webkit-scrollbar:horizontal {
+  display: none;
 }

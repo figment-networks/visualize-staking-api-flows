@@ -124,14 +124,7 @@ export default function BroadcastTransaction({ operation }) {
           <form onSubmit={handleSubmit} method="post">
             <h3>&darr; Signed Transaction Payload</h3>
             <textarea
-              style={{
-                padding: "10px",
-                borderRadius: "15px",
-                border: "2px solid #ccc;",
-                fontSize: "medium",
-                width: "100%",
-                background: "rgba(100,100,100,0.2)",
-              }}
+              className={styles.signedTransactionPayload}
               id="signed_payload"
               name="signed_payload"
               rows={8}

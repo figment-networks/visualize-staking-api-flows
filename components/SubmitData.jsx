@@ -1,15 +1,19 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Steps, Tooltip } from "antd";
+import { Row, Col, Button, Modal, Steps } from "antd";
 import styles from "/styles/Home.module.css";
-import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 import {
   WarningOutlined,
   SolutionOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
+
+import Heading from "@components/elements/Heading";
+import ToolTip from "@components/elements/ToolTip";
+import Description from "@components/elements/Description";
+import Footer from "@components/elements/Footer";
 
 export default function SubmitData({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -198,15 +202,6 @@ const handleSubmit = async (event) => {
 };
 `;
 
-  useEffect(() => {
-    if (localStorage.getItem("visualize-staking-api-flows_accountBackup")) {
-      console.log(
-        localStorage.getItem("visualize-staking-api-flows_accountBackup")
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       <Row justify="space-around">
@@ -262,11 +257,11 @@ const handleSubmit = async (event) => {
         </Col>
       </Row>
 
-      <h1 className={styles.title}>Submit Data to the Staking API</h1>
+      <Heading>Submit Data to the Staking API</Heading>
 
       <Row justify="space-around">
         <Col span={10}>
-          <p className={styles.description}>
+          <Description>
             After creating a flow, the next step is to check the response to
             understand which actions are available, and which data needs to be
             provided to continue the flow.
@@ -283,7 +278,7 @@ const handleSubmit = async (event) => {
             >
               Click Here For More Information
             </Button>
-          </p>
+          </Description>
         </Col>
       </Row>
 
@@ -291,16 +286,12 @@ const handleSubmit = async (event) => {
         <Col span={10}>
           {!accountAddress && !accountPublicKey ? (
             <>
-              <p className={styles.description}>
+              <Description>
                 Please create an account first &rarr;
-              </p>
-              <Button
-                style={{ width: "auto" }}
-                type="primary"
-                href="/create-near-account"
-              >
-                Create a .testnet account
-              </Button>
+                <Button type="primary" href="/create-near-account">
+                  Create a .testnet account
+                </Button>
+              </Description>
             </>
           ) : (
             <>
@@ -308,10 +299,12 @@ const handleSubmit = async (event) => {
                 Click <b>Create Inputs Payload</b> to continue.
               </p>
               {/* This dynamic form is explained in the More Information modal when viewing the page */}
-              <form className="flowForm" onSubmit={handleSubmit} method="post">
-                <label htmlFor="actions" className={styles.leftLabel}>
-                  Action(s):
-                </label>
+              <form
+                className={styles.submitForm}
+                onSubmit={handleSubmit}
+                method="post"
+              >
+                <label htmlFor="actions">Action(s):</label>
                 <select
                   id="actions"
                   name="actions"
@@ -332,9 +325,7 @@ const handleSubmit = async (event) => {
                 {inputs.map(({ name, label }, index) => {
                   return (
                     <span key={name}>
-                      <label htmlFor={name} className={styles.leftLabel}>
-                        {label}:
-                      </label>
+                      <label htmlFor={name}>{label}:</label>
                       <input
                         key={name}
                         type="text"
@@ -354,8 +345,6 @@ const handleSubmit = async (event) => {
                   Create Inputs Payload
                 </Button>
               </form>
-              <br />
-              <br />
             </>
           )}
         </Col>
@@ -363,28 +352,28 @@ const handleSubmit = async (event) => {
         <Col span={14}>
           {formData ? (
             <>
-              <p className={styles.desc}>
+              <p className={styles.explanation}>
                 Send this JSON request body to the{" "}
-                <Tooltip
+                <ToolTip
                   placement="top"
-                  className={styles.ttip}
                   title={`/api/v1/flows/<flow_id>/next - Refer to the Figment Docs for more information.`}
-                  arrowPointAtCenter
                 >
                   Staking API endpoint
-                </Tooltip>{" "}
+                </ToolTip>{" "}
                 to continue with the flow:
               </p>
-              <pre className="payload">{JSON.stringify(formData, null, 2)}</pre>
+              <pre className={styles.jsonPayload}>
+                {JSON.stringify(formData, null, 2)}
+              </pre>
 
               <br />
 
               {!inputsSent && (
                 <>
                   <Button
+                    className={styles.proceedButton}
                     type="primary"
                     htmlType="button"
-                    className={styles.proceedButton}
                     onClick={() => handleStakingAPI()}
                   >
                     Submit Data to Staking API
@@ -394,8 +383,8 @@ const handleSubmit = async (event) => {
                     className={styles.resetButton}
                     type="text"
                     htmlType="button"
-                    onClick={() => handleClearFormData()}
                     icon={<WarningOutlined />}
+                    onClick={() => handleClearFormData()}
                   >
                     Reset Inputs Payload
                   </Button>
@@ -406,7 +395,7 @@ const handleSubmit = async (event) => {
             <>
               <br />
               <br />
-              <p className="spacer">
+              <p className={styles.spacer}>
                 Request body displayed here after clicking{" "}
                 <b>Create Inputs Payload</b>
               </p>
@@ -415,26 +404,23 @@ const handleSubmit = async (event) => {
 
           {unsignedTransactionPayload && inputsSent && (
             <>
-              <p className={styles.desc}>
+              <p className={styles.explanation}>
                 An unsigned{" "}
-                <Tooltip
+                <ToolTip
                   placement="top"
-                  className={styles.ttip}
                   title={`In terms of the Staking API, a transaction payload is a hashed representation of the inputs belonging to an action. It must be signed before it can be broadcast by the Staking API.`}
-                  arrowPointAtCenter
                 >
                   transaction payload
-                </Tooltip>{" "}
+                </ToolTip>{" "}
                 has been created by the Staking API
                 <br />
                 based on the submitted <code>action</code> and{" "}
                 <code>inputs</code>:<br />
               </p>
-              <details style={{ width: "680px" }}>
+              <details>
                 <summary>Click here to see the payload</summary>
-                <h3>&darr; Scroll down to view the entire payload</h3>
                 <pre
-                  className="payload"
+                  className={styles.responseFixedShort}
                   onClick={() =>
                     navigator.clipboard.writeText(unsignedTransactionPayload)
                   }
@@ -461,18 +447,18 @@ const handleSubmit = async (event) => {
       <Modal
         title="Details"
         width="calc(40% - 10px)"
-        footer={null}
         open={isModalOpen}
         onCancel={closeModal}
+        footer={null}
       >
         <ul>
           <li>
-            The flow <code>actions</code>
-            {" , "}
-            <code>inputs</code> and <code>display</code> labels used to build
-            the form on this page come from the Staking API response when the
-            flow is created. The values shown here are taken directly from the
-            response:
+            The flow provides <code>actions</code>
+            {" & "}
+            <code>inputs</code> names and <code>display</code> labels used to
+            build the form on this page come from the Staking API response when
+            the flow is created. The values shown here are taken directly from
+            the response:
           </li>
           <li>
             <details>
@@ -515,12 +501,12 @@ const handleSubmit = async (event) => {
 
               <pre className={styles.codeDetail}>{codeSnippet}</pre>
 
-              <p style={{ padding: "10px" }}>
+              <p>
                 Since we&apos;re using React for this, we must supply a unique{" "}
                 <code>key</code> property for each item in the list!
               </p>
 
-              <p style={{ padding: "10px" }}>
+              <p>
                 To gather the form input values, the <code>handleSubmit</code>{" "}
                 function is called by the form&apos;s <code>onSubmit</code>{" "}
                 handler when the form&apos;s submit button is clicked. In this
@@ -532,70 +518,80 @@ const handleSubmit = async (event) => {
               <br />
             </details>
           </li>
-          <h3>Default Values (Staking flow)</h3>
-          <h4>
+          <br />
+
+          <li>
+            Parameters and responses for Staking API flows are detailed in{" "}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data"
+            >
+              network-specific Guides
+            </Link>{" "}
+            on the Figment Docs.
+          </li>
+          <br />
+
+          <p>&darr; Default Values for a staking flow</p>
+          <li>
             We&apos;ll use the account generated by this app as the delegator
             account:
-          </h4>
-          <ul>
-            <li>
-              Delegator Address: <b>{accountAddress}</b>
-            </li>
-            <li>
-              Delegator Public Key: <b>{accountPublicKey}</b>
-            </li>
-          </ul>
-          <h4>
-            This default comes from the list of NEAR{" "}
+            <ul>
+              <li>
+                Delegator Address: <b>{accountAddress}</b>
+              </li>
+              <li>
+                Delegator Public Key: <b>{accountPublicKey}</b>
+              </li>
+            </ul>
+          </li>
+          <br />
+
+          <li>
+            This default validator address comes from the list of NEAR{" "}
             <Link href="https://explorer.testnet.near.org/nodes/validators">
               testnet validators
             </Link>
             :
-          </h4>
+          </li>
           <ul>
             <li>
               Validator Address: <b>legends.pool.f863973.m0</b>
             </li>
           </ul>
-          <h4>
+          <br />
+
+          <li>
             Every new testnet account is supplied with 200 NEAR tokens upon
             creation.
             <br />
             We&apos;re arbitrarily selecting a default value of{" "}
             <b>10 NEAR tokens</b> to stake:
-          </h4>
+          </li>
           <ul>
             <li>
               Amount: <b>10.0</b>
             </li>
           </ul>
-          <h4>
+          <br />
+
+          <li>
             The Max Gas value is <i>optional</i>, so it&apos;s OK to leave it
-            empty! If you&apos;re interested, read more about{" "}
+            empty &mdash; Read more about{" "}
             <Link
               target="_blank"
               rel="noopener noreferrer"
               href="https://docs.near.org/concepts/basics/transactions/gas"
             >
               gas costs on NEAR
-            </Link>{" "}
-          </h4>
-          <ul>
-            <li>Max Gas: null</li>
-          </ul>
-          <br />
-          <li>
-            Parameters and response for a staking flow on NEAR are detailed in
-            the{" "}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.figment.io/guides/staking-api/near/delegate/submit-delegate-data"
-            >
-              Submit Delegate Data
-            </Link>{" "}
-            guide on the Figment Docs.
+            </Link>
           </li>
+          <ul>
+            <li>
+              Max Gas: <b>null</b>
+            </li>
+          </ul>
           <br />
         </ul>
       </Modal>

@@ -56,7 +56,7 @@ export default function AccountCard() {
         </Card>
       ) : (
         <>
-          <Card>
+          <Card maxWidth={1000}>
             <h2 className="address">Account Address &rarr;</h2>
             <Link className="ext_link" href={explorerUrl(accountAddress)}>
               {accountAddress}

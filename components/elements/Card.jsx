@@ -28,6 +28,11 @@ export default function Card({ children, maxWidth = 600, href = null }) {
           cursor: ${href ? "pointer" : "default"};
         }
 
+        div {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         div:hover,
         div:focus,
         div:active {
