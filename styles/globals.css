@@ -56,7 +56,9 @@ caption {
   font-size: 2.1rem;
 }
 
-p {
+p,
+code,
+pre {
   font-size: 1.8rem;
   line-height: 2.6rem;
 }
@@ -163,12 +165,16 @@ td > code {
 }
 
 code {
+  display: block;
   font-family: "Fira Code";
   background-color: #3b3b3b;
   color: #fff;
   border-radius: 8px;
-  line-height: 3.2rem;
-  padding: 5px;
+  padding: 1.6rem;
+}
+
+code.yellow {
+  color: #fff29b;
 }
 
 /* Preformatted codeblocks, anywhere <pre></pre> is used */
@@ -182,14 +188,18 @@ pre {
 }
 
 pre::-webkit-scrollbar {
-  width: 10px; /* Mostly for vertical scrollbars */
-  height: 10px; /* Mostly for horizontal scrollbars */
+  width: 10px;
+  /* Mostly for vertical scrollbars */
+  height: 10px;
+  /* Mostly for horizontal scrollbars */
 }
+
 pre::-webkit-scrollbar-thumb {
   /* Foreground */
   background: #b1b1b1;
   border-radius: 15px;
 }
+
 pre::-webkit-scrollbar-track {
   /* Background */
   background: rgba(0, 0, 0, 0.1);

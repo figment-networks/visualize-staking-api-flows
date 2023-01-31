@@ -8,17 +8,15 @@ export default function ToolTipComponent({
   title,
 }) {
   return (
-    <>
+    <span>
       <style jsx>{`
-        code {
+        span > * {
           cursor: help;
-          text-decoration: underline;
-          color: #fff29b;
         }
       `}</style>
       <Tooltip placement={placement} title={title} arrowPointAtCenter>
-        <code>{children}</code>
+        {children}
       </Tooltip>
-    </>
+    </span>
   );
 }
