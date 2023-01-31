@@ -165,7 +165,7 @@ td > code {
 }
 
 code {
-  display: block;
+  display: inline-block;
   font-family: "Fira Code";
   background-color: #3b3b3b;
   color: #fff;

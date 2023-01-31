@@ -3,7 +3,8 @@ import { ConfigProvider } from "antd";
 import { AnimatePresence } from "framer-motion";
 import ErrorBoundary from "@components/ErrorBoundary";
 import AppStateProvider from "@utilities/appState";
-import "@styles/globals.css";
+//import "@styles/globals.css";
+import "../styles/main.css";
 
 export default function WalkthroughApp({ Component, pageProps, router }) {
   return (
