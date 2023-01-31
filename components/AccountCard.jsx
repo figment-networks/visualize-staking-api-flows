@@ -57,23 +57,23 @@ export default function AccountCard() {
       ) : (
         <>
           <Card maxWidth={1000}>
-            <h2 className="address">Account Address &rarr;</h2>
+            <h5 className="address">Account Address &rarr;</h5>
             <Link className="ext_link" href={explorerUrl(accountAddress)}>
               {accountAddress}
             </Link>
 
             {accountPublicKey && (
               <>
-                <h3 className="pubkey">Account Public Key &rarr;</h3>
+                <h6 className="pubkey">Account Public Key &rarr;</h6>
                 <p>{accountPublicKey}</p>
               </>
             )}
 
             {accountPrivateKey && (
               <>
-                <h3 className="pubkey">
+                <h6 className="pubkey">
                   Account Private Key (hover to reveal) &rarr;
-                </h3>
+                </h6>
                 <p className="secret">{accountPrivateKey}</p>
               </>
             )}

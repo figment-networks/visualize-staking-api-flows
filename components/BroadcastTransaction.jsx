@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import styles from "/styles/Home.module.css";
 import { Col, Row, Button, Modal, Steps, Tooltip } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
+
+import Heading from "@components/elements/Heading";
+import ToolTip from "@components/elements/ToolTip";
+import Description from "@components/elements/Description";
+import Footer from "@components/elements/Footer";
 
 export default function BroadcastTransaction({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -29,6 +33,7 @@ export default function BroadcastTransaction({ operation }) {
     });
     const result = await response.json();
 
+    console.log(result);
     if (result.code) {
       alert(`${result.code}: ${result.message}`);
     }
@@ -102,7 +107,7 @@ export default function BroadcastTransaction({ operation }) {
 
       <Row justify="space-around">
         <Col span={10}>
-          <p className={styles.description}>
+          <Description>
             Provide the signed <code>transaction_payload</code> to the Staking
             API. The transaction is then broadcast to the network via the
             Staking APIs dedicated infrastructure.
@@ -115,19 +120,18 @@ export default function BroadcastTransaction({ operation }) {
             >
               Click Here For More Information
             </Button>
-          </p>
+          </Description>
         </Col>
       </Row>
 
       <Row className={styles.paddingBottom} justify="space-between">
         <Col span={12}>
           <form onSubmit={handleSubmit} method="post">
-            <h3>&darr; Signed Transaction Payload</h3>
+            <h6>&darr; Signed Transaction Payload</h6>
             <textarea
-              className={styles.signedTransactionPayload}
+              className={styles.decodeTextArea}
               id="signed_payload"
               name="signed_payload"
-              rows={8}
               required
               defaultValue={signedTransactionPayload}
             />

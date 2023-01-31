@@ -265,7 +265,7 @@ export default function DecodeAndSignPayload({ operation }) {
                     <pre className={styles.payload}>
                       const slate = require(&apos;@figmentio/slate&apos;);
                       <br />
-                      <span style={{ lineHeight: "2.5rem" }}>
+                      <span>
                         await slate.decode(
                         <ToolTip
                           placement="top"
@@ -503,7 +503,6 @@ export default function DecodeAndSignPayload({ operation }) {
               <br />
               <Button
                 className={styles.resetButton}
-                style={{ width: "auto", marginTop: "20px" }}
                 type="text"
                 htmlType="button"
                 onClick={() => handleResetSignedPayload()}

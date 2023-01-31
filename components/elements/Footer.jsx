@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
+import styles from "/styles/Home.module.css";
 
 export default function Footer() {
   const router = useRouter();
@@ -53,15 +54,11 @@ export default function Footer() {
 
         {!isIndexPage && (
           <Button
+            className={styles.homeButton}
             type="text"
             size="large"
             href="/"
             icon={<HomeOutlined />}
-            style={{
-              fontSize: "1.6rem",
-              marginRight: "25px",
-              marginLeft: "25px",
-            }}
           >
             Main Page
           </Button>

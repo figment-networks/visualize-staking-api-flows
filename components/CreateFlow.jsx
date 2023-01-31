@@ -400,7 +400,7 @@ export default function CreateFlow({ operation }) {
 
           {flowResponse && stepCompleted < 2 ? (
             <>
-              <p style={{ lineHeight: "2.5rem" }}>
+              <p>
                 Flow ID{" "}
                 <ToolTip
                   placement="top"

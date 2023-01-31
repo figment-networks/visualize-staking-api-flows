@@ -67,8 +67,6 @@ export default function SubmitData({ operation }) {
   };
 
   const handleStakingAPI = async () => {
-    console.log("handleStakingAPI formData: ", formData);
-
     const accountBackup = localStorage.getItem(
       "visualize-staking-api-flows_accountBackup"
     );
@@ -107,6 +105,7 @@ export default function SubmitData({ operation }) {
 
       // Retain these values in appState so they can be confirmed by decoding the payload
       setAppState({
+        flowResponse: result,
         unsignedTransactionPayload: result.data.delegate_transaction.raw,
         validatorAddress: result.data.validator_address,
         delegateAmount: result.data.amount,
@@ -428,6 +427,13 @@ const handleSubmit = async (event) => {
                   {unsignedTransactionPayload}
                 </pre>{" "}
               </details>
+              <details>
+                <summary>Click here to see the full response</summary>
+                <pre className={styles.responseFixedShort}>
+                  {JSON.stringify(flowResponse, null, 2)}
+                </pre>{" "}
+              </details>
+
               <Button
                 className={styles.proceedButton}
                 size="large"
@@ -490,7 +496,7 @@ const handleSubmit = async (event) => {
             with the following JavaScript + React (JSX) code:
             <details>
               <summary>Click here to expand code snippet</summary>
-              <p style={{ padding: "10px" }}>
+              <p>
                 The form inputs are obtained by iterating over the{" "}
                 <code>actions</code> and <code>inputs</code> from the Staking
                 API response. Here we are using the JavaScript{" "}

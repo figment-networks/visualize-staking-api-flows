@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { Row, Col, Button, Steps, Tooltip } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
-import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
+
+import Heading from "@components/elements/Heading";
+import ToolTip from "@components/elements/ToolTip";
+import Description from "@components/elements/Description";
+import Footer from "@components/elements/Footer";
 
 export default function FlowState({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -92,7 +96,7 @@ export default function FlowState({ operation }) {
 
       <Row justify="space-around">
         <Col span={10}>
-          <p className={styles.description}>
+          <Description>
             {flowState === "delegate_tx_broadcasting" && (
               <>
                 Once the signed transaction has been broadcast by the Staking
@@ -144,7 +148,7 @@ export default function FlowState({ operation }) {
                 </p>
               </>
             )}
-          </p>
+          </Description>
         </Col>
       </Row>
 
