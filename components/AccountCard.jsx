@@ -5,10 +5,12 @@ import React from "react";
 import { useAppState } from "@utilities/appState";
 import Card from "@components/elements/Card";
 import ToolTip from "@components/elements/ToolTip";
+import styles from "@styles/Home.module.css";
 
 const stepRoute = (step) =>
   ({
-    0: "/operations/staking/create-flow",
+    0: "/operations/staking/create-near-account",
+    1: "/operations/staking/create-flow",
     2: "/operations/staking/submit-data",
     3: "/operations/staking/sign-payload",
     4: "/operations/staking/broadcast-transaction",
@@ -47,12 +49,14 @@ export default function AccountCard() {
       {accountAddress && isIndex() ? (
         <Card href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}>
           <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-            <code className="yellow">
-              {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-                42,
-                -8
-              )}.testnet`}
-            </code>
+            <p>
+              <code className={styles.yellow}>
+                {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
+                  42,
+                  -8
+                )}.testnet`}
+              </code>
+            </p>
           </ToolTip>
           <NextStepLabel stepCompleted={stepCompleted} flowId={flowId} />
         </Card>

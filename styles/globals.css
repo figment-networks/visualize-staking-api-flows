@@ -173,10 +173,6 @@ code {
   padding: 1.6rem;
 }
 
-code.yellow {
-  color: #fff29b;
-}
-
 /* Preformatted codeblocks, anywhere <pre></pre> is used */
 pre {
   overflow-x: hidden;

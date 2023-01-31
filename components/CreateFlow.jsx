@@ -376,7 +376,7 @@ export default function CreateFlow({ operation }) {
         <Col span={12}>
           {stepCompleted === 5 && (
             <>
-              <p className="callout">
+              <p className={styles.callout}>
                 A previous flow <b>{flowId}</b> has already been completed.
                 Please <b>reset the flow</b> to continue.
               </p>
@@ -465,7 +465,7 @@ export default function CreateFlow({ operation }) {
                     </ToolTip>{" "}
                     to create a new flow:
                   </p>
-                  <pre className="payload">
+                  <pre className={styles.payload}>
                     {JSON.stringify(formData, null, 2)}
                   </pre>
                   <br />
