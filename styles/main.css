@@ -61,12 +61,18 @@ h6 {
 p,
 a,
 span,
-code,
-pre,
 input,
 textarea,
 button {
   font-size: 1.8rem;
+  margin: 0.3em 0;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  font-family: "Fira Code";
   margin: 0.3em 0;
 }
 
