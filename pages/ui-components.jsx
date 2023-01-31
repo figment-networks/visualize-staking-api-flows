@@ -30,13 +30,7 @@ export const Card = ({ children }) => (
   </div>
 );
 
-export const Button = ({
-  children,
-  destructive = false,
-  href,
-  operation,
-  ...props
-}) => {
+export const Button = ({ children, destructive = false, href, ...props }) => {
   return (
     <button {...props}>
       <style jsx>{`
@@ -169,7 +163,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
   );
 };
 
-export const Formatted = ({ children, block = false }) => (
+export const Formatted = ({ children, block = false, wrap }) => (
   <code>
     <style jsx>{`
       code {

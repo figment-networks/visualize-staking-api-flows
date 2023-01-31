@@ -70,6 +70,10 @@ button {
   margin: 0.3em 0;
 }
 
+textarea {
+  resize: none;
+}
+
 pre,
 code {
   white-space: pre-wrap;

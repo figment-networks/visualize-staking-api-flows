@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState } from "react";
-import { Col, Row, Button, Modal, Steps, Tooltip } from "antd";
+import { Col, Row, Modal, Steps, Tooltip } from "antd";
 import {
   WarningOutlined,
   SolutionOutlined,
@@ -14,6 +14,14 @@ import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
 import Footer from "@components/elements/Footer";
+
+import {
+  PageTitle,
+  BreadCrumbs,
+  Button,
+  Card,
+  Formatted,
+} from "@pages/ui-components";
 
 export default function DecodeAndSignPayload({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -133,66 +141,17 @@ export default function DecodeAndSignPayload({ operation }) {
 
   return (
     <>
-      <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={3}
-              status="finish"
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  onClick: () => {},
-                },
-                {
-                  title: "Create a Flow",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Submit Data",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Get Flow State",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row>
-
-      <Heading>Decode & Sign Transaction Payloads</Heading>
+      <BreadCrumbs step={3} />
+      <PageTitle title="Decode & Sign Transaction Payloads" />
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description>
+          <Card>
             After receiving the unsigned <code>transaction_payload</code>, the
             next step is to verify & sign it. Developers can write their own
             verification script, or leverage Figment’s npm package{" "}
             <ToolTip
-              placement="bottom"
+              placement="top"
               title={`Click here to view the package details on npmjs.com in a new tab.`}
             >
               <Link
@@ -213,7 +172,7 @@ export default function DecodeAndSignPayload({ operation }) {
             >
               Click Here For More Information
             </Button>
-          </Description>
+          </Card>
         </Col>
       </Row>
 
@@ -243,11 +202,10 @@ export default function DecodeAndSignPayload({ operation }) {
         </Col>
 
         <Col span={12}>
-          {isLoading && <p>Loading...</p>}
-
           {!decodedTransactionPayload && stepCompleted === 2 && (
             <>
               <p className={styles.spacer}>
+                {isLoading && <p>Decoding Payload...</p>}
                 The decoded payload will appear here after you click{" "}
                 <b>Decode Transaction Payload</b>.
               </p>
@@ -262,21 +220,21 @@ export default function DecodeAndSignPayload({ operation }) {
                   <>
                     <br />
                     <h6>&darr; Decoding method from @figmentio/slate</h6>
-                    <pre className={styles.payload}>
+                    <Formatted block>
                       const slate = require(&apos;@figmentio/slate&apos;);
-                      <br />
+                      <br /> <br />
                       <span>
                         await slate.decode(
-                        <ToolTip
-                          placement="top"
-                          title={`This parameter is the network_code used to create the flow.`}
-                        >
-                          <code>
-                            &quot;
+                        <code>
+                          &quot;
+                          <ToolTip
+                            placement="top"
+                            title={`This parameter is the network_code used to create the flow.`}
+                          >
                             {flowResponse?.network_code}
-                            &quot;
-                          </code>
-                        </ToolTip>
+                          </ToolTip>
+                          &quot;
+                        </code>
                         ,{" "}
                         <ToolTip
                           placement="top"
@@ -311,7 +269,7 @@ export default function DecodeAndSignPayload({ operation }) {
                         </ToolTip>
                         );
                       </span>
-                    </pre>
+                    </Formatted>
                   </>
                 )}
                 <p>

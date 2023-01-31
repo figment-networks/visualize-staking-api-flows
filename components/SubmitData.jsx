@@ -214,58 +214,6 @@ const handleSubmit = async (event) => {
       <BreadCrumbs step={2} />
       <PageTitle title="Submit Data to the Staking API" />
 
-      {/* <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={2}
-              status="finish"
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  onClick: () => {
-                    alert("!");
-                  },
-                },
-                {
-                  title: "Create a Flow",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Submit Data",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Get Flow State",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row> */}
-
       <Row justify="space-around">
         <Col span={10}>
           <Card>
@@ -293,12 +241,12 @@ const handleSubmit = async (event) => {
         <Col span={10}>
           {!accountAddress && !accountPublicKey ? (
             <>
-              <Description>
+              <Card>
                 Please create an account first &rarr;
                 <Button type="primary" href="/create-near-account">
                   Create a .testnet account
                 </Button>
-              </Description>
+              </Card>
             </>
           ) : (
             <>
@@ -306,52 +254,50 @@ const handleSubmit = async (event) => {
                 Click <b>Create Inputs Payload</b> to continue.
               </p>
               {/* This dynamic form is explained in the More Information modal when viewing the page */}
-              <form
-                className={styles.submitForm}
-                onSubmit={handleSubmit}
-                method="post"
-              >
-                <label htmlFor="actions">Action(s):</label>
-                <select
-                  id="actions"
-                  name="actions"
-                  required
-                  defaultValue={flowActions}
-                  key="actions"
-                  className={styles.selectInput}
-                >
-                  {Object.keys(flowActions).map((key) => (
-                    <>
-                      <option key={flowActions[key]} value={flowActions[key]}>
-                        {flowActions[key]}
-                      </option>
-                    </>
-                  ))}
-                </select>
+              <Card>
+                <form onSubmit={handleSubmit} method="post">
+                  <label htmlFor="actions">Action(s):</label>
+                  <select
+                    id="actions"
+                    name="actions"
+                    required
+                    defaultValue={flowActions}
+                    key="actions"
+                    className={styles.selectInput}
+                  >
+                    {Object.keys(flowActions).map((key) => (
+                      <>
+                        <option key={flowActions[key]} value={flowActions[key]}>
+                          {flowActions[key]}
+                        </option>
+                      </>
+                    ))}
+                  </select>
 
-                {inputs.map(({ name, label }, index) => {
-                  return (
-                    <span key={name}>
-                      <label htmlFor={name}>{label}:</label>
-                      <input
-                        key={name}
-                        type="text"
-                        id={name}
-                        name={name}
-                        defaultValue={defaultValues[name]}
-                      />
-                    </span>
-                  );
-                })}
-                <Button
-                  disabled={formData}
-                  className={styles.submitButton}
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Create Inputs Payload
-                </Button>
-              </form>
+                  {inputs.map(({ name, label }, index) => {
+                    return (
+                      <span key={name}>
+                        <label htmlFor={name}>{label}:</label>
+                        <input
+                          key={name}
+                          type="text"
+                          id={name}
+                          name={name}
+                          defaultValue={defaultValues[name]}
+                        />
+                      </span>
+                    );
+                  })}
+                  <Button
+                    disabled={formData}
+                    className={styles.submitButton}
+                    type="primary"
+                    htmlType="submit"
+                  >
+                    Create Inputs Payload
+                  </Button>
+                </form>
+              </Card>
             </>
           )}
         </Col>
@@ -359,7 +305,7 @@ const handleSubmit = async (event) => {
         <Col span={14}>
           {formData ? (
             <>
-              <p className={styles.explanation}>
+              <p>
                 Send this JSON request body to the{" "}
                 <ToolTip
                   placement="top"
@@ -369,16 +315,12 @@ const handleSubmit = async (event) => {
                 </ToolTip>{" "}
                 to continue with the flow:
               </p>
-              <pre className={styles.jsonPayload}>
-                {JSON.stringify(formData, null, 2)}
-              </pre>
 
-              <br />
+              <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
 
               {!inputsSent && (
                 <>
                   <Button
-                    className={styles.proceedButton}
                     type="primary"
                     htmlType="button"
                     onClick={() => handleStakingAPI()}
@@ -387,10 +329,9 @@ const handleSubmit = async (event) => {
                   </Button>
                   <br />
                   <Button
-                    className={styles.resetButton}
+                    destructive
                     type="text"
                     htmlType="button"
-                    icon={<WarningOutlined />}
                     onClick={() => handleClearFormData()}
                   >
                     Reset Inputs Payload
@@ -426,24 +367,16 @@ const handleSubmit = async (event) => {
               </p>
               <details>
                 <summary>Click here to see the payload</summary>
-                <pre
-                  className={styles.responseFixedShort}
-                  onClick={() =>
-                    navigator.clipboard.writeText(unsignedTransactionPayload)
-                  }
-                >
-                  {unsignedTransactionPayload}
-                </pre>{" "}
+                <Formatted block>{unsignedTransactionPayload}</Formatted>{" "}
               </details>
               <details>
                 <summary>Click here to see the full response</summary>
-                <pre className={styles.responseFixedShort}>
+                <Formatted block>
                   {JSON.stringify(flowResponse, null, 2)}
-                </pre>{" "}
+                </Formatted>{" "}
               </details>
 
               <Button
-                className={styles.proceedButton}
                 size="large"
                 type="primary"
                 onClick={() => setAppState({ stepCompleted: 2 })}
