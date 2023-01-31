@@ -96,7 +96,7 @@ export default function FlowState({ operation }) {
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description maxWidth={900}>
+          <Description>
             {flowState === "delegate_tx_broadcasting" && (
               <>
                 Once the signed transaction has been broadcast by the Staking

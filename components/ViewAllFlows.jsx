@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "@styles/Home.module.css";
-import { Row, Col, Button, Modal, Steps, Tooltip, Pagination } from "antd";
+import { Row, Col, Button, Modal, Steps, Pagination } from "antd";
 import { useAppState } from "@utilities/appState";
 import {
   WarningOutlined,
@@ -138,7 +138,7 @@ export default function ViewAllFlows() {
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description maxWidth={900}>
+          <Description>
             As you create new flows, their current state and response data can
             be viewed at any time in a paginated format. This works differently
             from querying details of a specific flow using its{" "}
@@ -146,14 +146,14 @@ export default function ViewAllFlows() {
             <br />
             <br />
             To view all flows created by your account, send a GET request to the{" "}
-            <Tooltip
+            <ToolTip
               placement="bottom"
               title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
               arrowPointAtCenter
               className={styles.tooltip}
             >
               Staking API endpoint
-            </Tooltip>{" "}
+            </ToolTip>{" "}
             without specifying a <code>flowId</code>. Select a page number, then
             click <b>Get Page of Flows</b> to continue.
             <form method="post" onSubmit={handleSubmit}>

@@ -22,17 +22,11 @@ const explorerUrl = (address) =>
 
 const isIndex = () => useRouter().pathname === "/";
 
-const NextStepLabel = ({ stepCompleted = 0, flowId }) => {
-  if (stepCompleted === 0) return <p>Get into the flow &rarr;</p>;
-  else if (stepCompleted < 5) return <p>Continue flow {flowId || ""} &rarr;</p>;
-  else if (stepCompleted === 5) return <p>Start a new flow &rarr;</p>;
-  else return <></>;
-};
-
 export default function AccountCard() {
   const {
     appState: {
       flowId,
+      flowCompleted,
       stepCompleted,
       accountAddress,
       accountPublicKey,
@@ -40,10 +34,18 @@ export default function AccountCard() {
     },
   } = useAppState();
 
+  const NextStepLabel = ({ stepCompleted = 0, flowId }) => {
+    if (stepCompleted === 0) return <p>Get into the flow &rarr;</p>;
+    else if (stepCompleted < 5)
+      return <p>Continue flow {flowId || ""} &rarr;</p>;
+    else if (flowCompleted) return <p>Start a new flow &rarr;</p>;
+    else return <></>;
+  };
+
   return (
     <>
       {accountAddress && isIndex() ? (
-        <Card href={stepRoute(stepCompleted)}>
+        <Card href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}>
           <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
             <code className="yellow">
               {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
