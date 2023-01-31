@@ -60,6 +60,7 @@ h6 {
 
 p,
 a,
+label,
 span,
 input,
 textarea,
@@ -78,4 +79,15 @@ code {
 
 caption {
   font-size: 1.4rem;
+}
+
+label,
+input,
+textarea {
+  display: block;
+}
+
+input,
+textarea {
+  padding: 0.8rem 1.2rem;
 }
