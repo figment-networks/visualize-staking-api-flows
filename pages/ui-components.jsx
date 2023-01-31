@@ -156,12 +156,15 @@ export const BreadCrumbs = ({ step = 0 }) => {
   );
 };
 
-export const CodeBlock = ({ children }) => (
+export const Formatted = ({ children, block = false }) => (
   <code>
     <style jsx>{`
       code {
         white-space: pre-wrap;
         background-color: #f1f4f3;
+        line-height: 1;
+        padding: ${block ? "2rem" : ".5rem"};
+        display: ${block ? "block" : "inline-block"};
       }
     `}</style>
     {children}
@@ -182,7 +185,11 @@ export default function UIComponents() {
         <Button desctructive>Test</Button>
       </Card>
 
-      <CodeBlock>this is a code block</CodeBlock>
+      <Formatted>
+        this is a code snippet with a <a href="test">link</a>
+      </Formatted>
+
+      <Formatted block>this is a code block</Formatted>
       <Footer />
     </>
   );
