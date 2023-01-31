@@ -93,7 +93,7 @@ export const Footer = () => (
 );
 
 export const BreadCrumbs = ({ step = 0 }) => {
-  const allSteps = [
+  const steps = [
     "Create Account",
     "Create a Flow",
     "Submit Data",
@@ -102,12 +102,11 @@ export const BreadCrumbs = ({ step = 0 }) => {
     "View All Flows",
   ];
 
-  const steps = allSteps.slice(0, step + 1);
-
   return (
     <header>
       <style jsx>{`
         header {
+          overflow: hidden;
           align-items: center;
           white-space: nowrap;
           text-align: left;
@@ -119,7 +118,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
           position: relative;
           display: inline-block;
           overflow: hidden;
-          text-overflow: ellipsis;
+          text-overflow: clip;
           white-space: nowrap;
           padding: 1.2rem 0;
           color: #6f7471;
@@ -132,34 +131,19 @@ export const BreadCrumbs = ({ step = 0 }) => {
         }
         header span {
           position: relative;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 1.2rem;
-          z-index: 1;
-        }
-        header span span:before {
-          content: "";
-          border-color: currentColor;
-          border-style: solid;
-          border-width: 0.1rem 0.1rem 0 0;
           display: inline-block;
-          vertical-align: top;
-          height: 0.6rem;
-          width: 0.6rem;
-          transform: rotate(45deg);
-          margin-left: -0.6rem;
+          overflow: hidden;
+          text-overflow: clip;
+          white-space: nowrap;
+          flex-shrink: 1;
+          padding: 0 2rem;
         }
       `}</style>
       {steps.map((text, index) => (
         <React.Fragment key={`bc_step_${index}`}>
-          {index > 0 && (
-            <span>
-              <span />
-            </span>
-          )}
+          {index !== 0 && <span>{index === step + 1 ? "→" : "-"}</span>}
           <div
-            style={{ flexShrink: steps.length - index - 1 }}
+            style={{ flexShrink: step === index ? 0 : 1 }}
             className={step === index ? "current" : ""}
           >
             {text}
@@ -169,6 +153,18 @@ export const BreadCrumbs = ({ step = 0 }) => {
     </header>
   );
 };
+
+export const CodeBlock = ({ children }) => (
+  <code>
+    <style jsx>{`
+      code {
+        white-space: pre-wrap;
+        background-color: #f1f4f3;
+      }
+    `}</style>
+    {children}
+  </code>
+);
 
 export default function UIComponents() {
   return (
