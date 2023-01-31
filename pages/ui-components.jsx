@@ -42,8 +42,7 @@ export const Button = ({ children, desctructive = false, ...props }) => {
           ${desctructive ? "border-color: #C01005;" : ""}
           ${desctructive ? "background-color: #C01005;" : ""}
           border-radius: 3.6rem;
-          padding: 0.9rem;
-          min-width: calc(3.6rem * 3);
+          padding: 0.9rem 2.8rem;
           font-weight: 600;
           transition: color 250ms, background-color 250ms;
           cursor: pointer;
