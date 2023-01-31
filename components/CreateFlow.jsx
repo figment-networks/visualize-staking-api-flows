@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Steps } from "antd";
+import { Row, Col, Modal, Steps } from "antd";
 import {
   WarningOutlined,
   SolutionOutlined,
@@ -15,6 +15,14 @@ import { useAppState } from "@utilities/appState";
 import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
+
+import {
+  PageTitle,
+  BreadCrumbs,
+  Button,
+  Card,
+  Formatted,
+} from "@pages/ui-components";
 
 export default function CreateFlow({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -164,7 +172,10 @@ export default function CreateFlow({ operation }) {
 
   return (
     <>
-      <Row justify="space-around">
+      <BreadCrumbs step={1} />
+      <PageTitle title="Create a Flow" />
+
+      {/* <Row justify="space-around">
         <Col span={24}>
           <div className={styles.header}>
             <Steps
@@ -211,18 +222,17 @@ export default function CreateFlow({ operation }) {
             />
           </div>
         </Col>
-      </Row>
-
-      <Heading>Create a Flow</Heading>
+      </Row> */}
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description>
-            <span></span>
+          <Card>
+            <span />
             Figment&apos;s Staking API works with the concept of flows. When
-            creating a flow, you must provide the <code>network</code>,{" "}
-            <code>chain_code</code>, <code>operation</code> and Staking API{" "}
-            <code>version</code>.<span />
+            creating a flow, you must provide the <Formatted>network</Formatted>
+            , <Formatted>chain_code</Formatted>,{" "}
+            <Formatted>operation</Formatted> and Staking API{" "}
+            <Formatted>version</Formatted>. <span />
             Each flow is given a unique ID, which is referenced when continuing
             that flow or querying its details.
             <span />
@@ -237,7 +247,7 @@ export default function CreateFlow({ operation }) {
             >
               Click Here For More Information
             </Button>
-          </Description>
+          </Card>
         </Col>
       </Row>
 
@@ -504,10 +514,11 @@ export default function CreateFlow({ operation }) {
         onCancel={closeModal}
       >
         <ul>
-          <h4>
+          <p>
             <b>Note</b>: To provide a seamless experience, this app is currently
             limited to the staking flow on NEAR testnet.
-          </h4>
+          </p>
+          <br />
           <li>
             Figment&apos;s Staking API supports several networks, each network
             has its own set of available operations.
@@ -564,7 +575,7 @@ export default function CreateFlow({ operation }) {
             </Link>{" "}
             for sample request and response data.
           </li>
-          <h4>Network specific operations:</h4>
+          <h6>Network specific operations:</h6>
           <li>
             Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
             <code>unstaking</code> operation.
@@ -592,7 +603,7 @@ export default function CreateFlow({ operation }) {
             <code>merge_stake_account</code> operations, which are useful when
             managing stake account balances.
           </li>
-          <h4>Network specific chain codes:</h4>
+          <h6>Network specific chain codes:</h6>
           <li>
             <b>All</b> networks support operations on <b>mainnet</b> (
             <code>chain_code</code> = <code>mainnet</code>).

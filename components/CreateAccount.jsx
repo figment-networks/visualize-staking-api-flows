@@ -3,13 +3,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "@styles/Home.module.css";
-import { Col, Row, Button, Steps } from "antd";
+import { Col, Row } from "antd";
 import { SolutionOutlined, WarningOutlined } from "@ant-design/icons";
 import AccountCard from "@components/AccountCard";
 import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 
-import { PageTitle, BreadCrumbs } from "@pages/ui-components";
+import { PageTitle, BreadCrumbs, Button, Card } from "@pages/ui-components";
 
 import Heading from "@components/elements/Heading";
 import Description from "@components/elements/Description";
@@ -102,7 +102,7 @@ export default function CreateNEARAccountPage() {
       <Row justify="space-around">
         <Col span={12}>
           {!accountAddress && (
-            <Description>
+            <Card>
               <p>
                 Click the <b>Create Account</b> button to generate a random NEAR
                 testnet account ID and keypair, which is only intended for use
@@ -124,13 +124,13 @@ export default function CreateNEARAccountPage() {
                   Create Account
                 </Button>
               </form>
-            </Description>
+            </Card>
           )}
           {accountAddress && (
             <>
-              <Description>
+              <Card>
                 Your randomly generated account ID is <b>{accountAddress}</b>
-              </Description>
+              </Card>
             </>
           )}
         </Col>
