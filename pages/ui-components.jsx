@@ -30,7 +30,13 @@ export const Card = ({ children }) => (
   </div>
 );
 
-export const Button = ({ children, desctructive = false, ...props }) => {
+export const Button = ({
+  children,
+  destructive = false,
+  href,
+  operation,
+  ...props
+}) => {
   return (
     <button {...props}>
       <style jsx>{`
@@ -39,8 +45,8 @@ export const Button = ({ children, desctructive = false, ...props }) => {
           border: solid 0.2rem;
           background-color: #0e5048;
           border-color: #0e5048;
-          ${desctructive ? "border-color: #C01005;" : ""}
-          ${desctructive ? "background-color: #C01005;" : ""}
+          ${destructive ? "border-color: #C01005;" : ""}
+          ${destructive ? "background-color: #C01005;" : ""}
           border-radius: 3.6rem;
           padding: 0.9rem 2.8rem;
           font-weight: 600;
@@ -51,7 +57,7 @@ export const Button = ({ children, desctructive = false, ...props }) => {
         button:hover:not(:active):not(:disabled) {
           color: #0e5048;
           background-color: #ffffff;
-          ${desctructive ? "color: #C01005;" : ""}
+          ${destructive ? "color: #C01005;" : ""}
         }
 
         button:disabled {
@@ -60,8 +66,16 @@ export const Button = ({ children, desctructive = false, ...props }) => {
           color: #6f7471;
           cursor: not-allowed;
         }
+
+        a {
+          color: #efefef;
+        }
+
+        a:hover {
+          color: #0e5048;
+        }
       `}</style>
-      {children}
+      {href ? <a href={href}>{children}</a> : children}
     </button>
   );
 };

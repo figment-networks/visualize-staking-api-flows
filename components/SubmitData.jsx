@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Steps } from "antd";
+import { Row, Col, Modal, Steps } from "antd";
 import styles from "/styles/Home.module.css";
 import { useAppState } from "@utilities/appState";
 import {
@@ -14,6 +14,14 @@ import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
 import Footer from "@components/elements/Footer";
+
+import {
+  PageTitle,
+  BreadCrumbs,
+  Button,
+  Card,
+  Formatted,
+} from "@pages/ui-components";
 
 export default function SubmitData({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -203,14 +211,16 @@ const handleSubmit = async (event) => {
 
   return (
     <>
-      <Row justify="space-around">
+      <BreadCrumbs step={2} />
+      <PageTitle title="Submit Data to the Staking API" />
+
+      {/* <Row justify="space-around">
         <Col span={24}>
           <div className={styles.header}>
             <Steps
               current={2}
               status="finish"
               type="navigation"
-              // className={(styles.description, styles.progress)}
               items={[
                 {
                   title: "Create Account",
@@ -254,13 +264,11 @@ const handleSubmit = async (event) => {
             />
           </div>
         </Col>
-      </Row>
-
-      <Heading>Submit Data to the Staking API</Heading>
+      </Row> */}
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description>
+          <Card>
             After creating a flow, the next step is to check the response to
             understand which actions are available, and which data needs to be
             provided to continue the flow.
@@ -277,7 +285,7 @@ const handleSubmit = async (event) => {
             >
               Click Here For More Information
             </Button>
-          </Description>
+          </Card>
         </Col>
       </Row>
 
@@ -413,8 +421,8 @@ const handleSubmit = async (event) => {
                 </ToolTip>{" "}
                 has been created by the Staking API
                 <br />
-                based on the submitted <code>action</code> and{" "}
-                <code>inputs</code>:<br />
+                based on the submitted <Formatted>action</Formatted> and{" "}
+                <Formatted>inputs</Formatted>:<br />
               </p>
               <details>
                 <summary>Click here to see the payload</summary>
@@ -459,12 +467,12 @@ const handleSubmit = async (event) => {
       >
         <ul>
           <li>
-            The flow provides <code>actions</code>
+            The flow provides <Formatted>actions</Formatted>
             {" & "}
-            <code>inputs</code> names and <code>display</code> labels used to
-            build the form on this page come from the Staking API response when
-            the flow is created. The values shown here are taken directly from
-            the response:
+            <Formatted>inputs</Formatted> names and{" "}
+            <Formatted>display</Formatted> labels used to build the form on this
+            page come from the Staking API response when the flow is created.
+            The values shown here are taken directly from the response:
           </li>
           <li>
             <details>
@@ -472,17 +480,17 @@ const handleSubmit = async (event) => {
               <ul>
                 <li>
                   Flow Action(s): <b>{flowActions}</b> comes from{" "}
-                  <code>actions[0].name</code>
+                  <Formatted>actions[0].name</Formatted>
                 </li>
                 <li>
                   Action Inputs: <b>{flowInputs.join(", ")}</b> come from{" "}
-                  <code>actions[0].inputs[0].name</code>,{" "}
-                  <code>actions[0].inputs[1].name</code> etc.
+                  <Formatted>actions[0].inputs[0].name</Formatted>,{" "}
+                  <Formatted>actions[0].inputs[1].name</Formatted> etc.
                 </li>
                 <li>
                   Action Display Label: <b>{flowLabels.join(", ")}</b> come from{" "}
-                  <code>actions[0].inputs[0].display</code>,{" "}
-                  <code>actions[0].inputs[1].display</code> etc.
+                  <Formatted>actions[0].inputs[0].display</Formatted>,{" "}
+                  <Formatted>actions[0].inputs[1].display</Formatted> etc.
                 </li>
               </ul>
               <pre className={styles.codeDetail}>
@@ -498,26 +506,27 @@ const handleSubmit = async (event) => {
               <summary>Click here to expand code snippet</summary>
               <p>
                 The form inputs are obtained by iterating over the{" "}
-                <code>actions</code> and <code>inputs</code> from the Staking
-                API response. Here we are using the JavaScript{" "}
-                <code>map()</code> method. This form is used to gather the
-                information needed by the Staking API to create the transaction
-                payload:
+                <Formatted>actions</Formatted> and <Formatted>inputs</Formatted>{" "}
+                from the Staking API response. Here we are using the JavaScript{" "}
+                <Formatted>map()</Formatted> method. This form is used to gather
+                the information needed by the Staking API to create the
+                transaction payload:
               </p>
 
               <pre className={styles.codeDetail}>{codeSnippet}</pre>
 
               <p>
                 Since we&apos;re using React for this, we must supply a unique{" "}
-                <code>key</code> property for each item in the list!
+                <Formatted>key</Formatted> property for each item in the list!
               </p>
 
               <p>
-                To gather the form input values, the <code>handleSubmit</code>{" "}
-                function is called by the form&apos;s <code>onSubmit</code>{" "}
-                handler when the form&apos;s submit button is clicked. In this
-                context, we&apos;re adding the form data to a state variable{" "}
-                <code>formData</code> for later use:
+                To gather the form input values, the{" "}
+                <Formatted>handleSubmit</Formatted> function is called by the
+                form&apos;s <Formatted>onSubmit</Formatted> handler when the
+                form&apos;s submit button is clicked. In this context,
+                we&apos;re adding the form data to a state variable{" "}
+                <Formatted>formData</Formatted> for later use:
               </p>
 
               <pre className={styles.codeDetail}>{codeSnippetSubmit}</pre>

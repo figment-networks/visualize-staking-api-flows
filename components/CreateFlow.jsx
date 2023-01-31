@@ -175,55 +175,6 @@ export default function CreateFlow({ operation }) {
       <BreadCrumbs step={1} />
       <PageTitle title="Create a Flow" />
 
-      {/* <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={1}
-              status="finish"
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Create a Flow",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Submit Data",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Get Flow State",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row> */}
-
       <Row justify="space-around">
         <Col span={10}>
           <Card>
@@ -256,131 +207,131 @@ export default function CreateFlow({ operation }) {
           <p className={styles.centerLabel}>
             Click <b>Create JSON Request Body</b> to continue.
           </p>
-          <form
-            className={styles.flowForm}
-            onSubmit={handleSubmit}
-            method="post"
-          >
-            <label htmlFor="network_code">Network</label>
-            <select
-              id="network_code"
-              name="networkCode"
-              required
-              defaultValue="near"
-              onChange={handleFormChange}
-            >
-              <option disabled value="avalanche">
-                Avalanche
-              </option>
-              <option disabled value="cosmos">
-                Cosmos
-              </option>
-              <option disabled value="ethereum">
-                Ethereum
-              </option>
-              <option value="near">NEAR</option>
-              <option disabled value="polkadot">
-                Polkadot
-              </option>
-              <option disabled value="polygon">
-                Polygon
-              </option>
-              <option disabled value="solana">
-                Solana
-              </option>
-            </select>
+          <Card>
+            <form onSubmit={handleSubmit} method="post">
+              <label htmlFor="network_code">Network</label>
+              <select
+                id="network_code"
+                name="networkCode"
+                required
+                defaultValue="near"
+                onChange={handleFormChange}
+              >
+                <option disabled value="avalanche">
+                  Avalanche
+                </option>
+                <option disabled value="cosmos">
+                  Cosmos
+                </option>
+                <option disabled value="ethereum">
+                  Ethereum
+                </option>
+                <option value="near">NEAR</option>
+                <option disabled value="polkadot">
+                  Polkadot
+                </option>
+                <option disabled value="polygon">
+                  Polygon
+                </option>
+                <option disabled value="solana">
+                  Solana
+                </option>
+              </select>
 
-            <label htmlFor="chain_code">Chain Code</label>
-            <select
-              id="chain_code"
-              name="chainCode"
-              required
-              defaultValue="testnet"
-            >
-              <option disabled value="mainnet">
-                Mainnet
-              </option>
-              {selectedNetwork === "polkadot" ? (
-                <option value="westend">Westend</option>
-              ) : (
-                <option value="testnet">Testnet</option>
-              )}
-              {selectedNetwork === "solana" ? (
-                <option value="devnet">Devnet</option>
-              ) : (
-                ""
-              )}
-            </select>
+              <label htmlFor="chain_code">Chain Code</label>
+              <select
+                id="chain_code"
+                name="chainCode"
+                required
+                defaultValue="testnet"
+              >
+                <option disabled value="mainnet">
+                  Mainnet
+                </option>
+                {selectedNetwork === "polkadot" ? (
+                  <option value="westend">Westend</option>
+                ) : (
+                  <option value="testnet">Testnet</option>
+                )}
+                {selectedNetwork === "solana" ? (
+                  <option value="devnet">Devnet</option>
+                ) : (
+                  ""
+                )}
+              </select>
 
-            {/* Networks support different operations, 
+              {/* Networks support different operations, 
               so we are using conditional rendering to make the form dynamic. */}
-            <label htmlFor="operation">Operation</label>
-            <select
-              id="operation"
-              name="operation"
-              required
-              defaultValue="staking"
-            >
-              <option value="staking">Staking</option>
-              {selectedNetwork === "solana" ||
-              selectedNetwork === "near" ||
-              selectedNetwork === "polkadot" ||
-              selectedNetwork === "polygon" ||
-              !selectedNetwork ? (
-                <option value="unstaking" disabled>
-                  Unstaking
-                </option>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "solana" ||
-              selectedNetwork === "near" ||
-              selectedNetwork === "polkadot" ||
-              selectedNetwork === "cosmos" ||
-              !selectedNetwork ? (
-                <option value="transfer" disabled>
-                  Transfer
-                </option>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "polkadot" ? (
-                <>
-                  <option value="add_proxy">Add Proxy</option>
-                  <option value="remove_proxy">Remove Proxy</option>
-                </>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "polygon" ? (
-                <option value="claim_rewards">Claim Rewards</option>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "solana" ? (
-                <option value="split_stake_account">Split Stake Account</option>
-              ) : (
-                ""
-              )}
-            </select>
+              <label htmlFor="operation">Operation</label>
+              <select
+                id="operation"
+                name="operation"
+                required
+                defaultValue="staking"
+              >
+                <option value="staking">Staking</option>
+                {selectedNetwork === "solana" ||
+                selectedNetwork === "near" ||
+                selectedNetwork === "polkadot" ||
+                selectedNetwork === "polygon" ||
+                !selectedNetwork ? (
+                  <option value="unstaking" disabled>
+                    Unstaking
+                  </option>
+                ) : (
+                  ""
+                )}
+                {selectedNetwork === "solana" ||
+                selectedNetwork === "near" ||
+                selectedNetwork === "polkadot" ||
+                selectedNetwork === "cosmos" ||
+                !selectedNetwork ? (
+                  <option value="transfer" disabled>
+                    Transfer
+                  </option>
+                ) : (
+                  ""
+                )}
+                {selectedNetwork === "polkadot" ? (
+                  <>
+                    <option value="add_proxy">Add Proxy</option>
+                    <option value="remove_proxy">Remove Proxy</option>
+                  </>
+                ) : (
+                  ""
+                )}
+                {selectedNetwork === "polygon" ? (
+                  <option value="claim_rewards">Claim Rewards</option>
+                ) : (
+                  ""
+                )}
+                {selectedNetwork === "solana" ? (
+                  <option value="split_stake_account">
+                    Split Stake Account
+                  </option>
+                ) : (
+                  ""
+                )}
+              </select>
 
-            <label htmlFor="version">Version</label>
-            <select id="version" name="version" required defaultValue="v1">
-              <option value="v1">v1</option>
-            </select>
+              <label htmlFor="version">Version</label>
+              <select id="version" name="version" required defaultValue="v1">
+                <option value="v1">v1</option>
+              </select>
 
-            {/* Submitting this form does not fetch from the Staking API,
+              {/* Submitting this form does not fetch from the Staking API,
                 it only populates the display of the JSON payload. */}
 
-            <Button
-              disabled={formData || stepCompleted === 5}
-              className={styles.submitButton}
-              type="primary"
-              htmlType="submit"
-            >
-              Create JSON Request Body
-            </Button>
-          </form>
+              <Button
+                disabled={formData || stepCompleted === 5}
+                className={styles.submitButton}
+                type="primary"
+                htmlType="submit"
+              >
+                Create JSON Request Body
+              </Button>
+            </form>
+          </Card>
         </Col>
 
         <Col span={12}>
@@ -396,7 +347,6 @@ export default function CreateFlow({ operation }) {
                 title={`Click here to reset the current flow and appState`}
               >
                 <Button
-                  className={styles.resetButton}
                   type="primary"
                   htmlType="button"
                   onClick={() => handleResetFlow()}
@@ -412,23 +362,23 @@ export default function CreateFlow({ operation }) {
             <>
               <p>
                 Flow ID{" "}
-                <ToolTip
-                  placement="top"
-                  title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
-                >
-                  <code>
+                <Formatted>
+                  <ToolTip
+                    placement="top"
+                    title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
+                  >
                     <b>{flowResponse?.id}</b>
-                  </code>
-                </ToolTip>{" "}
+                  </ToolTip>
+                </Formatted>
                 is{" "}
-                <ToolTip
-                  placement="top"
-                  title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until the transaction has been sent to the network.`}
-                >
-                  <code>
+                <Formatted>
+                  <ToolTip
+                    placement="top"
+                    title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until the transaction has been sent to the network.`}
+                  >
                     <b>{flowResponse?.state}</b>
-                  </code>
-                </ToolTip>{" "}
+                  </ToolTip>
+                </Formatted>{" "}
               </p>
               <br />
               <details>
@@ -442,7 +392,6 @@ export default function CreateFlow({ operation }) {
               <Button
                 size="large"
                 type="primary"
-                className={styles.proceedButton}
                 onClick={() => setAppState({ stepCompleted: 1 })}
                 href={`/operations/${operation}/submit-data`}
               >
@@ -489,7 +438,7 @@ export default function CreateFlow({ operation }) {
                   </Button>
                   <br />
                   <Button
-                    style={{ width: "auto" }}
+                    destructive={true}
                     type="text"
                     htmlType="button"
                     onClick={() => handleClearFormData()}
@@ -530,15 +479,16 @@ export default function CreateFlow({ operation }) {
             A flow will change state when an action has been completed.
             <br />
             Depending on the operation, flow actions relate to each part of an
-            operation &mdash; for example, a <code>staking</code> operation has
-            the actions <code>create_delegate_tx</code>,{" "}
-            <code>refresh_delegate_tx</code> and <code>sign_delegate_tx</code>.
+            operation &mdash; for example, a <Formatted>staking</Formatted>{" "}
+            operation has the actions <Formatted>create_delegate_tx</Formatted>,{" "}
+            <Formatted>refresh_delegate_tx</Formatted> and{" "}
+            <Formatted>sign_delegate_tx</Formatted>.
           </li>
           <br />
           <li>
             The most common operations for the Staking API are{" "}
-            <code>staking</code>, <code>unstaking</code> and{" "}
-            <code>transfer</code>.
+            <Formatted>staking</Formatted>, <Formatted>unstaking</Formatted> and{" "}
+            <Formatted>transfer</Formatted>.
             <br />
             The full list of supported networks and operations is available in
             the{" "}
@@ -578,7 +528,7 @@ export default function CreateFlow({ operation }) {
           <h6>Network specific operations:</h6>
           <li>
             Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
-            <code>unstaking</code> operation.
+            <Formatted>unstaking</Formatted> operation.
             <br /> For Avalanche and Cosmos, this is due to how delegations are
             handled on those networks.
             <br />
@@ -594,30 +544,31 @@ export default function CreateFlow({ operation }) {
           </li>
           <br />
           <li>
-            Polkadot has <code>add_proxy</code> and <code>remove_proxy</code>{" "}
-            operations, which are useful for managing staking nominations.
+            Polkadot has <Formatted>add_proxy</Formatted> and{" "}
+            <Formatted>remove_proxy</Formatted> operations, which are useful for
+            managing staking nominations.
           </li>
           <br />
           <li>
-            Solana has <code>split_stake_account</code> and{" "}
-            <code>merge_stake_account</code> operations, which are useful when
-            managing stake account balances.
+            Solana has <Formatted>split_stake_account</Formatted> and{" "}
+            <Formatted>merge_stake_account</Formatted> operations, which are
+            useful when managing stake account balances.
           </li>
           <h6>Network specific chain codes:</h6>
           <li>
             <b>All</b> networks support operations on <b>mainnet</b> (
-            <code>chain_code</code> = <code>mainnet</code>).
+            <Formatted>chain_code</Formatted> = <Formatted>mainnet</Formatted>).
           </li>
           <br />
           <li>
             Polkadot&apos;s <b>testnet</b> is called Westend (
-            <code>chain_code</code> = <code>westend</code>).
+            <Formatted>chain_code</Formatted> = <Formatted>westend</Formatted>).
           </li>
           <br />
           <li>
-            Solana has both a <b>testnet</b> (<code>chain_code</code> ={" "}
-            <code>testnet</code>) and a <b>devnet</b>, (<code>chain_code</code>{" "}
-            = <code>devnet</code>).
+            Solana has both a <b>testnet</b> (<Formatted>chain_code</Formatted>{" "}
+            = <Formatted>testnet</Formatted>) and a <b>devnet</b>, (
+            <Formatted>chain_code</Formatted> = <Formatted>devnet</Formatted>).
           </li>
           <br />
         </ul>
