@@ -9,6 +9,8 @@ import AccountCard from "@components/AccountCard";
 import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 
+import { PageTitle, BreadCrumbs } from "@pages/ui-components";
+
 import Heading from "@components/elements/Heading";
 import Description from "@components/elements/Description";
 
@@ -51,7 +53,10 @@ export default function CreateNEARAccountPage() {
 
   return (
     <>
-      <Row justify="space-around">
+      <BreadCrumbs step={0} />
+      <PageTitle title="Create NEAR Account" />
+
+      {/* <Row justify="space-around">
         <Col span={24}>
           <div className={styles.header}>
             <Steps
@@ -92,9 +97,7 @@ export default function CreateNEARAccountPage() {
             />
           </div>
         </Col>
-      </Row>
-
-      <Heading>Create Account</Heading>
+      </Row> */}
 
       <Row justify="space-around">
         <Col span={12}>

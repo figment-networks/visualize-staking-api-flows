@@ -173,7 +173,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
 export default function UIComponents() {
   return (
     <>
-      <BreadCrumbs step={3} />
+      <BreadCrumbs step={4} />
       <PageTitle
         title="Visualize Figment's Staking API"
         headline="Learn how to use Figment's Staking API in an intuitive, visual format"
