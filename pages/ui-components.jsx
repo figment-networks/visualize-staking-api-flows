@@ -189,6 +189,14 @@ export default function UIComponents() {
       </Formatted>
 
       <Formatted block>this is a code block</Formatted>
+
+      <form>
+        <h5>title</h5>
+        <label>email</label>
+        <input type="text" />
+        <label>number</label>
+        <input type="number" />
+      </form>
       <Footer />
     </>
   );
