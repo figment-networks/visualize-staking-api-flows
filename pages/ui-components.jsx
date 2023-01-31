@@ -143,7 +143,9 @@ export const BreadCrumbs = ({ step = 0 }) => {
         <React.Fragment key={`bc_step_${index}`}>
           {index !== 0 && <span>{index === step + 1 ? "→" : "-"}</span>}
           <div
-            style={{ flexShrink: step === index ? 0 : 1 }}
+            style={{
+              flexShrink: step === index ? 0 : step + 1 === index ? 1 : 99,
+            }}
             className={step === index ? "current" : ""}
           >
             {text}
@@ -179,6 +181,8 @@ export default function UIComponents() {
         <p>test content</p>
         <Button desctructive>Test</Button>
       </Card>
+
+      <CodeBlock>this is a code block</CodeBlock>
       <Footer />
     </>
   );
