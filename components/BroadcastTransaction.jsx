@@ -75,67 +75,66 @@ export default function BroadcastTransaction({ operation }) {
         </Button>
       </Card>
 
-      <Row className={styles.paddingBottom} justify="space-between">
-        <form onSubmit={handleSubmit} method="post">
-          <h6>&darr; Signed Transaction Payload</h6>
-          <textarea
-            className={styles.decodeTextArea}
-            id="signed_payload"
-            name="signed_payload"
-            required
-            defaultValue={signedTransactionPayload}
-          />
-          <Button
-            disabled={flowState === "delegate_tx_broadcasting"}
-            style={{ width: "auto" }}
-            type="primary"
-            htmlType="submit"
-          >
-            Submit Signed Transaction Payload
-          </Button>
-        </form>
+      <form onSubmit={handleSubmit} method="post">
+        <h6>&darr; Signed Transaction Payload</h6>
+        <textarea
+          className={styles.decodeTextArea}
+          id="signed_payload"
+          name="signed_payload"
+          required
+          defaultValue={signedTransactionPayload}
+        />
+        <Button
+          disabled={flowState === "delegate_tx_broadcasting"}
+          style={{ width: "auto" }}
+          type="primary"
+          htmlType="submit"
+        >
+          Submit Signed Transaction Payload
+        </Button>
+      </form>
 
-        <Col span={12}>
-          {flowState && (
+      {flowState && (
+        <>
+          <p>
+            Flow ID: <Formatted bold>{flowId}</Formatted>
+          </p>
+          <p>
+            Flow state: <Formatted>{flowState}</Formatted>{" "}
+          </p>
+
+          {flowState === "delegate_tx_broadcasting" && (
             <>
-              <p>
-                Flow ID: <Formatted bold>{flowId}</Formatted>
-              </p>
-              <p>
-                Flow state: <Formatted>{flowState}</Formatted>{" "}
-              </p>
-
-              {flowState === "delegate_tx_broadcasting" && (
-                <>
-                  <Description>
-                    The signed payload has been broadcast to the NEAR network by
-                    the Staking API,
-                    <br />
-                    the flow state changed from{" "}
-                    <Formatted>initialized</Formatted> to{" "}
-                    <Formatted>delegate_tx_broadcasting</Formatted>.<br />
-                    <br />
-                    At this point in the flow, the only action remaining is to
-                    check the flow state to ensure it is{" "}
-                    <Formatted>delegated</Formatted>.
-                  </Description>
+              <Card>
+                <p>
+                  The signed payload has been broadcast to the NEAR network by
+                  the Staking API,
                   <br />
-                  <Button
-                    size="large"
-                    type="primary"
-                    htmlType="button"
-                    className={styles.proceedButton}
-                    onClick={() => setAppState({ stepCompleted: 4 })}
-                    href={`/operations/${operation}/flow-state`}
-                  >
-                    Proceed to the next step &rarr;
-                  </Button>
-                </>
-              )}
+                  the flow state changed from <Formatted>
+                    initialized
+                  </Formatted>{" "}
+                  to <Formatted>delegate_tx_broadcasting</Formatted>.<br />
+                  <br />
+                  At this point in the flow, the only action remaining is to
+                  check the flow state to ensure it is{" "}
+                  <Formatted>delegated</Formatted>.
+                </p>
+              </Card>
+
+              <Button
+                size="large"
+                type="primary"
+                htmlType="button"
+                className={styles.proceedButton}
+                onClick={() => setAppState({ stepCompleted: 4 })}
+                href={`/operations/${operation}/flow-state`}
+              >
+                Proceed to the next step &rarr;
+              </Button>
             </>
           )}
-        </Col>
-      </Row>
+        </>
+      )}
 
       <Footer />
 

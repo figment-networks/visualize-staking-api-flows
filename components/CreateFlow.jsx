@@ -177,268 +177,253 @@ export default function CreateFlow({ operation }) {
       <BreadCrumbs step={1} />
       <Title title="Create a Flow" />
 
-      <Row justify="space-around">
-        <Col span={10}>
-          <Card>
-            <span />
-            Figment&apos;s Staking API works with the concept of flows. When
-            creating a flow, you must provide the <Formatted>network</Formatted>
-            , <Formatted>chain_code</Formatted>,{" "}
-            <Formatted>operation</Formatted> and Staking API{" "}
-            <Formatted>version</Formatted>. <span />
-            Each flow is given a unique ID, which is referenced when continuing
-            that flow or querying its details.
-            <span />
-            The form below creates a JSON request body, which you can send to
-            the Staking API to create a new flow.
-            <p />
-            <Button size="large" type="text" onClick={() => showModal()}>
-              Click Here For More Information
-            </Button>
-          </Card>
-        </Col>
-      </Row>
+      <Card>
+        <span />
+        Figment&apos;s Staking API works with the concept of flows. When
+        creating a flow, you must provide the <Formatted>
+          network
+        </Formatted>, <Formatted>chain_code</Formatted>,{" "}
+        <Formatted>operation</Formatted> and Staking API{" "}
+        <Formatted>version</Formatted>. <span />
+        Each flow is given a unique ID, which is referenced when continuing that
+        flow or querying its details.
+        <span />
+        The form below creates a JSON request body, which you can send to the
+        Staking API to create a new flow.
+        <p />
+        <Button size="large" type="text" onClick={() => showModal()}>
+          Click Here For More Information
+        </Button>
+      </Card>
 
-      <Row className={styles.paddingBottom}>
-        <Col span={12}>
-          <p className={styles.centerLabel}>
-            Click <b>Create JSON Request Body</b> to continue.
-          </p>
-          <Card>
-            <form onSubmit={handleSubmit} method="post">
-              <label htmlFor="network_code">Network</label>
-              <select
-                id="network_code"
-                name="networkCode"
-                required
-                defaultValue="near"
-                onChange={handleFormChange}
-              >
-                <option disabled value="avalanche">
-                  Avalanche
-                </option>
-                <option disabled value="cosmos">
-                  Cosmos
-                </option>
-                <option disabled value="ethereum">
-                  Ethereum
-                </option>
-                <option value="near">NEAR</option>
-                <option disabled value="polkadot">
-                  Polkadot
-                </option>
-                <option disabled value="polygon">
-                  Polygon
-                </option>
-                <option disabled value="solana">
-                  Solana
-                </option>
-              </select>
+      <p className={styles.centerLabel}>
+        Click <b>Create JSON Request Body</b> to continue.
+      </p>
+      <Card>
+        <form onSubmit={handleSubmit} method="post">
+          <label htmlFor="network_code">Network</label>
+          <select
+            id="network_code"
+            name="networkCode"
+            required
+            defaultValue="near"
+            onChange={handleFormChange}
+          >
+            <option disabled value="avalanche">
+              Avalanche
+            </option>
+            <option disabled value="cosmos">
+              Cosmos
+            </option>
+            <option disabled value="ethereum">
+              Ethereum
+            </option>
+            <option value="near">NEAR</option>
+            <option disabled value="polkadot">
+              Polkadot
+            </option>
+            <option disabled value="polygon">
+              Polygon
+            </option>
+            <option disabled value="solana">
+              Solana
+            </option>
+          </select>
 
-              <label htmlFor="chain_code">Chain Code</label>
-              <select
-                id="chain_code"
-                name="chainCode"
-                required
-                defaultValue="testnet"
-              >
-                <option disabled value="mainnet">
-                  Mainnet
-                </option>
-                {selectedNetwork === "polkadot" ? (
-                  <option value="westend">Westend</option>
-                ) : (
-                  <option value="testnet">Testnet</option>
-                )}
-                {selectedNetwork === "solana" ? (
-                  <option value="devnet">Devnet</option>
-                ) : (
-                  ""
-                )}
-              </select>
+          <label htmlFor="chain_code">Chain Code</label>
+          <select
+            id="chain_code"
+            name="chainCode"
+            required
+            defaultValue="testnet"
+          >
+            <option disabled value="mainnet">
+              Mainnet
+            </option>
+            {selectedNetwork === "polkadot" ? (
+              <option value="westend">Westend</option>
+            ) : (
+              <option value="testnet">Testnet</option>
+            )}
+            {selectedNetwork === "solana" ? (
+              <option value="devnet">Devnet</option>
+            ) : (
+              ""
+            )}
+          </select>
 
-              {/* Networks support different operations, 
+          {/* Networks support different operations, 
               so we are using conditional rendering to make the form dynamic. */}
-              <label htmlFor="operation">Operation</label>
-              <select
-                id="operation"
-                name="operation"
-                required
-                defaultValue="staking"
-              >
-                <option value="staking">Staking</option>
-                {selectedNetwork === "solana" ||
-                selectedNetwork === "near" ||
-                selectedNetwork === "polkadot" ||
-                selectedNetwork === "polygon" ||
-                !selectedNetwork ? (
-                  <option value="unstaking" disabled>
-                    Unstaking
-                  </option>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "solana" ||
-                selectedNetwork === "near" ||
-                selectedNetwork === "polkadot" ||
-                selectedNetwork === "cosmos" ||
-                !selectedNetwork ? (
-                  <option value="transfer" disabled>
-                    Transfer
-                  </option>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "polkadot" ? (
-                  <>
-                    <option value="add_proxy">Add Proxy</option>
-                    <option value="remove_proxy">Remove Proxy</option>
-                  </>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "polygon" ? (
-                  <option value="claim_rewards">Claim Rewards</option>
-                ) : (
-                  ""
-                )}
-                {selectedNetwork === "solana" ? (
-                  <option value="split_stake_account">
-                    Split Stake Account
-                  </option>
-                ) : (
-                  ""
-                )}
-              </select>
+          <label htmlFor="operation">Operation</label>
+          <select
+            id="operation"
+            name="operation"
+            required
+            defaultValue="staking"
+          >
+            <option value="staking">Staking</option>
+            {selectedNetwork === "solana" ||
+            selectedNetwork === "near" ||
+            selectedNetwork === "polkadot" ||
+            selectedNetwork === "polygon" ||
+            !selectedNetwork ? (
+              <option value="unstaking" disabled>
+                Unstaking
+              </option>
+            ) : (
+              ""
+            )}
+            {selectedNetwork === "solana" ||
+            selectedNetwork === "near" ||
+            selectedNetwork === "polkadot" ||
+            selectedNetwork === "cosmos" ||
+            !selectedNetwork ? (
+              <option value="transfer" disabled>
+                Transfer
+              </option>
+            ) : (
+              ""
+            )}
+            {selectedNetwork === "polkadot" ? (
+              <>
+                <option value="add_proxy">Add Proxy</option>
+                <option value="remove_proxy">Remove Proxy</option>
+              </>
+            ) : (
+              ""
+            )}
+            {selectedNetwork === "polygon" ? (
+              <option value="claim_rewards">Claim Rewards</option>
+            ) : (
+              ""
+            )}
+            {selectedNetwork === "solana" ? (
+              <option value="split_stake_account">Split Stake Account</option>
+            ) : (
+              ""
+            )}
+          </select>
 
-              <label htmlFor="version">Version</label>
-              <select id="version" name="version" required defaultValue="v1">
-                <option value="v1">v1</option>
-              </select>
+          <label htmlFor="version">Version</label>
+          <select id="version" name="version" required defaultValue="v1">
+            <option value="v1">v1</option>
+          </select>
 
-              {/* Submitting this form does not fetch from the Staking API,
+          {/* Submitting this form does not fetch from the Staking API,
                 it only populates the display of the JSON payload. */}
 
-              <Button disabled={formData || stepCompleted === 5}>
-                Create JSON Request Body
-              </Button>
-            </form>
-          </Card>
-        </Col>
+          <Button disabled={formData || stepCompleted === 5}>
+            Create JSON Request Body
+          </Button>
+        </form>
+      </Card>
 
-        <Col span={12}>
-          {flowCompleted && (
-            <>
-              <p className={styles.callout}>
-                A previous flow <b>{flowId}</b> has already been completed.
-                Please <b>reset the flow</b> to continue.
-              </p>
+      {flowCompleted && (
+        <>
+          <p className={styles.callout}>
+            A previous flow <b>{flowId}</b> has already been completed. Please{" "}
+            <b>reset the flow</b> to continue.
+          </p>
 
-              <Button destructive onClick={() => handleResetFlow()}>
-                <ToolTip
-                  placement="bottomLeft"
-                  title={`Click here to reset the current flow and appState`}
-                >
-                  Reset Flow
-                </ToolTip>
-              </Button>
-            </>
-          )}
+          <Button destructive onClick={() => handleResetFlow()}>
+            <ToolTip
+              placement="bottomLeft"
+              title={`Click here to reset the current flow and appState`}
+            >
+              Reset Flow
+            </ToolTip>
+          </Button>
+        </>
+      )}
 
-          {!flowCompleted && flowResponse && stepCompleted < 2 ? (
-            <>
-              <p>
-                Flow ID{" "}
-                <Formatted>
-                  <ToolTip
-                    placement="top"
-                    title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
-                  >
-                    <b>{flowResponse?.id}</b>
-                  </ToolTip>
-                </Formatted>
-                is{" "}
-                <Formatted>
-                  <ToolTip
-                    placement="top"
-                    title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until the transaction has been sent to the network.`}
-                  >
-                    <b>{flowResponse?.state}</b>
-                  </ToolTip>
-                </Formatted>{" "}
-              </p>
-              <br />
-              <details>
-                <summary>
-                  Click here to view the full Staking API response
-                </summary>
-                <Formatted block maxHeight="500px">
-                  {JSON.stringify(flowResponse, null, 2)}
-                </Formatted>
-              </details>
-              <Button
-                size="large"
-                type="primary"
-                onClick={() => setAppState({ stepCompleted: 1 })}
-                href={`/operations/${operation}/submit-data`}
+      {!flowCompleted && flowResponse && stepCompleted < 2 ? (
+        <>
+          <p>
+            Flow ID{" "}
+            <Formatted>
+              <ToolTip
+                placement="top"
+                title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
               >
-                Proceed to the next step &rarr;
-              </Button>
-            </>
-          ) : (
+                <b>{flowResponse?.id}</b>
+              </ToolTip>
+            </Formatted>
+            is{" "}
+            <Formatted>
+              <ToolTip
+                placement="top"
+                title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until the transaction has been sent to the network.`}
+              >
+                <b>{flowResponse?.state}</b>
+              </ToolTip>
+            </Formatted>{" "}
+          </p>
+          <br />
+          <details>
+            <summary>Click here to view the full Staking API response</summary>
+            <Formatted block maxHeight="500px">
+              {JSON.stringify(flowResponse, null, 2)}
+            </Formatted>
+          </details>
+          <Button
+            size="large"
+            type="primary"
+            onClick={() => setAppState({ stepCompleted: 1 })}
+            href={`/operations/${operation}/submit-data`}
+          >
+            Proceed to the next step &rarr;
+          </Button>
+        </>
+      ) : (
+        <>
+          {!formData && stepCompleted !== 5 && (
             <>
-              {!formData && stepCompleted !== 5 && (
-                <>
-                  <br />
-                  <br />
-                  <p className="spacer">
-                    The request body will appear when you click{" "}
-                    <b>Create JSON Request Body</b>.
-                  </p>
-                </>
-              )}
-
-              {formData && !flowResponse && (
-                <>
-                  <p className={styles.desc}>
-                    Send this JSON request body to the{" "}
-                    <ToolTip
-                      placement="top"
-                      title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
-                      className={styles.tooltip}
-                    >
-                      Staking API endpoint
-                    </ToolTip>{" "}
-                    to create a new flow:
-                  </p>
-                  <Formatted block>
-                    {JSON.stringify(formData, null, 2)}
-                  </Formatted>
-                  <br />
-                  <Button
-                    style={{ width: "auto" }}
-                    type="primary"
-                    htmlType="button"
-                    onClick={() => handleCreateFlow()}
-                  >
-                    Send request to the Staking API
-                  </Button>
-                  <br />
-                  <Button
-                    destructive={true}
-                    type="text"
-                    htmlType="button"
-                    onClick={() => handleClearFormData()}
-                    icon={<WarningOutlined />}
-                  >
-                    Clear JSON Request Body
-                  </Button>
-                </>
-              )}
+              <br />
+              <br />
+              <p className="spacer">
+                The request body will appear when you click{" "}
+                <b>Create JSON Request Body</b>.
+              </p>
             </>
           )}
-        </Col>
-      </Row>
+
+          {formData && !flowResponse && (
+            <>
+              <p className={styles.desc}>
+                Send this JSON request body to the{" "}
+                <ToolTip
+                  placement="top"
+                  title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
+                  className={styles.tooltip}
+                >
+                  Staking API endpoint
+                </ToolTip>{" "}
+                to create a new flow:
+              </p>
+              <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
+              <br />
+              <Button
+                style={{ width: "auto" }}
+                type="primary"
+                htmlType="button"
+                onClick={() => handleCreateFlow()}
+              >
+                Send request to the Staking API
+              </Button>
+              <br />
+              <Button
+                destructive={true}
+                type="text"
+                htmlType="button"
+                onClick={() => handleClearFormData()}
+                icon={<WarningOutlined />}
+              >
+                Clear JSON Request Body
+              </Button>
+            </>
+          )}
+        </>
+      )}
 
       <Footer />
 

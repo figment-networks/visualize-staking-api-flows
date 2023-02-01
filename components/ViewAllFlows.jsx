@@ -151,50 +151,41 @@ export default function ViewAllFlows() {
         </Button>
       </Card>
 
-      <Row justify="space-between" className={styles.paddingBottom}>
-        <Col span={2} />
-        <Col span={10} justify="space-between">
-          {responseData && !responseData.page && !isLoading && (
-            <>
-              <h6>&darr; Recently completed flow</h6>
-              <Formatted block>
-                {JSON.stringify(responseData, null, 2)}
-              </Formatted>
-            </>
-          )}
+      {responseData && !responseData.page && !isLoading && (
+        <>
+          <h6>&darr; Recently completed flow</h6>
+          <Formatted block maxHeight="500px">
+            {JSON.stringify(responseData, null, 2)}
+          </Formatted>
+        </>
+      )}
 
-          {isLoading && <p>Loading...</p>}
+      {isLoading && <p>Loading...</p>}
 
-          {responseData?.page && !isLoading && (
-            <>
-              <p>
-                In this response from the Staking API, the{" "}
-                <Formatted>data[]</Formatted> array contains{" "}
-                <b>{responseData?.data.length}</b> results per page &mdash;
-                <br />
-                You are curently viewing page <b>
-                  {responseData?.page}
-                </b> of <b>{responseData?.pages}</b>. Use the pagination control
-                below to move between results.
-              </p>
-              <Pagination
-                className={styles.paginationControls}
-                total={
-                  responseData?.data?.length ? responseData.data.length : 1
-                }
-                pageSize={1}
-                responsive={true}
-                defaultCurrent={1}
-                onChange={handlePaginationChange}
-              />
-              <Formatted block maxHeight="450px">
-                {JSON.stringify(pageItem, null, 2)}
-              </Formatted>
-            </>
-          )}
-        </Col>
-        <Col span={2} />
-      </Row>
+      {responseData?.page && !isLoading && (
+        <>
+          <p>
+            In this response from the Staking API, the{" "}
+            <Formatted>data[]</Formatted> array contains{" "}
+            <b>{responseData?.data.length}</b> results per page &mdash;
+            <br />
+            You are curently viewing page <b>{responseData?.page}</b> of{" "}
+            <b>{responseData?.pages}</b>. Use the pagination control below to
+            move between results.
+          </p>
+          <Pagination
+            className={styles.paginationControls}
+            total={responseData?.data?.length ? responseData.data.length : 1}
+            pageSize={1}
+            responsive={true}
+            defaultCurrent={1}
+            onChange={handlePaginationChange}
+          />
+          <Formatted block maxHeight="450px">
+            {JSON.stringify(pageItem, null, 2)}
+          </Formatted>
+        </>
+      )}
 
       <Footer />
 

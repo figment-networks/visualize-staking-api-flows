@@ -1,13 +1,9 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState } from "react";
-import { Row, Col } from "antd";
-import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import styles from "@styles/Home.module.css";
 import { useAppState } from "@utilities/appState";
 
 import ToolTip from "@components/elements/ToolTip";
-import Description from "@components/elements/Description";
 
 import {
   Title,
@@ -103,46 +99,40 @@ export default function FlowState({ operation }) {
         )}
       </Card>
 
-      <Row justify="space-around" className={styles.paddingBottom}>
-        <Col span={10}>
-          {flowState !== "delegated" && (
-            <Button onClick={() => handleGetState()}>
-              Get Current Flow State
-            </Button>
-          )}
-          {flowState === "delegated" && (
-            <Button
-              onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
-              href="/view-all-flows"
-            >
-              Proceed to the final step &rarr;
-            </Button>
-          )}
+      {flowState !== "delegated" && (
+        <Button onClick={() => handleGetState()}>Get Current Flow State</Button>
+      )}
+      {flowState === "delegated" && (
+        <Button
+          onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
+          href="/view-all-flows"
+        >
+          Proceed to the final step &rarr;
+        </Button>
+      )}
 
-          {isLoading ? (
-            "Loading..."
-          ) : (
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <>
+          {responseData && flowState === "delegate_tx_broadcasting" && (
             <>
-              {responseData && flowState === "delegate_tx_broadcasting" && (
-                <>
-                  <h3>&darr; Staking API Response</h3>
-                  <Formatted block maxHeight="500px">
-                    {JSON.stringify(responseData, null, 2)}
-                  </Formatted>
-                </>
-              )}
-              {responseData && flowState === "delegated" && (
-                <>
-                  <h6>&darr; Staking API Response</h6>
-                  <Formatted block maxHeight="500px">
-                    {JSON.stringify(responseData, null, 2)}
-                  </Formatted>
-                </>
-              )}
+              <h6>&darr; Staking API Response</h6>
+              <Formatted block maxHeight="500px">
+                {JSON.stringify(responseData, null, 2)}
+              </Formatted>
             </>
           )}
-        </Col>
-      </Row>
+          {responseData && flowState === "delegated" && (
+            <>
+              <h6>&darr; Staking API Response</h6>
+              <Formatted block maxHeight="500px">
+                {JSON.stringify(responseData, null, 2)}
+              </Formatted>
+            </>
+          )}
+        </>
+      )}
 
       <Footer />
     </>
