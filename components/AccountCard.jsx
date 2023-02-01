@@ -37,30 +37,28 @@ export default function AccountCard() {
     },
   } = useAppState();
 
+  const trimmedAccount = `${accountAddress.slice(
+    0,
+    6
+  )}...${accountAddress.slice(42, -8)}.testnet`;
+
   return (
     <>
       {accountAddress && isIndex() ? (
         <Card>
+          <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
+            Testnet Account: <Formatted>{trimmedAccount}</Formatted>
+          </ToolTip>
           <Button
             href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}
           >
-            <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-              <Formatted>
-                {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-                  42,
-                  -8
-                )}.testnet`}
-              </Formatted>
-            </ToolTip>
-            <p>
-              {stepCompleted === 0
-                ? "Get into the flow &rarr;"
-                : stepCompleted < 5
-                ? `Continue flow ${flowId || ""} &rarr;`
-                : flowCompleted
-                ? "Start a new flow &rarr;"
-                : ""}
-            </p>
+            {stepCompleted === 0
+              ? "Get into the flow &rarr;"
+              : stepCompleted < 5
+              ? `Continue flow ${flowId || ""} &rarr;`
+              : flowCompleted
+              ? "Start a new flow &rarr;"
+              : ""}
           </Button>
         </Card>
       ) : (

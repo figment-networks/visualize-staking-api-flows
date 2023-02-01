@@ -54,10 +54,12 @@ export const Card = ({ children, maxWidth = "none", ...props }) => (
         border: solid 0.1rem #d4d6d4;
         border-radius: 0.8rem;
         max-width: ${maxWidth ? maxWidth : "120rem"};
-        padding: 1.6rem;
+        padding: 2.4rem;
       }
 
-      div :global(button.btn) {
+      div :global(button.btn),
+      div :global(a.btn) {
+        width: max-content;
         display: block;
         margin: 0 auto;
       }
@@ -221,8 +223,8 @@ export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
         border-radius: 4px;
         white-space: pre-wrap;
         background-color: #f1f4f3;
-        line-height: ${block ? "calc(1em + 0.8rem);" : "calc(1em + 0.6rem);"};
-        padding: ${block ? "2rem" : ".5rem"};
+        line-height: calc(1em + 0.8rem);
+        padding: ${block ? "2rem" : "0 .4rem"};
         display: ${block ? "block" : "inline"};
         word-break: break-all;
         max-height: ${maxHeight};
