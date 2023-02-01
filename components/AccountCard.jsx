@@ -37,27 +37,27 @@ export default function AccountCard() {
     },
   } = useAppState();
 
-  const NextStepLabel = ({ stepCompleted = 0, flowId }) => {
-    if (stepCompleted === 0) return <p>Get into the flow &rarr;</p>;
-    else if (stepCompleted < 5)
-      return <p>Continue flow {flowId || ""} &rarr;</p>;
-    else if (flowCompleted) return <p>Start a new flow &rarr;</p>;
-    else return <></>;
-  };
-
   return (
     <>
       {accountAddress && isIndex() ? (
         <Card href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}>
           <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-            <code className={styles.yellow}>
+            <Formatted>
               {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
                 42,
                 -8
               )}.testnet`}
-            </code>
+            </Formatted>
           </ToolTip>
-          <NextStepLabel stepCompleted={stepCompleted} flowId={flowId} />
+          <p>
+            {stepCompleted === 0
+              ? "Get into the flow &rarr;"
+              : stepCompleted < 5
+              ? 'Continue flow {flowId || ""} &rarr;'
+              : flowCompleted
+              ? "Start a new flow &rarr;"
+              : ""}
+          </p>
         </Card>
       ) : (
         <>
