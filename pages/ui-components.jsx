@@ -107,9 +107,9 @@ export const Button = ({
         }
       `}</style>
       {href ? (
-        <a className="btn" href={href} {...props}>
-          {children}
-        </a>
+        <Link href={href} {...props} legacyBehavior>
+          <a className="btn">{children}</a>
+        </Link>
       ) : (
         <button className="btn" {...props}>
           {children}
