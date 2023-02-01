@@ -181,13 +181,14 @@ export default function CreateFlow({ operation }) {
             creating a flow, you must provide the <Formatted>network</Formatted>
             , <Formatted>chain_code</Formatted>,{" "}
             <Formatted>operation</Formatted> and Staking API{" "}
-            <Formatted>version</Formatted>. <span />
+            <Formatted>version</Formatted>.
           </p>
-          Each flow is given a unique ID, which is referenced when continuing
-          that flow or querying its details. The form below creates a JSON
-          request body, which you can send to the Staking API to create a new
-          flow.
-          <p />
+          <p>
+            Each flow is given a unique ID, which is referenced when continuing
+            that flow or querying its details. The form below creates a JSON
+            request body, which you can send to the Staking API to create a new
+            flow.
+          </p>
           <Button size="large" type="text" onClick={() => showModal()}>
             Click Here For More Information
           </Button>
@@ -308,7 +309,7 @@ export default function CreateFlow({ operation }) {
 
             {/* Submitting this form does not fetch from the Staking API,
                 it only populates the display of the JSON payload. */}
-
+            <br />
             <Button disabled={formData || stepCompleted === 5}>
               Create JSON Request Body
             </Button>
@@ -377,8 +378,6 @@ export default function CreateFlow({ operation }) {
           <>
             {!formData && stepCompleted !== 5 && (
               <>
-                <br />
-                <br />
                 <p className="spacer">
                   The request body will appear when you click{" "}
                   <b>Create JSON Request Body</b>.
