@@ -221,12 +221,13 @@ export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
         border-radius: 4px;
         white-space: pre-wrap;
         background-color: #f1f4f3;
-        line-height: ${block ? "calc(1em + 0.8rem);" : "1;"};
+        line-height: ${block ? "calc(1em + 0.8rem);" : "calc(1em + 0.6rem);"};
         padding: ${block ? "2rem" : ".5rem"};
-        display: ${block ? "block" : "inline-block"};
+        display: ${block ? "block" : "inline"};
         word-break: break-all;
         max-height: ${maxHeight};
         overflow-y: auto;
+        vertical-align: baseline;
       }
     `}</style>
     {children}

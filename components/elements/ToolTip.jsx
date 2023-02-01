@@ -9,7 +9,7 @@ export default function ToolTipComponent({
 }) {
   return (
     <Tooltip placement={placement} title={title} arrowPointAtCenter>
-      <span style={{ textDecoration: "underline" }}>{children}</span>
+      {children}
     </Tooltip>
   );
 }

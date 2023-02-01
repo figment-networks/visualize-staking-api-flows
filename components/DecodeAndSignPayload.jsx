@@ -175,12 +175,12 @@ export default function DecodeAndSignPayload({ operation }) {
           />
           <br />
           {!signedTransactionPayload && (
-            <Button>Decode Transaction Payload</Button>
+            <Button type="submit">Decode Transaction Payload</Button>
           )}
         </form>
 
         <Col span={12}>
-          {!decodedTransactionPayload && stepCompleted === 2 && (
+          {!decodedTransactionPayload && (
             <>
               <p className={styles.spacer}>
                 {isLoading && <p>Decoding Payload...</p>}
@@ -191,8 +191,7 @@ export default function DecodeAndSignPayload({ operation }) {
           )}
           {decodedTransactionPayload &&
             !isLoading &&
-            !signedTransactionPayload &&
-            stepCompleted === 2 && (
+            !signedTransactionPayload && (
               <>
                 {decodedTransactionPayload && !signedTransactionPayload && (
                   <>
