@@ -225,12 +225,7 @@ const handleSubmit = async (event) => {
             The form below has been created based on the Staking API response
             and provided with default values.
             <br />
-            <Button
-              size="large"
-              type="text"
-              className={styles.modalButton}
-              onClick={() => showModal()}
-            >
+            <Button size="large" type="text" onClick={() => showModal()}>
               Click Here For More Information
             </Button>
           </Card>
@@ -263,7 +258,6 @@ const handleSubmit = async (event) => {
                     required
                     defaultValue={flowActions}
                     key="actions"
-                    className={styles.selectInput}
                   >
                     {Object.keys(flowActions).map((key) => (
                       <>
@@ -288,12 +282,7 @@ const handleSubmit = async (event) => {
                       </span>
                     );
                   })}
-                  <Button
-                    disabled={formData}
-                    className={styles.submitButton}
-                    type="primary"
-                    htmlType="submit"
-                  >
+                  <Button disabled={formData} type="primary" htmlType="submit">
                     Create Inputs Payload
                   </Button>
                 </form>
@@ -320,11 +309,7 @@ const handleSubmit = async (event) => {
 
               {!inputsSent && (
                 <>
-                  <Button
-                    type="primary"
-                    htmlType="button"
-                    onClick={() => handleStakingAPI()}
-                  >
+                  <Button onClick={() => handleStakingAPI()}>
                     Submit Data to Staking API
                   </Button>
                   <br />
@@ -371,7 +356,7 @@ const handleSubmit = async (event) => {
               </details>
               <details>
                 <summary>Click here to see the full response</summary>
-                <Formatted block>
+                <Formatted block maxHeight="500px">
                   {JSON.stringify(flowResponse, null, 2)}
                 </Formatted>{" "}
               </details>
@@ -426,9 +411,9 @@ const handleSubmit = async (event) => {
                   <Formatted>actions[0].inputs[1].display</Formatted> etc.
                 </li>
               </ul>
-              <pre className={styles.codeDetail}>
+              <Formatted block maxHeight="250px">
                 {JSON.stringify(flowResponse, null, 2)}
-              </pre>
+              </Formatted>
             </details>
           </li>
           <br />
@@ -446,7 +431,9 @@ const handleSubmit = async (event) => {
                 transaction payload:
               </p>
 
-              <pre className={styles.codeDetail}>{codeSnippet}</pre>
+              <Formatted block maxHeight="365px">
+                {codeSnippet}
+              </Formatted>
 
               <p>
                 Since we&apos;re using React for this, we must supply a unique{" "}
@@ -462,11 +449,11 @@ const handleSubmit = async (event) => {
                 <Formatted>formData</Formatted> for later use:
               </p>
 
-              <pre className={styles.codeDetail}>{codeSnippetSubmit}</pre>
-              <br />
+              <Formatted block maxHeight="365px">
+                {codeSnippetSubmit}
+              </Formatted>
             </details>
           </li>
-          <br />
 
           <li>
             Parameters and responses for Staking API flows are detailed in{" "}

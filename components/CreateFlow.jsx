@@ -189,13 +189,8 @@ export default function CreateFlow({ operation }) {
             <span />
             The form below creates a JSON request body, which you can send to
             the Staking API to create a new flow.
-            <span />
-            <Button
-              size="large"
-              type="text"
-              className={styles.modalButton}
-              onClick={() => showModal()}
-            >
+            <p />
+            <Button size="large" type="text" onClick={() => showModal()}>
               Click Here For More Information
             </Button>
           </Card>

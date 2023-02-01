@@ -1,19 +1,11 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState } from "react";
-import { Col, Row, Modal, Steps, Tooltip } from "antd";
-import {
-  WarningOutlined,
-  SolutionOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
-import styles from "/styles/Home.module.css";
+import { Col, Row, Modal } from "antd";
 import { useAppState } from "@utilities/appState";
+import styles from "/styles/Home.module.css";
 
-import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
-import Description from "@components/elements/Description";
-import Footer from "@components/elements/Footer";
 
 import {
   Title,
@@ -21,6 +13,7 @@ import {
   Button,
   Card,
   Formatted,
+  Footer,
 } from "@pages/ui-components";
 
 export default function DecodeAndSignPayload({ operation }) {
@@ -144,62 +137,47 @@ export default function DecodeAndSignPayload({ operation }) {
       <BreadCrumbs step={3} />
       <Title title="Decode & Sign Transaction Payloads" />
 
-      <Row justify="space-around">
-        <Col span={10}>
-          <Card>
-            After receiving the unsigned <code>transaction_payload</code>, the
-            next step is to verify & sign it. Developers can write their own
-            verification script, or leverage Figment’s npm package{" "}
-            <ToolTip
-              placement="top"
-              title={`Click here to view the package details on npmjs.com in a new tab.`}
+      <Card maxWidth="800px">
+        <p>
+          After receiving the unsigned{" "}
+          <Formatted>transaction_payload</Formatted>, the next step is to verify
+          & sign it. Developers can write their own verification script, or
+          leverage Figment’s npm package{" "}
+          <ToolTip
+            placement="top"
+            title={`Click here to view the package details on npmjs.com in a new tab.`}
+          >
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.npmjs.com/package/@figmentio/slate"
             >
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.npmjs.com/package/@figmentio/slate"
-              >
-                <b>@figmentio/slate</b>
-              </Link>
-            </ToolTip>
-            .
-            <br />
-            <Button
-              size="large"
-              type="text"
-              className={styles.modalButton}
-              onClick={() => showModal()}
-            >
-              Click Here For More Information
-            </Button>
-          </Card>
-        </Col>
-      </Row>
+              <b>@figmentio/slate</b>
+            </Link>
+          </ToolTip>
+          .
+        </p>
+        <br />
+        <Button onClick={() => showModal()}>
+          Click Here For More Information
+        </Button>
+      </Card>
 
       <Row className={styles.paddingBottom}>
-        <Col span={12}>
-          <form onSubmit={handleDecode} method="post">
-            <h6>&darr; Unsigned Transaction Payload</h6>
-            <textarea
-              className={styles.decodeTextArea}
-              id="transaction_payload"
-              name="transaction_payload"
-              defaultValue={unsignedTransactionPayload}
-              required
-            />
-            <br />
-            {!signedTransactionPayload && (
-              <Button
-                disabled={decodedTransactionPayload}
-                type="primary"
-                htmlType="submit"
-                className={styles.submitButton}
-              >
-                Decode Transaction Payload
-              </Button>
-            )}
-          </form>
-        </Col>
+        <form onSubmit={handleDecode} method="post">
+          <h6>&darr; Unsigned Transaction Payload</h6>
+          <textarea
+            className={styles.decodeTextArea}
+            id="transaction_payload"
+            name="transaction_payload"
+            defaultValue={unsignedTransactionPayload}
+            required
+          />
+          <br />
+          {!signedTransactionPayload && (
+            <Button>Decode Transaction Payload</Button>
+          )}
+        </form>
 
         <Col span={12}>
           {!decodedTransactionPayload && stepCompleted === 2 && (
@@ -218,14 +196,13 @@ export default function DecodeAndSignPayload({ operation }) {
               <>
                 {decodedTransactionPayload && !signedTransactionPayload && (
                   <>
-                    <br />
                     <h6>&darr; Decoding method from @figmentio/slate</h6>
                     <Formatted block>
                       const slate = require(&apos;@figmentio/slate&apos;);
                       <br /> <br />
                       <span>
                         await slate.decode(
-                        <code>
+                        <Formatted>
                           &quot;
                           <ToolTip
                             placement="top"
@@ -234,38 +211,40 @@ export default function DecodeAndSignPayload({ operation }) {
                             {flowResponse?.network_code}
                           </ToolTip>
                           &quot;
-                        </code>
+                        </Formatted>
                         ,{" "}
                         <ToolTip
                           placement="top"
                           title={`This parameter is the operation being used for this flow. NEAR supports staking, unstaking or transfer operations.`}
                         >
-                          <code>
+                          <Formatted>
                             &quot;
                             {operation}
                             &quot;
-                          </code>
+                          </Formatted>
                         </ToolTip>
                         ,{" "}
                         <ToolTip
                           placement="top"
                           title={`This parameter is the Staking API version used to create the flow.`}
                         >
-                          <code>&quot;v1&quot;</code>
+                          <Formatted>&quot;v1&quot;</Formatted>
                         </ToolTip>
                         ,{" "}
                         <ToolTip
                           placement="bottom"
                           title={`This parameter is the transaction type, which relates to the operation being used. Refer to the Figment Docs for details.`}
                         >
-                          <code>&quot; delegateTransaction &quot;</code>
+                          <Formatted>
+                            &quot; delegateTransaction &quot;
+                          </Formatted>
                         </ToolTip>
                         ,{" "}
                         <ToolTip
                           placement="bottom"
                           title={`This parameter is the unsigned transaction payload to be decoded, shown on the left.`}
                         >
-                          <code>transaction_payload</code>
+                          <Formatted>transaction_payload</Formatted>
                         </ToolTip>
                         );
                       </span>
@@ -296,9 +275,9 @@ export default function DecodeAndSignPayload({ operation }) {
                   match the decoded values below:
                 </p>
                 <h6>&darr; Decoded Transaction Payload</h6>
-                <pre className={styles.payload}>
+                <Formatted block>
                   {JSON.stringify(decodedTransactionPayload, null, 2)}
-                </pre>
+                </Formatted>
 
                 {!signedTransactionPayload && (
                   <>
@@ -318,8 +297,6 @@ export default function DecodeAndSignPayload({ operation }) {
                       type="text"
                       htmlType="button"
                       onClick={() => handleResetDecodedPayload()}
-                      icon={<WarningOutlined />}
-                      className={styles.resetButton}
                     >
                       Reset Decoded Transaction Payload
                     </Button>
@@ -339,7 +316,7 @@ export default function DecodeAndSignPayload({ operation }) {
                 <br />
                 <br />
                 await slate.sign(
-                <code>
+                <Formatted>
                   &quot;
                   <ToolTip
                     placement="top"
@@ -348,9 +325,9 @@ export default function DecodeAndSignPayload({ operation }) {
                     {flowResponse?.network_code}
                   </ToolTip>
                   &quot;
-                </code>
+                </Formatted>
                 ,{" "}
-                <code>
+                <Formatted>
                   &quot;
                   <ToolTip
                     placement="top"
@@ -359,18 +336,18 @@ export default function DecodeAndSignPayload({ operation }) {
                     v1
                   </ToolTip>
                   &quot;
-                </code>
+                </Formatted>
                 ,{" "}
-                <code>
+                <Formatted>
                   <ToolTip
                     placement="top"
                     title={`This parameter is the unsigned transaction payload to be signed, shown on the left.`}
                   >
                     transaction_payload
                   </ToolTip>
-                </code>
+                </Formatted>
                 ,{" "}
-                <code>
+                <Formatted>
                   [
                   <ToolTip
                     placement="top"
@@ -379,7 +356,7 @@ export default function DecodeAndSignPayload({ operation }) {
                     privateKeys
                   </ToolTip>
                   ]
-                </code>
+                </Formatted>
                 );
               </pre>
             </>
@@ -389,7 +366,7 @@ export default function DecodeAndSignPayload({ operation }) {
               <br />
               <h6>&darr; Signed Transaction Payload</h6>
               <Formatted block>
-                <Tooltip
+                <ToolTip
                   placement="left"
                   title={`The blue text is the unsigned transaction payload, also shown on the left.`}
                 >
@@ -407,9 +384,9 @@ export default function DecodeAndSignPayload({ operation }) {
                   <span style={{ color: "#8FE2DD" }}>
                     {unsignedTransactionPayload}
                   </span>
-                </Tooltip>
+                </ToolTip>
 
-                <Tooltip
+                <ToolTip
                   placement="left"
                   title={`The yellow text is the signature, created by signing the payload using the private key of the delegator account.`}
                 >
@@ -430,7 +407,7 @@ export default function DecodeAndSignPayload({ operation }) {
                   <span style={{ color: "#FFF29B" }}>
                     {signedTransactionPayload.slice(434, 562)}
                   </span>
-                </Tooltip>
+                </ToolTip>
               </Formatted>
               <br />
               <p>
@@ -441,23 +418,13 @@ export default function DecodeAndSignPayload({ operation }) {
               </p>
               <br />
               <Button
-                size="large"
-                type="primary"
-                htmlType="button"
                 href={`/operations/${operation}/broadcast-transaction`}
                 onClick={() => setAppState({ stepCompleted: 3 })}
               >
                 Proceed to the next step &rarr;
               </Button>
               <br />
-              <Button
-                destructive
-                className={styles.resetButton}
-                type="text"
-                htmlType="button"
-                onClick={() => handleResetSignedPayload()}
-                icon={<WarningOutlined />}
-              >
+              <Button destructive onClick={() => handleResetSignedPayload()}>
                 Reset Signed Transaction Payload
               </Button>
             </>
@@ -554,9 +521,9 @@ export default function DecodeAndSignPayload({ operation }) {
           <li>
             When decoding the payload, you may notice that the public key does
             not have the ECDSA prefix{" "}
-            <code>
+            <Formatted>
               <b>ed25519:</b>
-            </code>
+            </Formatted>
             . The prefix is part of the string representation of the public key
             &mdash; however this is not maintained when the public key is added
             to the NEAR Transaction object as a byte array. Just be aware that
@@ -569,8 +536,8 @@ export default function DecodeAndSignPayload({ operation }) {
               </summary>
               <br />
               The public key shown in this transaction has a{" "}
-              <code>keyType</code> of 0, indicating an <code>ed25519</code>{" "}
-              keypair.
+              <Formatted>keyType</Formatted> of 0, indicating an{" "}
+              <Formatted>ed25519</Formatted> keypair.
               <br />
               Check out the relevant NEAR JavaScript API code{" "}
               <Link
@@ -582,7 +549,9 @@ export default function DecodeAndSignPayload({ operation }) {
               </Link>
               <br />
               <br />
-              <pre className="payload">{NEARTransactionStructure}</pre>
+              <Formatted block maxHeight="315px">
+                {NEARTransactionStructure}
+              </Formatted>
             </details>
           </li>
         </ul>

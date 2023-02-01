@@ -40,24 +40,28 @@ export default function AccountCard() {
   return (
     <>
       {accountAddress && isIndex() ? (
-        <Card href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}>
-          <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-            <Formatted>
-              {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-                42,
-                -8
-              )}.testnet`}
-            </Formatted>
-          </ToolTip>
-          <p>
-            {stepCompleted === 0
-              ? "Get into the flow &rarr;"
-              : stepCompleted < 5
-              ? 'Continue flow {flowId || ""} &rarr;'
-              : flowCompleted
-              ? "Start a new flow &rarr;"
-              : ""}
-          </p>
+        <Card>
+          <Button
+            href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}
+          >
+            <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
+              <Formatted>
+                {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
+                  42,
+                  -8
+                )}.testnet`}
+              </Formatted>
+            </ToolTip>
+            <p>
+              {stepCompleted === 0
+                ? "Get into the flow &rarr;"
+                : stepCompleted < 5
+                ? `Continue flow ${flowId || ""} &rarr;`
+                : flowCompleted
+                ? "Start a new flow &rarr;"
+                : ""}
+            </p>
+          </Button>
         </Card>
       ) : (
         <>

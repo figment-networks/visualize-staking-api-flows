@@ -64,66 +64,45 @@ export default function BroadcastTransaction({ operation }) {
       <BreadCrumbs step={4} />
       <Title title="Broadcast Transaction" />
 
-      <Row justify="space-around">
-        <Col span={10}>
-          <Card>
-            Provide the signed <code>transaction_payload</code> to the Staking
-            API. The transaction is then broadcast to the network via the
-            Staking APIs dedicated infrastructure.
-            <br />
-            <Button
-              size="large"
-              className={styles.modalButton}
-              type="text"
-              onClick={() => showModal()}
-            >
-              Click Here For More Information
-            </Button>
-          </Card>
-        </Col>
-      </Row>
+      <Card>
+        <p>
+          Provide the signed <Formatted>transaction_payload</Formatted> to the
+          Staking API. The transaction is then broadcast to the network via the
+          Staking APIs dedicated infrastructure.
+        </p>
+        <Button size="large" type="text" onClick={() => showModal()}>
+          Click Here For More Information
+        </Button>
+      </Card>
 
       <Row className={styles.paddingBottom} justify="space-between">
-        <Col span={12}>
-          <form onSubmit={handleSubmit} method="post">
-            <h6>&darr; Signed Transaction Payload</h6>
-            <textarea
-              className={styles.decodeTextArea}
-              id="signed_payload"
-              name="signed_payload"
-              required
-              defaultValue={signedTransactionPayload}
-            />
-            <br />
-
-            <Button
-              disabled={flowState === "delegate_tx_broadcasting"}
-              style={{ width: "auto" }}
-              type="primary"
-              htmlType="submit"
-              className={styles.submitButton}
-            >
-              Submit Signed Transaction Payload
-            </Button>
-          </form>
-        </Col>
+        <form onSubmit={handleSubmit} method="post">
+          <h6>&darr; Signed Transaction Payload</h6>
+          <textarea
+            className={styles.decodeTextArea}
+            id="signed_payload"
+            name="signed_payload"
+            required
+            defaultValue={signedTransactionPayload}
+          />
+          <Button
+            disabled={flowState === "delegate_tx_broadcasting"}
+            style={{ width: "auto" }}
+            type="primary"
+            htmlType="submit"
+          >
+            Submit Signed Transaction Payload
+          </Button>
+        </form>
 
         <Col span={12}>
           {flowState && (
             <>
-              <br />
-              <br />
               <p>
-                Flow ID:{" "}
-                <code>
-                  <b>{flowId}</b>
-                </code>
+                Flow ID: <Formatted bold>{flowId}</Formatted>
               </p>
               <p>
-                Flow state:{" "}
-                <code>
-                  <b>{flowState}</b>
-                </code>{" "}
+                Flow state: <Formatted>{flowState}</Formatted>{" "}
               </p>
 
               {flowState === "delegate_tx_broadcasting" && (
@@ -132,11 +111,13 @@ export default function BroadcastTransaction({ operation }) {
                     The signed payload has been broadcast to the NEAR network by
                     the Staking API,
                     <br />
-                    the flow state changed from <code>initialized</code> to{" "}
-                    <code>delegate_tx_broadcasting</code>.<br />
+                    the flow state changed from{" "}
+                    <Formatted>initialized</Formatted> to{" "}
+                    <Formatted>delegate_tx_broadcasting</Formatted>.<br />
                     <br />
                     At this point in the flow, the only action remaining is to
-                    check the flow state to ensure it is <code>delegated</code>.
+                    check the flow state to ensure it is{" "}
+                    <Formatted>delegated</Formatted>.
                   </Description>
                   <br />
                   <Button
@@ -167,17 +148,18 @@ export default function BroadcastTransaction({ operation }) {
       >
         <ul>
           <li>
-            The <code>action</code> at this point of the flow is{" "}
-            <code>sign_delegate_tx</code> &mdash; indicating that we need to
-            supply the signed transaction payload.
+            The <Formatted>action</Formatted> at this point of the flow is{" "}
+            <Formatted>sign_delegate_tx</Formatted> &mdash; indicating that we
+            need to supply the signed transaction payload.
           </li>
           <br />
 
           <li>
             It is sometimes useful to get an updated transaction payload, for
-            which there is another <code>action</code> named{" "}
-            <code>refresh_delegate_tx</code>, which generates a new unsigned
-            transaction payload. This can be used for situations where a{" "}
+            which there is another <Formatted>action</Formatted> named{" "}
+            <Formatted>refresh_delegate_tx</Formatted>, which generates a new
+            unsigned transaction payload. This can be used for situations where
+            a{" "}
             <Tooltip
               placement="top"
               title={`The word nonce means "a number, used once". Nonces are used to prevent transactions from being replayed.`}
@@ -202,8 +184,9 @@ export default function BroadcastTransaction({ operation }) {
 
           <li>
             The flow state will change from{" "}
-            <code>delegate_tx_broadcasting</code> to <code>delegated</code> once
-            the transaction is confirmed on-chain
+            <Formatted>delegate_tx_broadcasting</Formatted> to{" "}
+            <Formatted>delegated</Formatted> once the transaction is confirmed
+            on-chain
           </li>
           <br />
 

@@ -46,14 +46,14 @@ export const Headline = ({ children }) => (
   </div>
 );
 
-export const Card = ({ children, ...props }) => (
+export const Card = ({ children, maxWidth = "none", ...props }) => (
   <div {...props}>
     <style jsx>{`
       div {
         background-color: #ffffff;
         border: solid 0.1rem #d4d6d4;
         border-radius: 0.8rem;
-        max-width: 120rem;
+        max-width: ${maxWidth ? maxWidth : "120rem"};
         padding: 1.6rem;
       }
 
@@ -213,16 +213,19 @@ export const BreadCrumbs = ({ step = 0 }) => {
   );
 };
 
-export const Formatted = ({ children, block = false }) => (
+export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
   <code>
     <style jsx>{`
       code {
+        border-radius: 4px;
         white-space: pre-wrap;
         background-color: #f1f4f3;
         line-height: ${block ? "calc(1em + 0.8rem);" : "1;"};
         padding: ${block ? "2rem" : ".5rem"};
         display: ${block ? "block" : "inline-block"};
         word-break: break-all;
+        max-height: ${maxHeight};
+        overflow-y: auto;
       }
     `}</style>
     {children}
