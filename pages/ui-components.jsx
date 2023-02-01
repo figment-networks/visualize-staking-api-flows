@@ -30,9 +30,22 @@ export const Card = ({ children }) => (
   </div>
 );
 
-export const Button = ({ children, destructive = false, href, ...props }) => {
+export const Button = ({
+  children,
+  destructive = false,
+  href = null,
+  ...props
+}) => {
+  const Comp = href
+    ? (props) => <button {...props}>{children}</button>
+    : (props) => (
+        <a href={href} {...props}>
+          {children}
+        </a>
+      );
+
   return (
-    <button {...props}>
+    <Comp {...props}>
       <style jsx>{`
         button {
           color: #ffffff;
@@ -69,8 +82,8 @@ export const Button = ({ children, destructive = false, href, ...props }) => {
           color: #0e5048;
         }
       `}</style>
-      {href ? <a href={href}>{children}</a> : children}
-    </button>
+      {children}
+    </Comp>
   );
 };
 
@@ -163,13 +176,13 @@ export const BreadCrumbs = ({ step = 0 }) => {
   );
 };
 
-export const Formatted = ({ children, block = false, wrap }) => (
+export const Formatted = ({ children, block = false }) => (
   <code>
     <style jsx>{`
       code {
         white-space: pre-wrap;
         background-color: #f1f4f3;
-        line-height: 1;
+        line-height: ${block ? "calc(1em + 0.8rem);" : "1;"};
         padding: ${block ? "2rem" : ".5rem"};
         display: ${block ? "block" : "inline-block"};
       }
@@ -196,7 +209,10 @@ export default function UIComponents() {
         this is a code snippet with a <a href="test">link</a>
       </Formatted>
 
-      <Formatted block>this is a code block</Formatted>
+      <Formatted block>
+        {`this is a code block
+with multi-line support`}
+      </Formatted>
 
       <form>
         <h5>title</h5>
