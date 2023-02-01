@@ -6,13 +6,7 @@ import { useAppState } from "@utilities/appState";
 import ToolTip from "@components/elements/ToolTip";
 import styles from "@styles/Home.module.css";
 
-import {
-  Title,
-  BreadCrumbs,
-  Button,
-  Card,
-  Formatted,
-} from "@pages/ui-components";
+import { Button, Card, Formatted } from "@pages/ui-components";
 
 const stepRoute = (step) =>
   ({
@@ -56,20 +50,18 @@ export default function AccountCard() {
       {accountAddress && isIndex() ? (
         <Card href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}>
           <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-            <p>
-              <code className={styles.yellow}>
-                {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-                  42,
-                  -8
-                )}.testnet`}
-              </code>
-            </p>
+            <code className={styles.yellow}>
+              {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
+                42,
+                -8
+              )}.testnet`}
+            </code>
           </ToolTip>
           <NextStepLabel stepCompleted={stepCompleted} flowId={flowId} />
         </Card>
       ) : (
         <>
-          <Card maxWidth={1000}>
+          <Card>
             <h5 className="address">Account Address &rarr;</h5>
             <Link className="ext_link" href={explorerUrl(accountAddress)}>
               {accountAddress}

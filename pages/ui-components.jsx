@@ -56,6 +56,11 @@ export const Card = ({ children, ...props }) => (
         max-width: 120rem;
         padding: 1.6rem;
       }
+
+      div :global(button.btn) {
+        display: block;
+        margin: 0 auto;
+      }
     `}</style>
     {children}
   </div>
