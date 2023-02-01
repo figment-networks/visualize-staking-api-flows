@@ -2,16 +2,37 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export const PageTitle = ({ title, headline }) => (
-  <div>
+export const Title = ({ children }) => (
+  <h3>
     <style jsx>{`
-      div {
-        margin: 4rem 0;
+      h3 {
+        margin-top: 4rem;
         text-align: center;
       }
+      h3 :global(*) {
+        font-size: inherit;
+        font-family: inherit;
+        line-height: inherit;
+      }
     `}</style>
-    <h3>{title}</h3>
-    {headline && <h5>{headline}</h5>}
+    {children}
+  </h3>
+);
+
+export const Headline = ({ children }) => (
+  <div>
+    <style jsx>{`
+      h5 {
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      h5 :global(*) {
+        font-size: inherit;
+        font-family: inherit;
+        line-height: inherit;
+      }
+    `}</style>
+    <h5>{children}</h5>
   </div>
 );
 
@@ -36,55 +57,54 @@ export const Button = ({
   href = null,
   ...props
 }) => {
+  const styles = `
+    button.btn, a.btn {
+      color: #ffffff;
+      border: solid 0.2rem;
+      background-color: #0e5048;
+      border-color: #0e5048;
+      ${destructive ? "border-color: #C01005;" : ""}
+      ${destructive ? "background-color: #C01005;" : ""}
+      border-radius: 3.6rem;
+      padding: 0.9rem 2.8rem;
+      font-weight: 600;
+      transition: color 250ms, background-color 250ms;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    button.btn:hover:not(:active):not(:disabled),
+    a.btn:hover:not(:active):not(:disabled) {
+      color: #0e5048;
+      background-color: #ffffff;
+      ${destructive ? "color: #C01005;" : ""}
+    }
+
+    button.btn:disabled,
+    a.btn:disabled {
+      border-color: #efefef;
+      background-color: #efefef;
+      color: #6f7471;
+      cursor: not-allowed;
+    }
+  `;
+
   const Comp = href
-    ? (props) => <button {...props}>{children}</button>
-    : (props) => (
-        <a href={href} {...props}>
+    ? (props) => (
+        <a className="btn" href={href} {...props}>
+          <style jsx>{styles}</style>
           {children}
         </a>
+      )
+    : (props) => (
+        <button className="btn" {...props}>
+          <style jsx>{styles}</style>
+          {children}
+        </button>
       );
 
-  return (
-    <Comp {...props}>
-      <style jsx>{`
-        button {
-          color: #ffffff;
-          border: solid 0.2rem;
-          background-color: #0e5048;
-          border-color: #0e5048;
-          ${destructive ? "border-color: #C01005;" : ""}
-          ${destructive ? "background-color: #C01005;" : ""}
-          border-radius: 3.6rem;
-          padding: 0.9rem 2.8rem;
-          font-weight: 600;
-          transition: color 250ms, background-color 250ms;
-          cursor: pointer;
-        }
-
-        button:hover:not(:active):not(:disabled) {
-          color: #0e5048;
-          background-color: #ffffff;
-          ${destructive ? "color: #C01005;" : ""}
-        }
-
-        button:disabled {
-          border-color: #efefef;
-          background-color: #efefef;
-          color: #6f7471;
-          cursor: not-allowed;
-        }
-
-        a {
-          color: #efefef;
-        }
-
-        a:hover {
-          color: #0e5048;
-        }
-      `}</style>
-      {children}
-    </Comp>
-  );
+  return <Comp {...props}>{children}</Comp>;
 };
 
 export const Footer = () => (
@@ -195,10 +215,10 @@ export default function UIComponents() {
   return (
     <>
       <BreadCrumbs step={4} />
-      <PageTitle
-        title="Visualize Figment's Staking API"
-        headline="Learn how to use Figment's Staking API in an intuitive, visual format"
-      />
+      <Title>Visualize Figment's Staking API</Title>
+      <Headline>
+        Learn how to use Figment's Staking API in an intuitive, visual format
+      </Headline>
       <Card>
         <h5>Hey</h5>
         <p>test content</p>
