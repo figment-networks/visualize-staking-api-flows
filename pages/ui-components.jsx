@@ -135,6 +135,7 @@ export const Footer = () => (
         position: fixed;
         bottom: 0;
         display: flex;
+        background-color: #f9f9f9;
         justify-content: center;
         align-items: center;
       }
