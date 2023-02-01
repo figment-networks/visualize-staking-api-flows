@@ -76,8 +76,9 @@ export const Button = ({
       ${destructive ? "border-color: #C01005;" : ""}
       ${destructive ? "background-color: #C01005;" : ""}
       border-radius: 3.6rem;
-      padding: 0.9rem 2.8rem;
+      padding: 1rem 2.8rem;
       font-weight: 600;
+      font-size: 1.6rem;
       transition: color 250ms, background-color 250ms;
       cursor: pointer;
       display: inline-block;

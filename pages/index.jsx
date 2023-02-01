@@ -37,7 +37,7 @@ export default function IndexPage() {
 
       {loaded && !accountAddress && (
         <Card>
-          <h3>NEAR Account &rarr;</h3>
+          <h5>NEAR Account &rarr;</h5>
           <p>Get started by creating a NEAR testnet account</p>
           <Button href="/create-near-account">Create NEAR Account</Button>
         </Card>
@@ -45,7 +45,7 @@ export default function IndexPage() {
 
       {flowCompleted && (
         <Card>
-          <h3>View All Flows &rarr;</h3>
+          <h5>View All Flows &rarr;</h5>
           <p>Get information about all of the flows you have created</p>
           <Button href="/view-all-flows">View All Flows</Button>
         </Card>
