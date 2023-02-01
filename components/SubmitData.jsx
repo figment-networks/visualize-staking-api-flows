@@ -16,7 +16,7 @@ import Description from "@components/elements/Description";
 import Footer from "@components/elements/Footer";
 
 import {
-  PageTitle,
+  Title,
   BreadCrumbs,
   Button,
   Card,
@@ -212,7 +212,7 @@ const handleSubmit = async (event) => {
   return (
     <>
       <BreadCrumbs step={2} />
-      <PageTitle title="Submit Data to the Staking API" />
+      <Title title="Submit Data to the Staking API" />
 
       <Row justify="space-around">
         <Col span={10}>

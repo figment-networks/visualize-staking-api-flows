@@ -17,7 +17,7 @@ import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
 
 import {
-  PageTitle,
+  Title,
   BreadCrumbs,
   Button,
   Card,
@@ -173,7 +173,7 @@ export default function CreateFlow({ operation }) {
   return (
     <>
       <BreadCrumbs step={1} />
-      <PageTitle title="Create a Flow" />
+      <Title title="Create a Flow" />
 
       <Row justify="space-around">
         <Col span={10}>
@@ -322,12 +322,7 @@ export default function CreateFlow({ operation }) {
               {/* Submitting this form does not fetch from the Staking API,
                 it only populates the display of the JSON payload. */}
 
-              <Button
-                disabled={formData || stepCompleted === 5}
-                className={styles.submitButton}
-                type="primary"
-                htmlType="submit"
-              >
+              <Button disabled={formData || stepCompleted === 5}>
                 Create JSON Request Body
               </Button>
             </form>

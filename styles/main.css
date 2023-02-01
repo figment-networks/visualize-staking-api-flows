@@ -70,6 +70,11 @@ button {
   margin: 0.3em 0;
 }
 
+form button {
+  margin: 0 auto;
+  display: block;
+}
+
 textarea {
   resize: none;
 }

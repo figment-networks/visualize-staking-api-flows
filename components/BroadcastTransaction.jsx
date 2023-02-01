@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import styles from "/styles/Home.module.css";
-import { Col, Row, Button, Modal, Steps, Tooltip } from "antd";
+import { Col, Row, Modal, Steps, Tooltip } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { useAppState } from "@utilities/appState";
 
@@ -10,6 +10,14 @@ import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
 import Footer from "@components/elements/Footer";
+
+import {
+  Title,
+  BreadCrumbs,
+  Button,
+  Card,
+  Formatted,
+} from "@pages/ui-components";
 
 export default function BroadcastTransaction({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -53,61 +61,12 @@ export default function BroadcastTransaction({ operation }) {
 
   return (
     <>
-      <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={4}
-              status="finish"
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  onClick: () => {},
-                },
-                {
-                  title: "Create a Flow",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Submit Data",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Get Flow State",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row>
-
-      <h1 className={styles.title}>Broadcast Transaction</h1>
+      <BreadCrumbs step={4} />
+      <Title title="Broadcast Transaction" />
 
       <Row justify="space-around">
         <Col span={10}>
-          <Description>
+          <Card>
             Provide the signed <code>transaction_payload</code> to the Staking
             API. The transaction is then broadcast to the network via the
             Staking APIs dedicated infrastructure.
@@ -120,7 +79,7 @@ export default function BroadcastTransaction({ operation }) {
             >
               Click Here For More Information
             </Button>
-          </Description>
+          </Card>
         </Col>
       </Row>
 
