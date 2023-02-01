@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useAppState } from "@utilities/appState";
 import ToolTip from "@components/elements/ToolTip";
-import styles from "@styles/Home.module.css";
 
 import { Button, Card, Formatted } from "@pages/ui-components";
 
@@ -20,10 +19,24 @@ const stepRoute = (step) =>
     7: "/operations/staking/create-flow",
   }[step]);
 
+const stepLabel = (step, flowId) => {
+  let stepLabel = "Get into the flow →";
+  if (step < 5) stepLabel = `Continue flow ${flowId || ""} →`;
+  else if (flowCompleted) stepLabel = "Start a new flow →";
+  return stepLabel;
+};
+
 const explorerUrl = (address) =>
   `https://explorer.testnet.near.org/accounts/${address}`;
 
 const isIndex = () => useRouter().pathname === "/";
+
+const trimmedAccount = (account) => {
+  let trimmedAccount = account.slice(0, 6);
+  trimmedAccount += `...${account.slice(42, -8)}`;
+  trimmedAccount += `.testnet`;
+  return trimmedAccount;
+};
 
 export default function AccountCard() {
   const {
@@ -37,31 +50,17 @@ export default function AccountCard() {
     },
   } = useAppState();
 
+  const stepLink = !flowCompleted ? stepRoute(stepCompleted) : stepRoute(7);
+
   return (
     <>
       {accountAddress && isIndex() ? (
         <Card>
-          <Button
-            href={!flowCompleted ? stepRoute(stepCompleted) : stepRoute(7)}
-          >
-            <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
-              <Formatted>
-                {`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-                  42,
-                  -8
-                )}.testnet`}
-              </Formatted>
-            </ToolTip>
-            <p>
-              {stepCompleted === 0
-                ? "Get into the flow &rarr;"
-                : stepCompleted < 5
-                ? `Continue flow ${flowId || ""} &rarr;`
-                : flowCompleted
-                ? "Start a new flow &rarr;"
-                : ""}
-            </p>
-          </Button>
+          <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
+            Testnet Account:{" "}
+            <Formatted>{trimmedAccount(accountAddress)}</Formatted>
+          </ToolTip>
+          <Button href={stepLink}>{stepLabel(stepCompleted, flowId)}</Button>
         </Card>
       ) : (
         <>
