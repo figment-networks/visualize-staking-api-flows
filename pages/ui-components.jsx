@@ -216,6 +216,7 @@ export const Formatted = ({ children, block = false }) => (
         line-height: ${block ? "calc(1em + 0.8rem);" : "1;"};
         padding: ${block ? "2rem" : ".5rem"};
         display: ${block ? "block" : "inline-block"};
+        word-break: break-all;
       }
     `}</style>
     {children}

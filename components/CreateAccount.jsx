@@ -100,14 +100,7 @@ export default function CreateNEARAccountPage() {
 
       <Row justify="space-around">
         {!accountAddress && (
-          <Card className="card">
-            <style jsx>{`
-              div.card {
-                width: 100%;
-                max-width: 60rem;
-                margin: 0 auto;
-              }
-            `}</style>
+          <Card>
             <p>
               Click the <b>Create Account</b> button to generate a random NEAR
               testnet account ID and keypair, which is only intended for use
