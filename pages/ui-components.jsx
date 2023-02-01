@@ -67,60 +67,56 @@ export const Button = ({
   href = null,
   ...props
 }) => {
-  console.log(destructive);
+  return (
+    <>
+      <style jsx>{`
+        button.btn,
+        a.btn {
+          color: #ffffff;
+          border: solid 0.2rem;
+          background-color: #0e5048;
+          border-color: #0e5048;
+          ${destructive ? "border-color: #C01005;" : ""}
+          ${destructive ? "background-color: #C01005;" : ""}
+          border-radius: 3.6rem;
+          padding: 1rem 2.8rem;
+          font-weight: 600;
+          font-size: 1.6rem;
+          transition: color 250ms, background-color 250ms;
+          cursor: pointer;
+          text-decoration: none;
+        }
 
-  const styles = `
-    button.btn, a.btn {
-      color: #ffffff;
-      border: solid 0.2rem;
-      background-color: #0e5048;
-      border-color: #0e5048;
-      ${destructive ? "border-color: #C01005;" : ""}
-      ${destructive ? "background-color: #C01005;" : ""}
-      border-radius: 3.6rem;
-      padding: 1rem 2.8rem;
-      font-weight: 600;
-      font-size: 1.6rem;
-      transition: color 250ms, background-color 250ms;
-      cursor: pointer;
-      text-decoration: none;
-    }
+        a.btn {
+          display: inline-block;
+        }
 
-    a.btn {
-      display: inline-block;
-    }
+        button.btn:hover:not(:active):not(:disabled),
+        a.btn:hover:not(:active):not(:disabled) {
+          color: #0e5048;
+          background-color: #ffffff;
+          ${destructive ? "color: #C01005;" : ""}
+        }
 
-    button.btn:hover:not(:active):not(:disabled),
-    a.btn:hover:not(:active):not(:disabled) {
-      color: #0e5048;
-      background-color: #ffffff;
-      ${destructive ? "color: #C01005;" : ""}
-    }
-
-    button.btn:disabled,
-    a.btn:disabled {
-      border-color: #efefef;
-      background-color: #efefef;
-      color: #6f7471;
-      cursor: not-allowed;
-    }
-  `;
-
-  const Comp = href
-    ? (props) => (
+        button.btn:disabled,
+        a.btn:disabled {
+          border-color: #efefef;
+          background-color: #efefef;
+          color: #6f7471;
+          cursor: not-allowed;
+        }
+      `}</style>
+      {href ? (
         <a className="btn" href={href} {...props}>
-          <style jsx>{styles}</style>
           {children}
         </a>
-      )
-    : (props) => (
+      ) : (
         <button className="btn" {...props}>
-          <style jsx>{styles}</style>
           {children}
         </button>
-      );
-
-  return <Comp {...props}>{children}</Comp>;
+      )}
+    </>
+  );
 };
 
 export const Footer = () => (
@@ -239,7 +235,7 @@ export default function UIComponents() {
       <Card>
         <h5>Hey</h5>
         <p>test content</p>
-        <Button desctructive>Test</Button>
+        <Button destructive>Test</Button>
       </Card>
 
       <Formatted>

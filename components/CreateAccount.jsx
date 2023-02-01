@@ -153,7 +153,7 @@ export default function CreateNEARAccountPage() {
                 accountPrivateKey={accountPrivateKey}
               />
               <br />
-              <Button onClick={handleResetAccount} destructive={true}>
+              <Button onClick={handleResetAccount} destructive>
                 Reset Account
               </Button>
               <br />
