@@ -46,15 +46,27 @@ export const Headline = ({ children }) => (
   </div>
 );
 
-export const Card = ({ children, maxWidth = "none", ...props }) => (
+export const Card = ({
+  children,
+  small = false,
+  medium = false,
+  large = false,
+  justify = false,
+  ...props
+}) => (
   <div {...props}>
     <style jsx>{`
       div {
+        margin: 2.4rem;
         background-color: #ffffff;
         border: solid 0.1rem #d4d6d4;
         border-radius: 0.8rem;
-        max-width: ${maxWidth ? maxWidth : "120rem"};
         padding: 2.4rem;
+        width: 100%;
+        ${small ? "max-width: 80rem;" : ""}
+        ${medium ? "max-width: 120rem;" : ""}
+        ${large ? "max-width: none;" : ""}
+        overflow: hidden;
       }
 
       div :global(button.btn),
@@ -62,6 +74,26 @@ export const Card = ({ children, maxWidth = "none", ...props }) => (
         width: max-content;
         display: block;
         margin: 0 auto;
+      }
+
+      div > :global(*) {
+        display: block;
+        margin-bottom: 2rem;
+      }
+
+      div > :global(*):last-child {
+        margin-bottom: 0;
+      }
+
+      div > :global(h5) {
+        text-align: center;
+      }
+
+      div > :global(*) {
+        content: "";
+        ${justify ? "text-align: justify;" : ""}
+        white-space: pre-wrap;
+        word-break: break-all;
       }
     `}</style>
     {children}
@@ -71,7 +103,9 @@ export const Card = ({ children, maxWidth = "none", ...props }) => (
 export const Button = ({
   children,
   destructive = false,
+  secondary = false,
   href = null,
+  small = false,
   ...props
 }) => {
   return (
@@ -85,10 +119,14 @@ export const Button = ({
           border-color: #0e5048;
           ${destructive ? "border-color: #C01005;" : ""}
           ${destructive ? "background-color: #C01005;" : ""}
+          ${secondary ? "border-color: #111111;" : ""}
+          ${secondary ? "background-color: #111111;" : ""}
           border-radius: 3.6rem;
           padding: 1rem 2.8rem;
+          ${small ? "padding: .6rem 2.4rem;" : ""}
           font-weight: 600;
           font-size: 1.6rem;
+          ${small ? "font-size: 1.2rem" : ""}
           transition: color 250ms, background-color 250ms;
           cursor: pointer;
           text-decoration: none;
@@ -103,6 +141,7 @@ export const Button = ({
           color: #0e5048;
           background-color: #ffffff;
           ${destructive ? "color: #C01005;" : ""}
+          ${secondary ? "color: #111111;" : ""}
         }
 
         button.btn:disabled,
@@ -130,16 +169,19 @@ export const Footer = () => (
   <footer>
     <style jsx>{`
       footer {
-        border-top: solid 1px #d4d6d4;
-        padding: 0.9rem;
-        width: 100%;
-        display: block;
         position: fixed;
+        width: 100%;
         bottom: 0;
+        border-top: solid 1px #d4d6d4;
+        padding: 0.8rem;
         display: flex;
         background-color: #f9f9f9;
+        z-index: 10;
         justify-content: center;
         align-items: center;
+      }
+      footer > :global(*) {
+        margin: 0;
       }
     `}</style>
     <Link href="https://figment.io/" target="_blank">
@@ -167,10 +209,15 @@ export const BreadCrumbs = ({ step = 0 }) => {
     <header>
       <style jsx>{`
         header {
+          position: fixed;
+          top: 0;
+          width: 100%;
           overflow: hidden;
           align-items: center;
           white-space: nowrap;
           text-align: left;
+          background-color: #f9f9f9;
+          z-index: 10;
           display: flex;
           border-bottom: solid 1px #d4d6d4;
           padding: 0 2rem;
@@ -183,6 +230,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
           white-space: nowrap;
           padding: 1.2rem 0;
           color: #6f7471;
+          line-height: calc(1em + 0.7rem);
           font-size: 1.6rem;
           flex-shrink: 1;
         }
@@ -235,6 +283,29 @@ export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
     `}</style>
     {children}
   </code>
+);
+
+export const Layout = ({ children, centerVertical = false, ...props }) => (
+  <div {...props}>
+    <style jsx>{`
+      div {
+        position: absolute;
+        min-height: 100%;
+        width: 100%;
+        display: flex;
+        padding: calc(4.8rem + 2.4rem) 2.4rem;
+        padding-bottom: calc(4.9rem + 2.4rem);
+        flex-direction: column;
+        align-items: center;
+        ${centerVertical ? "justify-content: center;" : ""}
+      }
+
+      div > :global(h3) {
+        margin-top: 2.8rem;
+      }
+    `}</style>
+    {children}
+  </div>
 );
 
 export default function UIComponents() {

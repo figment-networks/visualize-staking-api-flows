@@ -55,7 +55,7 @@ export default function AccountCard() {
   return (
     <>
       {accountAddress && isIndex() ? (
-        <Card>
+        <Card small>
           <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
             Testnet Account:{" "}
             <Formatted>{trimmedAccount(accountAddress)}</Formatted>
@@ -66,7 +66,7 @@ export default function AccountCard() {
         </Card>
       ) : (
         <>
-          <Card>
+          <Card medium>
             <h5 className="address">Account Address &rarr;</h5>
             <Link className="ext_link" href={explorerUrl(accountAddress)}>
               {accountAddress}
