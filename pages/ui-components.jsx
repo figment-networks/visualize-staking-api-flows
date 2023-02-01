@@ -157,6 +157,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
     "Submit Data",
     "Decode & Sign Payload",
     "Broadcast Transaction",
+    "Get Flow State",
     "View All Flows",
   ];
 

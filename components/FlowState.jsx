@@ -1,15 +1,22 @@
 // @ts-nocheck
 import Link from "next/link";
 import React, { useState } from "react";
-import { Row, Col, Button, Steps } from "antd";
+import { Row, Col } from "antd";
 import { SolutionOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
 import { useAppState } from "@utilities/appState";
 
-import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
-import Footer from "@components/elements/Footer";
+
+import {
+  Title,
+  BreadCrumbs,
+  Button,
+  Card,
+  Formatted,
+  Footer,
+} from "@pages/ui-components";
 
 export default function FlowState({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -38,141 +45,79 @@ export default function FlowState({ operation }) {
 
   return (
     <>
-      <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={5}
-              status="finish"
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  disabled: true,
-                },
-                {
-                  title: "Create a Flow",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  disabled: true,
-                },
-                {
-                  title: "Submit Data",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  disabled: true,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  disabled: true,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                  disabled: true,
-                },
-                {
-                  title: "Get Flow State",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row>
+      <BreadCrumbs step={5} />
+      <Title>Get Flow State</Title>
 
-      <Heading>Get Flow State</Heading>
-
-      <Row justify="space-around">
-        <Col span={10}>
-          <Description>
-            {flowState === "delegate_tx_broadcasting" && (
-              <>
-                Once the signed transaction has been broadcast by the Staking
-                API, it will take a moment to be confirmed on the network. Check
-                the final state of the flow with a GET request to the{" "}
-                <ToolTip
-                  placement="right"
-                  title={`/api/v1/flows/${flowId} - Refer to the Figment Docs for more information.`}
+      <Card>
+        {flowState === "delegate_tx_broadcasting" && (
+          <p>
+            <p>
+              Once the signed transaction has been broadcast by the Staking API,
+              it will take a moment to be confirmed on the network. Check the
+              final state of the flow with a GET request to the{" "}
+              <ToolTip
+                placement="right"
+                title={`/api/v1/flows/${flowId} - Refer to the Figment Docs for more information.`}
+              >
+                Staking API endpoint
+              </ToolTip>{" "}
+              , specifying the flow ID you want to query.
+            </p>
+            <p>
+              For example: GET <Formatted>/api/v1/flows/{flowId}</Formatted>
+            </p>
+          </p>
+        )}
+        {flowState === "delegated" && (
+          <>
+            <p>
+              Congratulations! Flow {flowId.toString().slice(0, -27)}
+              &apos;s state is <Formatted>{flowState}</Formatted>, the
+              transaction status is{" "}
+              <Formatted>
+                {responseData.data.delegate_transaction.status}
+              </Formatted>{" "}
+              and the staking flow is complete!
+              <br />
+              <br />
+              If you&apos;re interested, you can{" "}
+              <ToolTip
+                placement="top"
+                title={`Click here to view the transaction details in a new tab.`}
+              >
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://explorer.testnet.near.org/transactions/${responseData?.data.delegate_transaction.hash}`}
                 >
-                  Staking API endpoint
-                </ToolTip>{" "}
-                , specifying the flow ID you want to query.
-                <br />
-                <br /> For example: GET <code>/api/v1/flows/{flowId}</code>
-              </>
-            )}
-            {flowState === "delegated" && (
-              <>
-                <p>
-                  Congratulations! Flow {flowId.toString().slice(0, -27)}
-                  &apos;s state is <code>{flowState}</code>, the transaction
-                  status is{" "}
-                  <code>{responseData.data.delegate_transaction.status}</code>{" "}
-                  and the staking flow is complete!
-                  <br />
-                  <br />
-                  If you&apos;re interested, you can{" "}
-                  <ToolTip
-                    placement="top"
-                    title={`Click here to view the transaction details in a new tab.`}
-                  >
-                    <Link
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`https://explorer.testnet.near.org/transactions/${responseData?.data.delegate_transaction.hash}`}
-                    >
-                      view the transaction
-                    </Link>
-                  </ToolTip>{" "}
-                  on the NEAR Block Explorer.
-                  <br />
-                  <br />
-                  The final step shows you how to view all of the flows that you
-                  have created.
-                </p>
-              </>
-            )}
-          </Description>
-        </Col>
-      </Row>
+                  view the transaction
+                </Link>
+              </ToolTip>{" "}
+              on the NEAR Block Explorer.
+              <br />
+              <br />
+              In the final step, we will examine how to view all of the flows
+              that you have created.
+            </p>
+          </>
+        )}
+      </Card>
 
       <Row justify="space-around" className={styles.paddingBottom}>
         <Col span={10}>
-          {flowState !== "delegated" ? (
-            <Button
-              className={styles.submitButton}
-              type="primary"
-              htmlType="button"
-              onClick={() => handleGetState()}
-            >
+          {flowState !== "delegated" && (
+            <Button onClick={() => handleGetState()}>
               Get Current Flow State
             </Button>
-          ) : (
-            <>
-              <Button
-                size="large"
-                className={styles.proceedButtonCentered}
-                type="primary"
-                onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
-                href="/view-all-flows"
-              >
-                Proceed to the next step &rarr;
-              </Button>
-            </>
           )}
-          <br />
+          {flowState === "delegated" && (
+            <Button
+              onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
+              href="/view-all-flows"
+            >
+              Proceed to the final step &rarr;
+            </Button>
+          )}
 
           {isLoading ? (
             "Loading..."
@@ -181,23 +126,17 @@ export default function FlowState({ operation }) {
               {responseData && flowState === "delegate_tx_broadcasting" && (
                 <>
                   <h3>&darr; Staking API Response</h3>
-                  <pre
-                    className={styles.stateResponseCentered}
-                    style={{ width: "850px" }}
-                  >
+                  <Formatted block maxHeight="500px">
                     {JSON.stringify(responseData, null, 2)}
-                  </pre>
+                  </Formatted>
                 </>
               )}
               {responseData && flowState === "delegated" && (
                 <>
                   <h6>&darr; Staking API Response</h6>
-                  <pre
-                    className={styles.stateResponseCentered}
-                    style={{ width: "850px" }}
-                  >
+                  <Formatted block maxHeight="500px">
                     {JSON.stringify(responseData, null, 2)}
-                  </pre>
+                  </Formatted>
                 </>
               )}
             </>

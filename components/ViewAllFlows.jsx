@@ -3,18 +3,19 @@ import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "@styles/Home.module.css";
-import { Row, Col, Button, Modal, Steps, Pagination } from "antd";
+import { Row, Col, Modal, Pagination } from "antd";
 import { useAppState } from "@utilities/appState";
-import {
-  WarningOutlined,
-  SolutionOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 
-import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
-import Description from "@components/elements/Description";
-import Footer from "@components/elements/Footer";
+
+import {
+  Title,
+  BreadCrumbs,
+  Button,
+  Card,
+  Formatted,
+  Footer,
+} from "@pages/ui-components";
 
 export default function ViewAllFlows() {
   const { appState, setAppState } = useAppState();
@@ -81,136 +82,74 @@ export default function ViewAllFlows() {
 
   return (
     <>
-      <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={6}
-              status="finish"
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Create a Flow",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Submit Data",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "Get Flow State",
-                  status: "finish",
-                  icon: <CheckCircleOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
+      <BreadCrumbs step={6} />
+      <Title>View All Flows</Title>
+
+      <Card>
+        <p>
+          As you create new flows, their current state and response data can be
+          viewed at any time in a paginated format. This works differently from
+          querying details of a specific flow using its{" "}
+          <Formatted>flowId</Formatted> as illustrated in the previous step.
+          <br />
+          <br />
+          To view all flows created by your account, send a GET request to the{" "}
+          <ToolTip
+            placement="bottom"
+            title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
+            arrowPointAtCenter
+            className={styles.tooltip}
+          >
+            Staking API endpoint
+          </ToolTip>{" "}
+          without specifying a <Formatted>flowId</Formatted>. Select a page
+          number, then click <b>Get Page of Flows</b> to continue.
+          <form method="post" onSubmit={handleSubmit}>
+            <label htmlFor="page" className={styles.centerLabel}>
+              Select Page Number
+            </label>
+            <input
+              type="number"
+              id="page"
+              name="page"
+              defaultValue="1"
+              min="1"
+              className={styles.pageNumberInput}
             />
-          </div>
-        </Col>
-      </Row>
-
-      <Heading>View All Flows</Heading>
-
-      <Row justify="space-around">
-        <Col span={10}></Col>
-      </Row>
-
-      <Row justify="space-around">
-        <Col span={10}>
-          <Description>
-            As you create new flows, their current state and response data can
-            be viewed at any time in a paginated format. This works differently
-            from querying details of a specific flow using its{" "}
-            <code>flowId</code> as illustrated in the previous step.
-            <br />
-            <br />
-            To view all flows created by your account, send a GET request to the{" "}
-            <ToolTip
-              placement="bottom"
-              title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
-              arrowPointAtCenter
-              className={styles.tooltip}
-            >
-              Staking API endpoint
-            </ToolTip>{" "}
-            without specifying a <code>flowId</code>. Select a page number, then
-            click <b>Get Page of Flows</b> to continue.
-            <form method="post" onSubmit={handleSubmit}>
-              <label htmlFor="page" className={styles.centerLabel}>
-                Select Page Number
-              </label>
-              <input
-                type="number"
-                id="page"
-                name="page"
-                defaultValue="1"
-                min="1"
-                className={styles.pageNumberInput}
-              />
-              <Button
-                type="primary"
-                htmlType="submit"
-                className={styles.submitButton}
-                onClick={() => {
-                  setAppState({ flowCompleted: true });
-                }}
-              >
-                Get Page of Flows
-              </Button>
-              {responseData?.page && (
-                <>
-                  <Button
-                    type="text"
-                    htmlType="button"
-                    className={styles.submitButton}
-                    icon={<WarningOutlined />}
-                    onClick={handleReset}
-                  >
-                    Reset Page
-                  </Button>
-                </>
-              )}
-            </form>
-            When you are done here you can{" "}
-            <Link href="/">return to the main page</Link>, or stop the Next.js
-            server and close this browser tab to close the app.{" "}
-            <b>
-              Thank you for taking the time to visualize Figment&apos;s Staking
-              API!
-            </b>
-            <br />
             <Button
-              size="large"
-              type="text"
-              className={styles.modalButton}
-              onClick={() => showModal()}
+              type="primary"
+              htmlType="submit"
+              onClick={() => {
+                setAppState({ flowCompleted: true });
+              }}
             >
-              Click Here For More Information
+              Get Page of Flows
             </Button>
-          </Description>
-        </Col>
-      </Row>
+            {responseData?.page && (
+              <>
+                <Button
+                  destructive
+                  type="text"
+                  htmlType="button"
+                  onClick={handleReset}
+                >
+                  Reset Page
+                </Button>
+              </>
+            )}
+          </form>
+          When you are done here you can{" "}
+          <Link href="/">return to the main page</Link>, or stop the Next.js
+          server and close this browser tab to close the app.{" "}
+          <b>
+            Thank you for taking the time to visualize Figment&apos;s Staking
+            API!
+          </b>
+        </p>
+        <Button size="large" type="text" onClick={() => showModal()}>
+          Click Here For More Information
+        </Button>
+      </Card>
 
       <Row justify="space-between" className={styles.paddingBottom}>
         <Col span={2} />
@@ -218,10 +157,9 @@ export default function ViewAllFlows() {
           {responseData && !responseData.page && !isLoading && (
             <>
               <h6>&darr; Recently completed flow</h6>
-              <pre className={styles.stateResponseViewAll}>
+              <Formatted block>
                 {JSON.stringify(responseData, null, 2)}
-              </pre>
-              <br />
+              </Formatted>
             </>
           )}
 
@@ -230,9 +168,9 @@ export default function ViewAllFlows() {
           {responseData?.page && !isLoading && (
             <>
               <p>
-                In this response from the Staking API, the <code>data[]</code>{" "}
-                array contains <b>{responseData?.data.length}</b> results per
-                page &mdash;
+                In this response from the Staking API, the{" "}
+                <Formatted>data[]</Formatted> array contains{" "}
+                <b>{responseData?.data.length}</b> results per page &mdash;
                 <br />
                 You are curently viewing page <b>
                   {responseData?.page}
@@ -249,12 +187,9 @@ export default function ViewAllFlows() {
                 defaultCurrent={1}
                 onChange={handlePaginationChange}
               />
-              <pre
-                className={styles.stateResponseViewAll}
-                style={{ height: "550px" }}
-              >
+              <Formatted block maxHeight="450px">
                 {JSON.stringify(pageItem, null, 2)}
-              </pre>
+              </Formatted>
             </>
           )}
         </Col>
@@ -282,7 +217,8 @@ export default function ViewAllFlows() {
           <li>
             When you have created multiple flows, their state and all current
             information about them can be viewed by passing the query parameter:{" "}
-            <code>?page=</code>. For example: <code>api/v1/flows?page=2</code>.
+            <Formatted>?page=</Formatted>. For example:{" "}
+            <Formatted>api/v1/flows?page=2</Formatted>.
             <br />
           </li>
           <br />
@@ -292,35 +228,37 @@ export default function ViewAllFlows() {
             created one flow while using the app, remember that the flows are
             linked to your Figment account &mdash; <i>not</i> the API key
             you&apos;re using. It is possible that the API key you supplied in
-            the <code>.env</code> file is from a Figment account which has
-            already created multiple flows. If that is the case, you will see
-            more than one result on this page.
+            the <Formatted>.env</Formatted> file is from a Figment account which
+            has already created multiple flows. If that is the case, you will
+            see more than one result on this page.
           </li>
           <br />
 
           <li>
             Flow responses viewed in this way are paginated and returned in a{" "}
-            <code>data</code> array. Each object in the <code>data</code> array
-            is the most recent response for that <code>flowId</code>.
+            <Formatted>data</Formatted> array. Each object in the{" "}
+            <Formatted>data</Formatted> array is the most recent response for
+            that <Formatted>flowId</Formatted>.
           </li>
           <br />
 
           <li>
-            Pagination is currently <code>responseData.data.length</code> &rarr;{" "}
+            Pagination is currently{" "}
+            <Formatted>responseData.data.length</Formatted> &rarr;{" "}
             <b>
               {responseData?.data?.length ? responseData?.data?.length : "?"}
             </b>{" "}
             flows per page (to a max of 20).
             <br />
             Access individual results (in this context) with{" "}
-            <code>responseData.data[0]</code> through{" "}
-            <code>responseData.data[19]</code>.
+            <Formatted>responseData.data[0]</Formatted> through{" "}
+            <Formatted>responseData.data[19]</Formatted>.
           </li>
-          <br />
 
           <li>
-            Developers can <code>map()</code> to filter a page of flows by their
-            state (for example, <code>delegated</code>):
+            Developers can <Formatted>map()</Formatted> to filter a page of
+            flows by their state (for example, <Formatted>delegated</Formatted>
+            ):
             <br />
             <details>
               <summary>Click here to expand code snippet</summary>
@@ -328,7 +266,7 @@ export default function ViewAllFlows() {
 
               <p>
                 &nbsp;Based on the current page being viewed, such a filter
-                returns any <code>delegated</code> flows:
+                returns any <Formatted>delegated</Formatted> flows:
               </p>
 
               <pre className={styles.codeDetail}>
@@ -352,9 +290,9 @@ export default function ViewAllFlows() {
 
               <p>
                 &nbsp;Or filter by{" "}
-                <code>
+                <Formatted>
                   responseData?.data[index].state === &apos;initialized&apos;
-                </code>
+                </Formatted>
                 :
               </p>
               <pre className={styles.codeDetail}>

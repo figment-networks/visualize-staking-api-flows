@@ -8,7 +8,6 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
-import Footer from "@components/elements/Footer";
 
 import { useAppState } from "@utilities/appState";
 
@@ -22,6 +21,7 @@ import {
   Button,
   Card,
   Formatted,
+  Footer,
 } from "@pages/ui-components";
 
 export default function CreateFlow({ operation }) {
