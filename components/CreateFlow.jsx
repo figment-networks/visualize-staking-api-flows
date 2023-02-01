@@ -178,22 +178,19 @@ export default function CreateFlow({ operation }) {
       <Title title="Create a Flow" />
 
       <Card>
-        <span />
-        Figment&apos;s Staking API works with the concept of flows. When
-        creating a flow, you must provide the <Formatted>
-          network
-        </Formatted>, <Formatted>chain_code</Formatted>,{" "}
-        <Formatted>operation</Formatted> and Staking API{" "}
-        <Formatted>version</Formatted>. <span />
-        Each flow is given a unique ID, which is referenced when continuing that
-        flow or querying its details.
-        <span />
-        The form below creates a JSON request body, which you can send to the
-        Staking API to create a new flow.
-        <p />
-        <Button size="large" type="text" onClick={() => showModal()}>
-          Click Here For More Information
-        </Button>
+        <p>
+          Figment&apos;s Staking API works with the concept of flows. When
+          creating a flow, you must provide the <Formatted>network</Formatted>,{" "}
+          <Formatted>chain_code</Formatted>, <Formatted>operation</Formatted>{" "}
+          and Staking API <Formatted>version</Formatted>. <span />
+          Each flow is given a unique ID, which is referenced when continuing
+          that flow or querying its details. The form below creates a JSON
+          request body, which you can send to the Staking API to create a new
+          flow.
+          <Button size="large" type="text" onClick={() => showModal()}>
+            Click Here For More Information
+          </Button>
+        </p>
       </Card>
 
       <p className={styles.centerLabel}>
