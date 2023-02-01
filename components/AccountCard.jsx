@@ -19,10 +19,10 @@ const stepRoute = (step) =>
     7: "/operations/staking/create-flow",
   }[step]);
 
-const stepLabel = (step, flowId) => {
+const stepLabel = (step, completed, flowId) => {
   let stepLabel = "Get into the flow →";
   if (step < 5) stepLabel = `Continue flow ${flowId || ""} →`;
-  else if (flowCompleted) stepLabel = "Start a new flow →";
+  else if (completed) stepLabel = "Start a new flow →";
   return stepLabel;
 };
 
@@ -60,7 +60,9 @@ export default function AccountCard() {
             Testnet Account:{" "}
             <Formatted>{trimmedAccount(accountAddress)}</Formatted>
           </ToolTip>
-          <Button href={stepLink}>{stepLabel(stepCompleted, flowId)}</Button>
+          <Button href={stepLink}>
+            {stepLabel(stepCompleted, flowCompleted, flowId)}
+          </Button>
         </Card>
       ) : (
         <>
