@@ -212,39 +212,47 @@ export default function DecodeAndSignPayload({ operation }) {
                           &quot;
                         </Formatted>
                         ,{" "}
-                        <ToolTip
-                          placement="top"
-                          title={`This parameter is the operation being used for this flow. NEAR supports staking, unstaking or transfer operations.`}
-                        >
-                          <Formatted>
-                            &quot;
+                        <Formatted>
+                          &quot;
+                          <ToolTip
+                            placement="top"
+                            title={`This parameter is the operation being used for this flow. NEAR supports staking, unstaking or transfer operations.`}
+                          >
                             {operation}
-                            &quot;
-                          </Formatted>
-                        </ToolTip>
+                          </ToolTip>
+                          &quot;
+                        </Formatted>
                         ,{" "}
-                        <ToolTip
-                          placement="top"
-                          title={`This parameter is the Staking API version used to create the flow.`}
-                        >
-                          <Formatted>&quot;v1&quot;</Formatted>
-                        </ToolTip>
+                        <Formatted>
+                          &quot;
+                          <ToolTip
+                            placement="top"
+                            title={`This parameter is the Staking API version used to create the flow.`}
+                          >
+                            v1
+                          </ToolTip>
+                          &quot;
+                        </Formatted>
                         ,{" "}
-                        <ToolTip
-                          placement="bottom"
-                          title={`This parameter is the transaction type, which relates to the operation being used. Refer to the Figment Docs for details.`}
-                        >
-                          <Formatted>
-                            &quot; delegateTransaction &quot;
-                          </Formatted>
-                        </ToolTip>
+                        <Formatted>
+                          &quot;{" "}
+                          <ToolTip
+                            placement="bottom"
+                            title={`This parameter is the transaction type, which relates to the operation being used. Refer to the Figment Docs for details.`}
+                          >
+                            delegateTransaction
+                          </ToolTip>{" "}
+                          &quot;
+                        </Formatted>
                         ,{" "}
-                        <ToolTip
-                          placement="bottom"
-                          title={`This parameter is the unsigned transaction payload to be decoded, shown on the left.`}
-                        >
-                          <Formatted>transaction_payload</Formatted>
-                        </ToolTip>
+                        <Formatted>
+                          <ToolTip
+                            placement="bottom"
+                            title={`This parameter is the unsigned transaction payload to be decoded, shown on the left.`}
+                          >
+                            transaction_payload
+                          </ToolTip>
+                        </Formatted>
                         );
                       </span>
                     </Formatted>
@@ -310,7 +318,7 @@ export default function DecodeAndSignPayload({ operation }) {
               <h6>
                 &darr; Signing method from <b>@figmentio/slate</b>
               </h6>
-              <pre className={styles.payload}>
+              <Formatted block>
                 const slate = require(&apos;@figmentio/slate&apos;);
                 <br />
                 <br />
@@ -357,7 +365,7 @@ export default function DecodeAndSignPayload({ operation }) {
                   ]
                 </Formatted>
                 );
-              </pre>
+              </Formatted>
             </>
           )}
           {signedTransactionPayload && (

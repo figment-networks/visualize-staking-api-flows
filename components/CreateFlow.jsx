@@ -334,23 +334,18 @@ export default function CreateFlow({ operation }) {
                 Please <b>reset the flow</b> to continue.
               </p>
 
-              <ToolTip
-                placement="bottomLeft"
-                title={`Click here to reset the current flow and appState`}
-              >
-                <Button
-                  type="primary"
-                  htmlType="button"
-                  onClick={() => handleResetFlow()}
-                  icon={<WarningOutlined />}
+              <Button destructive onClick={() => handleResetFlow()}>
+                <ToolTip
+                  placement="bottomLeft"
+                  title={`Click here to reset the current flow and appState`}
                 >
                   Reset Flow
-                </Button>
-              </ToolTip>
+                </ToolTip>
+              </Button>
             </>
           )}
 
-          {flowResponse && stepCompleted < 2 ? (
+          {!flowCompleted && flowResponse && stepCompleted < 2 ? (
             <>
               <p>
                 Flow ID{" "}
@@ -377,9 +372,9 @@ export default function CreateFlow({ operation }) {
                 <summary>
                   Click here to view the full Staking API response
                 </summary>
-                <pre className={styles.responseFixedShort}>
+                <Formatted block maxHeight="500px">
                   {JSON.stringify(flowResponse, null, 2)}
-                </pre>
+                </Formatted>
               </details>
               <Button
                 size="large"
@@ -416,9 +411,9 @@ export default function CreateFlow({ operation }) {
                     </ToolTip>{" "}
                     to create a new flow:
                   </p>
-                  <pre className={styles.payload}>
+                  <Formatted block>
                     {JSON.stringify(formData, null, 2)}
-                  </pre>
+                  </Formatted>
                   <br />
                   <Button
                     style={{ width: "auto" }}

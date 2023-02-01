@@ -73,7 +73,7 @@ export default function ViewAllFlows() {
   const codeSnippet = `{responseData?.data && (
   Object?.keys(responseData.data).map((index) => (<>
     {responseData?.data[index].state === 'delegated' && (
-      <pre className="responseFixed" key={responseData?.data[index]}>
+      <pre key={responseData?.data[index]}>
         {JSON.stringify(responseData?.data[index].id, null, 2) + JSON.stringify(responseData?.data[index].state, null, 2)}
       </pre>
     )}
