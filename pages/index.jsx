@@ -2,13 +2,7 @@ import React from "react";
 import Link from "next/link";
 import AccountCard from "@components/AccountCard";
 import { useAppState } from "@utilities/appState";
-import Head from "@components/elements/Head";
-// import Title from "@components/elements/Title";
-// import Heading from "@components/elements/Heading";
-// import Card from "@components/elements/Card";
-import Footer from "@components/elements/Footer";
-
-import { Title, Card, Button, Headline } from "./ui-components";
+import { Head, Title, Card, Button, Headline, Footer } from "./ui-components";
 
 export default function IndexPage() {
   const {
@@ -17,7 +11,10 @@ export default function IndexPage() {
 
   return (
     <>
-      <Head />
+      <Head
+        title="Visualize Figment's Staking API"
+        description="Visualize Figment's Staking API"
+      />
       <Title>
         Visualize Figment&apos;s&nbsp;
         <Link

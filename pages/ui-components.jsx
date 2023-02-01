@@ -1,6 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { default as HeadComponent } from "next/head";
+
+export const Head = ({ title, description }) => (
+  <HeadComponent>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.ico" />
+  </HeadComponent>
+);
 
 export const Title = ({ children }) => (
   <h3>
