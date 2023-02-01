@@ -46,8 +46,8 @@ export const Headline = ({ children }) => (
   </div>
 );
 
-export const Card = ({ children }) => (
-  <div>
+export const Card = ({ children, ...props }) => (
+  <div {...props}>
     <style jsx>{`
       div {
         background-color: #ffffff;

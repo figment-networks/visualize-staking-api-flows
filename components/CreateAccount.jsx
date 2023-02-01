@@ -6,10 +6,9 @@ import styles from "@styles/Home.module.css";
 import { Col, Row } from "antd";
 import { SolutionOutlined, WarningOutlined } from "@ant-design/icons";
 import AccountCard from "@components/AccountCard";
-import Footer from "@components/elements/Footer";
 import { useAppState } from "@utilities/appState";
 
-import { Title, BreadCrumbs, Button, Card } from "@pages/ui-components";
+import { Title, BreadCrumbs, Button, Card, Footer } from "@pages/ui-components";
 
 import Heading from "@components/elements/Heading";
 import Description from "@components/elements/Description";
@@ -100,40 +99,39 @@ export default function CreateNEARAccountPage() {
       </Row> */}
 
       <Row justify="space-around">
-        <Col span={12}>
-          {!accountAddress && (
+        {!accountAddress && (
+          <Card className="card">
+            <style jsx>{`
+              div.card {
+                width: 100%;
+                max-width: 60rem;
+                margin: 0 auto;
+              }
+            `}</style>
+            <p>
+              Click the <b>Create Account</b> button to generate a random NEAR
+              testnet account ID and keypair, which is only intended for use
+              with this demo of Figment&apos;s Staking API.
+              <br />
+              <br />
+              The private key of this keypair will be used to sign a transaction
+              payload during the flow.
+              <br />
+            </p>
+            <form onSubmit={handleSubmit} method="post">
+              <Button disabled={isLoading ? true : false}>
+                Create Account
+              </Button>
+            </form>
+          </Card>
+        )}
+        {accountAddress && (
+          <>
             <Card>
-              <p>
-                Click the <b>Create Account</b> button to generate a random NEAR
-                testnet account ID and keypair, which is only intended for use
-                with this demo of Figment&apos;s Staking API.
-                <br />
-                <br />
-                The private key of this keypair will be used to sign a
-                transaction payload during the flow.
-                <br />
-              </p>
-              <form onSubmit={handleSubmit} method="post">
-                <Button
-                  size="large"
-                  type="primary"
-                  htmlType="submit"
-                  className={styles.submitButton}
-                  disabled={isLoading ? true : false}
-                >
-                  Create Account
-                </Button>
-              </form>
+              Your randomly generated account ID is <b>{accountAddress}</b>
             </Card>
-          )}
-          {accountAddress && (
-            <>
-              <Card>
-                Your randomly generated account ID is <b>{accountAddress}</b>
-              </Card>
-            </>
-          )}
-        </Col>
+          </>
+        )}
       </Row>
 
       <Row justify="center" className={styles.paddingBottom}>
