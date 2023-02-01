@@ -16,6 +16,7 @@ export const Title = ({ children }) => (
     <style jsx>{`
       h3 {
         margin-top: 4rem;
+        margin-bottom: 2.8rem;
         text-align: center;
       }
       h3 :global(*) {
