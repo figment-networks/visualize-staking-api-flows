@@ -67,6 +67,8 @@ export const Button = ({
   href = null,
   ...props
 }) => {
+  console.log(destructive);
+
   const styles = `
     button.btn, a.btn {
       color: #ffffff;
@@ -81,8 +83,11 @@ export const Button = ({
       font-size: 1.6rem;
       transition: color 250ms, background-color 250ms;
       cursor: pointer;
-      display: inline-block;
       text-decoration: none;
+    }
+
+    a.btn {
+      display: inline-block;
     }
 
     button.btn:hover:not(:active):not(:disabled),
