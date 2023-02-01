@@ -1,20 +1,11 @@
 // @ts-nocheck
-import Link from "next/link";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import styles from "@styles/Home.module.css";
-import { Col, Row } from "antd";
-import { SolutionOutlined, WarningOutlined } from "@ant-design/icons";
 import AccountCard from "@components/AccountCard";
 import { useAppState } from "@utilities/appState";
-
 import { Title, BreadCrumbs, Button, Card, Footer } from "@pages/ui-components";
 
-import Heading from "@components/elements/Heading";
-import Description from "@components/elements/Description";
-
 export default function CreateNEARAccountPage() {
-  const router = useRouter();
   const { appState, setAppState } = useAppState();
   const { accountPrivateKey, accountPublicKey, accountAddress } = appState;
   const [isLoading, setIsLoading] = useState(false);
@@ -55,114 +46,51 @@ export default function CreateNEARAccountPage() {
       <BreadCrumbs step={0} />
       <Title>Create NEAR Account</Title>
 
-      {/* <Row justify="space-around">
-        <Col span={24}>
-          <div className={styles.header}>
-            <Steps
-              current={0}
-              type="navigation"
-              items={[
-                {
-                  title: "Create Account",
-                  status: "finish",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Create a Flow",
-                  status: "process",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Submit Data",
-                  // status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Decode & Sign Payload",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "Broadcast Transaction",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-                {
-                  title: "View All Flows",
-                  status: "wait",
-                  icon: <SolutionOutlined />,
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row> */}
+      {!accountAddress && (
+        <Card>
+          <p>
+            Click the <b>Create Account</b> button to generate a random NEAR
+            testnet account ID and keypair, which is only intended for use with
+            this demo of Figment&apos;s Staking API.
+          </p>
+          <p>
+            The private key of this keypair will be used to sign a transaction
+            payload during the flow.
+          </p>
+          <form onSubmit={handleSubmit} method="post">
+            <Button disabled={isLoading ? true : false}>Create Account</Button>
+          </form>
+        </Card>
+      )}
 
-      <Row justify="space-around">
-        {!accountAddress && (
+      {accountAddress && (
+        <>
           <Card>
             <p>
-              Click the <b>Create Account</b> button to generate a random NEAR
-              testnet account ID and keypair, which is only intended for use
-              with this demo of Figment&apos;s Staking API.
-              <br />
-              <br />
-              The private key of this keypair will be used to sign a transaction
-              payload during the flow.
-              <br />
-            </p>
-            <form onSubmit={handleSubmit} method="post">
-              <Button disabled={isLoading ? true : false}>
-                Create Account
-              </Button>
-            </form>
-          </Card>
-        )}
-        {accountAddress && (
-          <>
-            <Card>
               Your randomly generated account ID is <b>{accountAddress}</b>
-            </Card>
-          </>
-        )}
-      </Row>
+            </p>
+          </Card>
+        </>
+      )}
 
-      <Row justify="center" className={styles.paddingBottom}>
-        <Col span={4} />
-        <Col span={16}>
-          <br />
-          {isLoading && <p className={styles.centerLabel}>Loading...</p>}
-          {accountPublicKey && (
-            <>
-              <h2 className={styles.centerLabel}>
-                <Button
-                  type="primary"
-                  size="large"
-                  // href="/operations/staking/create-flow"
-                  style={{ width: "auto", textAlign: "center" }}
-                  onClick={() => router.push("/operations/staking/create-flow")}
-                >
-                  Proceed to the next step &rarr;
-                </Button>
-              </h2>
-
-              <br />
-              <AccountCard
-                accountAddress={accountAddress}
-                accountPublicKey={accountPublicKey}
-                accountPrivateKey={accountPrivateKey}
-              />
-              <br />
-              <Button onClick={handleResetAccount} destructive>
-                Reset Account
-              </Button>
-              <br />
-              <br />
-            </>
-          )}
-        </Col>
-        <Col span={4} />
-      </Row>
+      {isLoading && <p className={styles.centerLabel}>Loading...</p>}
+      {accountPublicKey && (
+        <>
+          <h2 className={styles.centerLabel}>
+            <Button href="/operations/staking/create-flow">
+              Proceed to the next step &rarr;
+            </Button>
+          </h2>
+          <AccountCard
+            accountAddress={accountAddress}
+            accountPublicKey={accountPublicKey}
+            accountPrivateKey={accountPrivateKey}
+          />
+          <Button onClick={handleResetAccount} destructive>
+            Reset Account
+          </Button>
+        </>
+      )}
       <Footer />
     </>
   );
