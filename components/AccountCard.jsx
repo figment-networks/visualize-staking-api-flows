@@ -9,13 +9,13 @@ import { Button, Card, Formatted } from "@pages/ui-components";
 
 const stepRoute = (step) =>
   ({
-    0: "/operations/staking/create-near-account",
+    0: "/create-near-account",
     1: "/operations/staking/create-flow",
     2: "/operations/staking/submit-data",
     3: "/operations/staking/sign-payload",
     4: "/operations/staking/broadcast-transaction",
     5: "/operations/staking/flow-state",
-    6: "/operations/staking/create-flow",
+    6: "/view-all-flows",
     7: "/operations/staking/create-flow",
   }[step]);
 

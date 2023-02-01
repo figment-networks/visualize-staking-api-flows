@@ -196,8 +196,6 @@ export default function ViewAllFlows() {
         <Col span={2} />
       </Row>
 
-      <br />
-
       <Footer />
 
       <Modal
@@ -262,31 +260,28 @@ export default function ViewAllFlows() {
             <br />
             <details>
               <summary>Click here to expand code snippet</summary>
-              <pre className={styles.codeDetail}>{codeSnippet}</pre>
+              <Formatted block>{codeSnippet}</Formatted>
 
               <p>
                 &nbsp;Based on the current page being viewed, such a filter
                 returns any <Formatted>delegated</Formatted> flows:
               </p>
 
-              <pre className={styles.codeDetail}>
+              <Formatted block>
                 {responseData?.data && responseData?.data.length > 1
                   ? Object?.keys(responseData.data).map((index) => (
                       <>
                         {responseData?.data[index].state === "delegated" && (
-                          <pre
-                            className={styles.codeDetail}
-                            key={responseData?.data[index]}
-                          >
+                          <Formatted block key={responseData?.data[index]}>
                             {responseData?.data[index].id.toString() +
                               " " +
                               responseData?.data[index].state.toString()}
-                          </pre>
+                          </Formatted>
                         )}
                       </>
                     ))
                   : "Select a page of results first - input a number and click Get Page of Flows"}
-              </pre>
+              </Formatted>
 
               <p>
                 &nbsp;Or filter by{" "}
@@ -295,24 +290,21 @@ export default function ViewAllFlows() {
                 </Formatted>
                 :
               </p>
-              <pre className={styles.codeDetail}>
+              <Formatted block>
                 {responseData?.data && responseData?.data.length > 1
                   ? Object?.keys(responseData.data).map((index) => (
                       <>
                         {responseData?.data[index].state === "initialized" && (
-                          <pre
-                            className={styles.codeDetail}
-                            key={responseData?.data[index]}
-                          >
+                          <Formatted block key={responseData?.data[index]}>
                             {responseData?.data[index].id.toString() +
                               " " +
                               responseData?.data[index].state.toString()}
-                          </pre>
+                          </Formatted>
                         )}
                       </>
                     ))
                   : "Select a page of results first - input a number and click Get Page of Flows"}
-              </pre>
+              </Formatted>
             </details>
           </li>
           <br />

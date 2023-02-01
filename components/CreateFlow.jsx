@@ -35,6 +35,7 @@ export default function CreateFlow({ operation }) {
     accountAddress,
     accountPublicKey,
     accountPrivateKey,
+    flowCompleted,
   } = appState;
 
   const [formData, setFormData] = useState();
@@ -106,6 +107,7 @@ export default function CreateFlow({ operation }) {
       accountPublicKey: accountPublicKey,
       accountPrivateKey: accountPrivateKey,
       stepCompleted: 0,
+      flowCompleted: false,
       flowResponse: undefined,
       responseData: undefined,
       flowState: undefined,
@@ -325,7 +327,7 @@ export default function CreateFlow({ operation }) {
         </Col>
 
         <Col span={12}>
-          {stepCompleted === 5 && (
+          {flowCompleted && (
             <>
               <p className={styles.callout}>
                 A previous flow <b>{flowId}</b> has already been completed.
