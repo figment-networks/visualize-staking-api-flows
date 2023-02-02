@@ -61,6 +61,7 @@ export const Card = ({
         background-color: #ffffff;
         border: solid 0.1rem #d4d6d4;
         border-radius: 0.8rem;
+        flex-shrink: 0;
         padding: 2.4rem;
         width: 100%;
         ${small ? "max-width: 80rem;" : ""}
@@ -361,13 +362,11 @@ export const VerticalLayout = ({ children }) => (
       div {
         position: relative;
         width: 100%;
-        height: 100%;
         display: flex;
         padding: calc(4.8rem + 2.4rem) 2.4rem;
         padding-bottom: calc(4.9rem + 2.4rem);
         flex-direction: column;
         align-items: center;
-        flex-wrap: ;
       }
       div > :global(h3) {
         margin-top: 2.8rem;

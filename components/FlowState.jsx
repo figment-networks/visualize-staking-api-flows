@@ -12,7 +12,7 @@ import {
   Card,
   Formatted,
   Footer,
-  Layout,
+  VerticalLayout,
 } from "@pages/ui-components";
 
 export default function FlowState({ operation }) {
@@ -43,7 +43,7 @@ export default function FlowState({ operation }) {
   return (
     <>
       <BreadCrumbs step={5} />
-      <Layout>
+      <VerticalLayout>
         <Title>Get Flow State</Title>
 
         <Card small>
@@ -111,22 +111,23 @@ export default function FlowState({ operation }) {
           <p>Loading...</p>
         ) : (
           <>
-            {responseData && flowState === "delegate_tx_broadcasting" && (
-              <Card small>
-                <h6>&darr; Staking API Response</h6>
-                <Formatted block maxHeight="500px">
-                  {JSON.stringify(responseData, null, 2)}
-                </Formatted>
-              </Card>
-            )}
-            {responseData && flowState === "delegated" && (
-              <Card small>
-                <h6>&darr; Staking API Response</h6>
-                <Formatted block maxHeight="500px">
-                  {JSON.stringify(responseData, null, 2)}
-                </Formatted>
-              </Card>
-            )}
+            {responseData &&
+              (flowState === "delegate_tx_broadcasting" ||
+                flowState === "delegated") && (
+                <Card
+                  small
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "stretch",
+                  }}
+                >
+                  <h6>&darr; Staking API Response</h6>
+                  <Formatted block>
+                    {JSON.stringify(responseData, null, 2)}
+                  </Formatted>
+                </Card>
+              )}
 
             {flowState === "delegated" && (
               <Button
@@ -140,7 +141,7 @@ export default function FlowState({ operation }) {
         )}
 
         <Footer />
-      </Layout>
+      </VerticalLayout>
     </>
   );
 }

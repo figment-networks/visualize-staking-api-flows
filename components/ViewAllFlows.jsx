@@ -1,9 +1,9 @@
 // @ts-nocheck
 import React from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "@styles/Home.module.css";
-import { Row, Col, Modal, Pagination } from "antd";
+import { Modal, Pagination } from "antd";
 import { useAppState } from "@utilities/appState";
 
 import ToolTip from "@components/elements/ToolTip";
@@ -15,7 +15,7 @@ import {
   Card,
   Formatted,
   Footer,
-  Layout,
+  VerticalLayout,
 } from "@pages/ui-components";
 
 export default function ViewAllFlows() {
@@ -53,9 +53,12 @@ export default function ViewAllFlows() {
     });
 
     const result = await response.json();
-
-    setAppState({ flowState: result.state, responseData: result });
     setIsLoading(false);
+    setAppState({
+      flowState: result.state,
+      responseData: result,
+      pageItem: result?.data[data.page - 1],
+    });
   };
 
   const handleReset = async (event) => {
@@ -63,7 +66,7 @@ export default function ViewAllFlows() {
     setIsLoading(false);
     document.getElementById("page").value = "1";
   };
-
+  0;
   const handlePaginationChange = async (page) => {
     // responseData.data[0] through responseData.data[19] are valid
     // but the Pagination component's page parameter starts at 1,
@@ -84,7 +87,7 @@ export default function ViewAllFlows() {
   return (
     <>
       <BreadCrumbs step={6} />
-      <Layout>
+      <VerticalLayout>
         <Title>View All Flows</Title>
         <Card small>
           <p>
@@ -117,26 +120,27 @@ export default function ViewAllFlows() {
                 min="1"
                 className={styles.pageNumberInput}
               />
-              <Button
-                style={{ marginTop: "10px" }}
-                onClick={() => {
-                  setAppState({ flowCompleted: true });
-                }}
-              >
-                Get Page of Flows
-              </Button>
-              {responseData?.page && (
-                <>
-                  <Button
-                    destructive
-                    type="text"
-                    htmlType="button"
-                    onClick={handleReset}
-                  >
-                    Reset Page
-                  </Button>
-                </>
-              )}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                {responseData?.page && (
+                  <>
+                    <Button
+                      secondary
+                      style={{ margin: "1rem" }}
+                      onClick={handleReset}
+                    >
+                      Reset Page
+                    </Button>
+                  </>
+                )}
+                <Button
+                  style={{ margin: "1rem" }}
+                  onClick={() => {
+                    setAppState({ flowCompleted: true });
+                  }}
+                >
+                  Get Page of Flows
+                </Button>
+              </div>
             </form>
             <br />
             When you are done here you can{" "}
@@ -147,24 +151,36 @@ export default function ViewAllFlows() {
               API!
             </b>
           </p>
-          <Button size="large" type="text" onClick={() => showModal()}>
+          <Button small secondary onClick={() => showModal()}>
             Click Here For More Information
           </Button>
         </Card>
 
         {responseData && !responseData.page && !isLoading && (
-          <Card small>
+          <Card
+            small
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "stretch",
+            }}
+          >
             <h6>&darr; Recently completed flow</h6>
-            <Formatted block maxHeight="500px">
-              {JSON.stringify(responseData, null, 2)}
-            </Formatted>
+            <Formatted block>{JSON.stringify(responseData, null, 2)}</Formatted>
           </Card>
         )}
 
         {isLoading && <p>Loading...</p>}
 
         {responseData?.page && !isLoading && (
-          <Card medium>
+          <Card
+            medium
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "stretch",
+            }}
+          >
             <p>
               In this response from the Staking API, the{" "}
               <Formatted>data[]</Formatted> array contains{" "}
@@ -181,14 +197,11 @@ export default function ViewAllFlows() {
               defaultCurrent={1}
               onChange={handlePaginationChange}
             />
-            <Formatted block maxHeight="450px">
-              {JSON.stringify(pageItem, null, 2)}
-            </Formatted>
+            <Formatted block>{JSON.stringify(pageItem, null, 2)}</Formatted>
           </Card>
         )}
-
         <Footer />
-      </Layout>
+      </VerticalLayout>
 
       <Modal
         title="Details"

@@ -78,13 +78,13 @@ export default function BroadcastTransaction({ operation }) {
               the Staking API. The transaction is then broadcast to the network
               via the Staking APIs dedicated infrastructure.
             </p>
-            <Button size="large" type="text" onClick={() => showModal()}>
+            <Button small secondary onClick={() => showModal()}>
               Click Here For More Information
             </Button>
           </Card>
         </ColumnLayout.Column>
 
-        <ColumnLayout.Column>
+        <ColumnLayout.Column style={{ width: "100%", maxWidth: "600px" }}>
           <Card medium>
             <form onSubmit={handleSubmit} method="post">
               <h6>&darr; Signed Transaction Payload</h6>
@@ -95,6 +95,7 @@ export default function BroadcastTransaction({ operation }) {
                 required
                 defaultValue={signedTransactionPayload}
               />
+              <br />
               <Button
                 disabled={flowState === "delegate_tx_broadcasting"}
                 style={{ width: "auto" }}
