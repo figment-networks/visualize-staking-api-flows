@@ -69,16 +69,16 @@ h6 {
 p,
 a,
 label,
-span,
+span:not(.anticon),
 input,
 select,
 textarea,
-:not(.ant-modal-root) button {
+button {
   font-size: 1.8rem;
   margin: 0.3em 0;
 }
 
-:not(.ant-modal-root) form button {
+form button {
   margin: 0 auto;
   display: block;
 }
