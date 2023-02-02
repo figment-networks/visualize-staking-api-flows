@@ -9,7 +9,7 @@ import {
   Button,
   Headline,
   Footer,
-  Layout,
+  LayoutCenter,
 } from "./ui-components";
 
 export default function IndexPage() {
@@ -23,7 +23,7 @@ export default function IndexPage() {
         title="Visualize Figment's Staking API"
         description="Visualize Figment's Staking API"
       />
-      <Layout centerVertical>
+      <LayoutCenter>
         <Title>
           Visualize Figment&apos;s&nbsp;
           <Link
@@ -59,7 +59,7 @@ export default function IndexPage() {
             <Button href="/view-all-flows">View All Flows</Button>
           </Card>
         )}
-      </Layout>
+      </LayoutCenter>
       <Footer />
     </>
   );

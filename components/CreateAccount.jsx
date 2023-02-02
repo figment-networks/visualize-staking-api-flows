@@ -9,7 +9,7 @@ import {
   Button,
   Card,
   Footer,
-  Layout,
+  VerticalLayout,
 } from "@pages/ui-components";
 
 export default function CreateNEARAccountPage() {
@@ -51,7 +51,7 @@ export default function CreateNEARAccountPage() {
   return (
     <>
       <BreadCrumbs step={0} />
-      <Layout>
+      <VerticalLayout>
         <Title>Create NEAR Account</Title>
 
         {!accountAddress && (
@@ -80,6 +80,7 @@ export default function CreateNEARAccountPage() {
                 Your randomly generated account ID is <b>{accountAddress}</b>
               </p>
             </Card>
+            <br />
           </>
         )}
 
@@ -89,17 +90,19 @@ export default function CreateNEARAccountPage() {
             <Button href="/operations/staking/create-flow">
               Proceed to the next step &rarr;
             </Button>
+            <br />
             <AccountCard
               accountAddress={accountAddress}
               accountPublicKey={accountPublicKey}
               accountPrivateKey={accountPrivateKey}
             />
+            <br />
             <Button onClick={handleResetAccount} secondary small>
               Reset Account
             </Button>
           </>
         )}
-      </Layout>
+      </VerticalLayout>
       <Footer />
     </>
   );

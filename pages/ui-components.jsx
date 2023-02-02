@@ -58,7 +58,6 @@ export const Card = ({
   <div {...props}>
     <style jsx>{`
       div {
-        margin: 2.4rem;
         background-color: #ffffff;
         border: solid 0.1rem #d4d6d4;
         border-radius: 0.8rem;
@@ -106,6 +105,7 @@ export const Button = ({
   secondary = false,
   href = null,
   small = false,
+  style = {},
   ...props
 }) => {
   return (
@@ -154,10 +154,12 @@ export const Button = ({
       `}</style>
       {href ? (
         <Link href={href} {...props} legacyBehavior>
-          <a className="btn">{children}</a>
+          <button className="btn" style={style}>
+            {children}
+          </button>
         </Link>
       ) : (
-        <button className="btn" {...props}>
+        <button className="btn" style={style} {...props}>
           {children}
         </button>
       )}
@@ -329,25 +331,84 @@ export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
   </code>
 );
 
-export const Layout = ({ children, centerVertical = false, ...props }) => (
-  <div {...props}>
+export const LayoutCenter = ({ children }) => (
+  <div>
     <style jsx>{`
       div {
-        position: absolute;
-        min-height: 100vh;
+        position: relative;
         width: 100%;
+        height: 100%;
         display: flex;
         padding: calc(4.8rem + 2.4rem) 2.4rem;
         padding-bottom: calc(4.9rem + 2.4rem);
         flex-direction: column;
         align-items: center;
-        ${centerVertical ? "justify-content: center;" : ""}
+        justify-content: center;
+        flex-wrap: ;
       }
-
       div > :global(h3) {
         margin-top: 2.8rem;
       }
     `}</style>
+    {children}
+  </div>
+);
+
+export const VerticalLayout = ({ children }) => (
+  <div>
+    <style jsx>{`
+      div {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        padding: calc(4.8rem + 2.4rem) 2.4rem;
+        padding-bottom: calc(4.9rem + 2.4rem);
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: ;
+      }
+      div > :global(h3) {
+        margin-top: 2.8rem;
+      }
+    `}</style>
+    {children}
+  </div>
+);
+
+export const ColumnLayout = ({ children, title }) => (
+  <div className="container">
+    <style jsx>{`
+      div.container {
+        position: relative;
+        padding: calc(4.8rem + 2.4rem) 2.4rem;
+
+        width: 100%;
+        height: 100%;
+      }
+      div > :global(h3) {
+        margin-top: 2.8rem;
+      }
+
+      div.container > div {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding-bottom: calc(4.9rem + 2.4rem);
+      }
+
+      div.container > div > :global(div.column) {
+        padding: 0 2.4rem;
+      }
+    `}</style>
+    {title}
+    <div>{children}</div>
+  </div>
+);
+
+ColumnLayout.Column = ({ children, ...props }) => (
+  <div className="column" {...props}>
     {children}
   </div>
 );

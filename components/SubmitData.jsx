@@ -13,7 +13,7 @@ import {
   Button,
   Card,
   Formatted,
-  Layout,
+  ColumnLayout,
   Footer,
 } from "@pages/ui-components";
 
@@ -206,82 +206,90 @@ const handleSubmit = async (event) => {
   return (
     <>
       <BreadCrumbs step={2} />
-      <Layout>
-        <Title>Submit Data to the Staking API</Title>
-
-        <Card small>
-          <p>
-            After creating a flow, the next step is to check the response to
-            understand which actions are available, and which data needs to be
-            provided to continue the flow.
-            <br />
-            <br />
-            The form below has been created based on the Staking API response
-            and provided with default values.
-            <br />
-            <Button size="large" type="text" onClick={() => showModal()}>
+      <ColumnLayout title={<Title>Submit Data to the Staking API</Title>}>
+        <ColumnLayout.Column
+          style={{
+            padding: "0",
+            flexShrink: "0",
+            width: "100%",
+            marginBottom: "2.4rem",
+          }}
+        >
+          <Card large>
+            <p>
+              After creating a flow, the next step is to check the response to
+              understand which actions are available, and which data needs to be
+              provided to continue the flow.
+            </p>
+            <p>
+              The form below has been created based on the Staking API response
+              and provided with default values.
+            </p>
+            <Button small onClick={() => showModal()}>
               Click Here For More Information
             </Button>
-          </p>
-        </Card>
+          </Card>
+        </ColumnLayout.Column>
 
-        {!accountAddress && !accountPublicKey ? (
-          <>
-            <Card small>
+        <ColumnLayout.Column>
+          {!accountAddress && !accountPublicKey ? (
+            <>
+              <Card small>
+                <p>
+                  Please create an account first!
+                  <Button href="/create-near-account">
+                    Create a NEAR testnet account
+                  </Button>
+                </p>
+              </Card>
+            </>
+          ) : (
+            <>
               <p>
-                Please create an account first!
-                <Button href="/create-near-account">
-                  Create a NEAR testnet account
-                </Button>
+                Please review the inputs, then click{" "}
+                <b>Create Inputs Payload</b> to continue.
               </p>
-            </Card>
-          </>
-        ) : (
-          <>
-            <p>
-              Please review the inputs, then click <b>Create Inputs Payload</b>{" "}
-              to continue.
-            </p>
-            <Card small>
-              <form onSubmit={handleSubmit} method="post">
-                <label htmlFor="actions">Action(s):</label>
-                <select
-                  id="actions"
-                  name="actions"
-                  required
-                  defaultValue={flowActions}
-                  key="actions"
-                >
-                  {Object.keys(flowActions).map((key) => (
-                    <>
-                      <option key={flowActions[key]} value={flowActions[key]}>
-                        {flowActions[key]}
-                      </option>
-                    </>
-                  ))}
-                </select>
+              <Card small>
+                <form onSubmit={handleSubmit} method="post">
+                  <label htmlFor="actions">Action(s):</label>
+                  <select
+                    id="actions"
+                    name="actions"
+                    required
+                    defaultValue={flowActions}
+                    key="actions"
+                  >
+                    {Object.keys(flowActions).map((key) => (
+                      <>
+                        <option key={flowActions[key]} value={flowActions[key]}>
+                          {flowActions[key]}
+                        </option>
+                      </>
+                    ))}
+                  </select>
 
-                {inputs.map(({ name, label }, index) => {
-                  return (
-                    <span key={name}>
-                      <label htmlFor={name}>{label}:</label>
-                      <input
-                        key={name}
-                        type="text"
-                        id={name}
-                        name={name}
-                        defaultValue={defaultValues[name]}
-                      />
-                    </span>
-                  );
-                })}
-                <Button disabled={formData} type="primary" htmlType="submit">
-                  Create Inputs Payload
-                </Button>
-              </form>
-            </Card>
-          </>
-        )}
+                  {inputs.map(({ name, label }, index) => {
+                    return (
+                      <span key={name}>
+                        <label htmlFor={name}>{label}:</label>
+                        <input
+                          key={name}
+                          type="text"
+                          id={name}
+                          name={name}
+                          defaultValue={defaultValues[name]}
+                        />
+                      </span>
+                    );
+                  })}
+                  <Button disabled={formData} type="primary" htmlType="submit">
+                    Create Inputs Payload
+                  </Button>
+                </form>
+              </Card>
+            </>
+          )}
+        </ColumnLayout.Column>
 
         {formData ? (
           <>
@@ -319,7 +327,7 @@ const handleSubmit = async (event) => {
           <>
             <br />
             <br />
-            <p className={styles.spacer}>
+            <p>
               Request body displayed here after clicking{" "}
               <b>Create Inputs Payload</b>
             </p>
@@ -371,7 +379,7 @@ const handleSubmit = async (event) => {
         )}
 
         <Footer />
-      </Layout>
+      </ColumnLayout>
 
       <Modal
         title="Details"
