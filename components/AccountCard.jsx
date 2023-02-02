@@ -76,7 +76,11 @@ export default function AccountCard() {
         <>
           <Card medium>
             <h5>Account Address &rarr;</h5>
-            <Link className="ext_link" href={explorerUrl(accountAddress)}>
+            <Link
+              href={explorerUrl(accountAddress)}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               {accountAddress}
             </Link>
 
