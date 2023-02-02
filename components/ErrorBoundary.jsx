@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button } from "@pages/ui-components";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -20,12 +20,7 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="container">
           <h2>Oops, there is an error!</h2>
-          <Button
-            type="primary"
-            htmlType="button"
-            className="errorButton"
-            onClick={() => this.setState({ hasError: false })}
-          >
+          <Button secondary onClick={() => this.setState({ hasError: false })}>
             Try again?
           </Button>
         </div>
