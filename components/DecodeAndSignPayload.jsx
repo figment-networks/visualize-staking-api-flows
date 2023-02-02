@@ -135,14 +135,18 @@ export default function DecodeAndSignPayload({ operation }) {
   return (
     <>
       <BreadCrumbs step={3} />
-      <Title title="Decode & Sign Transaction Payloads" />
+      <Title>Decode & Sign Transaction Payloads</Title>
 
-      <Card maxWidth="800px">
+      <Card small>
         <p>
           After receiving the unsigned{" "}
           <Formatted>transaction_payload</Formatted>, the next step is to verify
-          & sign it. Developers can write their own verification script, or
-          leverage Figment’s npm package{" "}
+          & sign it.
+        </p>
+
+        <p>
+          Developers can write their own verification script, or leverage
+          Figment’s npm package{" "}
           <ToolTip
             placement="top"
             title={`Click here to view the package details on npmjs.com in a new tab.`}
@@ -190,7 +194,7 @@ export default function DecodeAndSignPayload({ operation }) {
       {decodedTransactionPayload && !isLoading && !signedTransactionPayload && (
         <>
           {decodedTransactionPayload && !signedTransactionPayload && (
-            <>
+            <Card medium>
               <h6>&darr; Decoding method from @figmentio/slate</h6>
               <Formatted block>
                 const slate = require(&apos;@figmentio/slate&apos;);
@@ -200,6 +204,7 @@ export default function DecodeAndSignPayload({ operation }) {
                   <Formatted>
                     &quot;
                     <ToolTip
+                      style={{ textDecoration: "underline" }}
                       placement="top"
                       title={`This parameter is the network_code used to create the flow.`}
                     >
@@ -211,6 +216,7 @@ export default function DecodeAndSignPayload({ operation }) {
                   <Formatted>
                     &quot;
                     <ToolTip
+                      style={{ textDecoration: "underline" }}
                       placement="top"
                       title={`This parameter is the operation being used for this flow. NEAR supports staking, unstaking or transfer operations.`}
                     >
@@ -222,6 +228,7 @@ export default function DecodeAndSignPayload({ operation }) {
                   <Formatted>
                     &quot;
                     <ToolTip
+                      style={{ textDecoration: "underline" }}
                       placement="top"
                       title={`This parameter is the Staking API version used to create the flow.`}
                     >
@@ -231,18 +238,20 @@ export default function DecodeAndSignPayload({ operation }) {
                   </Formatted>
                   ,{" "}
                   <Formatted>
-                    &quot;{" "}
+                    &quot;
                     <ToolTip
+                      style={{ textDecoration: "underline" }}
                       placement="bottom"
                       title={`This parameter is the transaction type, which relates to the operation being used. Refer to the Figment Docs for details.`}
                     >
                       delegateTransaction
-                    </ToolTip>{" "}
+                    </ToolTip>
                     &quot;
                   </Formatted>
                   ,{" "}
                   <Formatted>
                     <ToolTip
+                      style={{ textDecoration: "underline" }}
                       placement="bottom"
                       title={`This parameter is the unsigned transaction payload to be decoded, shown on the left.`}
                     >
@@ -252,128 +261,135 @@ export default function DecodeAndSignPayload({ operation }) {
                   );
                 </span>
               </Formatted>
-            </>
+            </Card>
           )}
-          <p>
-            These are the values you submitted to the Staking API for this
-            delegation in the previous step:
-          </p>
-          <p>
-            Delegator Address: <b>{accountAddress}</b>
-            <br />
-            Delegator Public Key: <b>{accountPublicKey}</b>
-            <br />
-            Validator Address: <b>{validatorAddress}</b>
-            <br />
-            Amount: <b>{delegateAmount}</b>
-            <br />
-            <br />
-            They{" "}
-            <ToolTip
-              placement="left"
-              title={`You may notice that the Elliptic Curve Digital Signature Algorithm specifier "ed25519:" is missing from the public key in the decoded payload! This does not prevent the payload from being signed or broadcast. Behind the scenes, the NEAR JavaScript API and the NEAR network itself still recognize the value as a valid public key. Refer to the NEAR documentation for more information on Full Access keypairs.`}
-            >
-              should
-            </ToolTip>{" "}
-            match the decoded values below:
-          </p>
-          <h6>&darr; Decoded Transaction Payload</h6>
-          <Formatted block>
-            {JSON.stringify(decodedTransactionPayload, null, 2)}
-          </Formatted>
+          <Card medium>
+            <p>
+              These are the values you submitted to the Staking API for this
+              delegation in the previous step:
+            </p>
+            <p>
+              Delegator Address: <b>{accountAddress}</b>
+              <br />
+              Delegator Public Key: <b>{accountPublicKey}</b>
+              <br />
+              Validator Address: <b>{validatorAddress}</b>
+              <br />
+              Amount: <b>{delegateAmount}</b>
+              <br />
+              <br />
+              They{" "}
+              <ToolTip
+                style={{ textDecoration: "underline" }}
+                placement="left"
+                title={`You may notice that the Elliptic Curve Digital Signature Algorithm specifier "ed25519:" is missing from the public key in the decoded payload! This does not prevent the payload from being signed or broadcast. Behind the scenes, the NEAR JavaScript API and the NEAR network itself still recognize the value as a valid public key. Refer to the NEAR documentation for more information on Full Access keypairs.`}
+              >
+                should
+              </ToolTip>{" "}
+              match the decoded values below:
+            </p>
+            <h6>&darr; Decoded Transaction Payload</h6>
+            <Formatted block>
+              {JSON.stringify(decodedTransactionPayload, null, 2)}
+            </Formatted>
 
-          {!signedTransactionPayload && (
-            <>
-              <br />
-              {/* Clicking this button will sign the transaction payload
-                          using the private key of the keypair generated by this application. */}
-              <Button
-                size="large"
-                type="primary"
-                onClick={() => handleSignature()}
-              >
-                Sign Transaction Payload
-              </Button>
-              <br />
-              <Button
-                destructive
-                type="text"
-                htmlType="button"
-                onClick={() => handleResetDecodedPayload()}
-              >
-                Reset Decoded Transaction Payload
-              </Button>
-            </>
-          )}
+            {!signedTransactionPayload && (
+              <>
+                <ToolTip
+                  placement="top"
+                  title={`Clicking this button will sign the payload using the private key of the NEAR testnet account generated by this app.`}
+                >
+                  <Button onClick={() => handleSignature()}>
+                    Sign Transaction Payload
+                  </Button>
+                </ToolTip>
+
+                <br />
+                <Button
+                  destructive
+                  type="text"
+                  htmlType="button"
+                  onClick={() => handleResetDecodedPayload()}
+                >
+                  Reset Decoded Transaction Payload
+                </Button>
+              </>
+            )}
+          </Card>
         </>
       )}
 
-      {signedTransactionPayload && (
-        <>
-          <br />
-          <h6>
-            &darr; Signing method from <b>@figmentio/slate</b>
-          </h6>
-          <Formatted block>
-            const slate = require(&apos;@figmentio/slate&apos;);
+      <Card medium>
+        {signedTransactionPayload && (
+          <>
+            <h6>
+              &darr; Signing method from <b>@figmentio/slate</b>
+            </h6>
+            <Formatted block>
+              const slate = require(&apos;@figmentio/slate&apos;);
+              <br />
+              <br />
+              await slate.sign(
+              <Formatted>
+                &quot;
+                <ToolTip
+                  style={{ textDecoration: "underline" }}
+                  placement="top"
+                  title={`This parameter is the network_code used to create the flow.`}
+                >
+                  {flowResponse?.network_code}
+                </ToolTip>
+                &quot;
+              </Formatted>
+              ,{" "}
+              <Formatted>
+                &quot;
+                <ToolTip
+                  style={{ textDecoration: "underline" }}
+                  placement="top"
+                  title={`This parameter is the Staking API version used to create the flow.`}
+                >
+                  v1
+                </ToolTip>
+                &quot;
+              </Formatted>
+              ,{" "}
+              <Formatted>
+                <ToolTip
+                  style={{ textDecoration: "underline" }}
+                  placement="top"
+                  title={`This parameter is the unsigned transaction payload to be signed, shown on the left.`}
+                >
+                  transaction_payload
+                </ToolTip>
+              </Formatted>
+              ,{" "}
+              <Formatted>
+                [
+                <ToolTip
+                  style={{ textDecoration: "underline" }}
+                  placement="top"
+                  title={`This parameter is an array containing the private key of the delegator account, which is used to sign the transaction. If more than one signature is required, additional keys can be supplied.`}
+                >
+                  privateKeys
+                </ToolTip>
+                ]
+              </Formatted>
+              );
+            </Formatted>
+          </>
+        )}
+
+        {signedTransactionPayload && (
+          <>
             <br />
-            <br />
-            await slate.sign(
-            <Formatted>
-              &quot;
+            <h6>&darr; Signed Transaction Payload</h6>
+            <Formatted block>
               <ToolTip
-                placement="top"
-                title={`This parameter is the network_code used to create the flow.`}
+                placement="left"
+                title={`The blue text is the unsigned transaction payload, also shown on the left.`}
               >
-                {flowResponse?.network_code}
-              </ToolTip>
-              &quot;
-            </Formatted>
-            ,{" "}
-            <Formatted>
-              &quot;
-              <ToolTip
-                placement="top"
-                title={`This parameter is the Staking API version used to create the flow.`}
-              >
-                v1
-              </ToolTip>
-              &quot;
-            </Formatted>
-            ,{" "}
-            <Formatted>
-              <ToolTip
-                placement="top"
-                title={`This parameter is the unsigned transaction payload to be signed, shown on the left.`}
-              >
-                transaction_payload
-              </ToolTip>
-            </Formatted>
-            ,{" "}
-            <Formatted>
-              [
-              <ToolTip
-                placement="top"
-                title={`This parameter is an array containing the private key of the delegator account, which is used to sign the transaction. If more than one signature is required, additional keys can be supplied.`}
-              >
-                privateKeys
-              </ToolTip>
-              ]
-            </Formatted>
-            );
-          </Formatted>
-        </>
-      )}
-      {signedTransactionPayload && (
-        <>
-          <br />
-          <h6>&darr; Signed Transaction Payload</h6>
-          <Formatted block>
-            <ToolTip
-              placement="left"
-              title={`The blue text is the unsigned transaction payload, also shown on the left.`}
-            >
-              {/* payload highlight span - 
+                {/* payload highlight span - 
                   
                     The output unsignedTransactionPayload is given
                     a contrasting color
@@ -384,16 +400,16 @@ export default function DecodeAndSignPayload({ operation }) {
                     color: "#FFF29B"
                     color: "#034d76"
                   */}
-              <span style={{ color: "#8FE2DD" }}>
-                {unsignedTransactionPayload}
-              </span>
-            </ToolTip>
+                <span style={{ color: "#8FE2DD" }}>
+                  {unsignedTransactionPayload}
+                </span>
+              </ToolTip>
 
-            <ToolTip
-              placement="left"
-              title={`The yellow text is the signature, created by signing the payload using the private key of the delegator account.`}
-            >
-              {/* signature highlight span - 
+              <ToolTip
+                placement="left"
+                title={`The yellow text is the signature, created by signing the payload using the private key of the delegator account.`}
+              >
+                {/* signature highlight span - 
                   
                     signature length for NEAR is 128 characters,
                     appended to the unsigned payload.
@@ -407,33 +423,32 @@ export default function DecodeAndSignPayload({ operation }) {
                     color: "#034d76"
 
                   */}
-              <span style={{ color: "#FFF29B" }}>
-                {signedTransactionPayload.slice(434, 562)}
-              </span>
-            </ToolTip>
-          </Formatted>
-          <br />
-          <p>
-            <b>@figmentio/slate</b> appends the signature to the unsigned
-            transaction payload,
-            <br /> which can now be sent to the Staking API for broadcast to the
-            network.
-          </p>
-          <br />
-          <Button
-            href={`/operations/${operation}/broadcast-transaction`}
-            onClick={() => setAppState({ stepCompleted: 3 })}
-          >
-            Proceed to the next step &rarr;
-          </Button>
-          <br />
-          <Button destructive onClick={() => handleResetSignedPayload()}>
-            Reset Signed Transaction Payload
-          </Button>
-        </>
-      )}
-
-      <br />
+                <span style={{ color: "#FFF29B" }}>
+                  {signedTransactionPayload.slice(434, 562)}
+                </span>
+              </ToolTip>
+            </Formatted>
+            <br />
+            <p>
+              <b>@figmentio/slate</b> appends the signature to the unsigned
+              transaction payload,
+              <br /> which can now be sent to the Staking API for broadcast to
+              the network.
+            </p>
+            <br />
+            <Button
+              href={`/operations/${operation}/broadcast-transaction`}
+              onClick={() => setAppState({ stepCompleted: 3 })}
+            >
+              Proceed to the next step &rarr;
+            </Button>
+            <br />
+            <Button destructive onClick={() => handleResetSignedPayload()}>
+              Reset Signed Transaction Payload
+            </Button>
+          </>
+        )}
+      </Card>
 
       <Footer />
 

@@ -21,7 +21,7 @@ const stepRoute = (step) =>
 
 const stepLabel = (step, completed, flowId) => {
   let stepLabel = "Get into the flow →";
-  if (step < 5) stepLabel = `Continue flow ${flowId || ""} →`;
+  if (step <= 6 && !completed) stepLabel = `Continue flow ${flowId || ""} →`;
   else if (completed) stepLabel = "Start a new flow →";
   return stepLabel;
 };
@@ -56,10 +56,17 @@ export default function AccountCard() {
     <>
       {accountAddress && isIndex() ? (
         <Card small>
-          <ToolTip title="For your reference, this is a shortened version of the NEAR testnet address created by this app">
+          <p>
             Testnet Account:{" "}
-            <Formatted>{trimmedAccount(accountAddress)}</Formatted>
-          </ToolTip>
+            <Formatted>
+              <ToolTip
+                style={{ textDecoration: "underline" }}
+                title="For your reference, this is a shortened version of the NEAR testnet address created by this app"
+              >
+                {trimmedAccount(accountAddress)}
+              </ToolTip>
+            </Formatted>
+          </p>
           <Button href={stepLink}>
             {stepLabel(stepCompleted, flowCompleted, flowId)}
           </Button>

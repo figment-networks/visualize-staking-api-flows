@@ -1,16 +1,12 @@
 // @ts-nocheck
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { Modal } from "antd";
-import {
-  WarningOutlined,
-  SolutionOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 import styles from "@styles/Home.module.css";
 
-import { useAppState } from "@utilities/appState";
 import ToolTip from "@components/elements/ToolTip";
+
+import { useAppState } from "@utilities/appState";
 
 import {
   Title,
@@ -175,7 +171,7 @@ export default function CreateFlow({ operation }) {
       <BreadCrumbs step={1} />
       <Layout>
         <Title>Create a Flow</Title>
-        <Card>
+        <Card small>
           <p>
             Figment&apos;s Staking API works with the concept of flows. When
             creating a flow, you must provide the <Formatted>network</Formatted>
@@ -194,129 +190,7 @@ export default function CreateFlow({ operation }) {
           </Button>
         </Card>
 
-        <p className={styles.centerLabel}>
-          Click <b>Create JSON Request Body</b> to continue.
-        </p>
-        <Card>
-          <form onSubmit={handleSubmit} method="post">
-            <label htmlFor="network_code">Network</label>
-            <select
-              id="network_code"
-              name="networkCode"
-              required
-              defaultValue="near"
-              onChange={handleFormChange}
-            >
-              <option disabled value="avalanche">
-                Avalanche
-              </option>
-              <option disabled value="cosmos">
-                Cosmos
-              </option>
-              <option disabled value="ethereum">
-                Ethereum
-              </option>
-              <option value="near">NEAR</option>
-              <option disabled value="polkadot">
-                Polkadot
-              </option>
-              <option disabled value="polygon">
-                Polygon
-              </option>
-              <option disabled value="solana">
-                Solana
-              </option>
-            </select>
-
-            <label htmlFor="chain_code">Chain Code</label>
-            <select
-              id="chain_code"
-              name="chainCode"
-              required
-              defaultValue="testnet"
-            >
-              <option disabled value="mainnet">
-                Mainnet
-              </option>
-              {selectedNetwork === "polkadot" ? (
-                <option value="westend">Westend</option>
-              ) : (
-                <option value="testnet">Testnet</option>
-              )}
-              {selectedNetwork === "solana" ? (
-                <option value="devnet">Devnet</option>
-              ) : (
-                ""
-              )}
-            </select>
-
-            {/* Networks support different operations, 
-              so we are using conditional rendering to make the form dynamic. */}
-            <label htmlFor="operation">Operation</label>
-            <select
-              id="operation"
-              name="operation"
-              required
-              defaultValue="staking"
-            >
-              <option value="staking">Staking</option>
-              {selectedNetwork === "solana" ||
-              selectedNetwork === "near" ||
-              selectedNetwork === "polkadot" ||
-              selectedNetwork === "polygon" ||
-              !selectedNetwork ? (
-                <option value="unstaking" disabled>
-                  Unstaking
-                </option>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "solana" ||
-              selectedNetwork === "near" ||
-              selectedNetwork === "polkadot" ||
-              selectedNetwork === "cosmos" ||
-              !selectedNetwork ? (
-                <option value="transfer" disabled>
-                  Transfer
-                </option>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "polkadot" ? (
-                <>
-                  <option value="add_proxy">Add Proxy</option>
-                  <option value="remove_proxy">Remove Proxy</option>
-                </>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "polygon" ? (
-                <option value="claim_rewards">Claim Rewards</option>
-              ) : (
-                ""
-              )}
-              {selectedNetwork === "solana" ? (
-                <option value="split_stake_account">Split Stake Account</option>
-              ) : (
-                ""
-              )}
-            </select>
-
-            <label htmlFor="version">Version</label>
-            <select id="version" name="version" required defaultValue="v1">
-              <option value="v1">v1</option>
-            </select>
-
-            {/* Submitting this form does not fetch from the Staking API,
-                it only populates the display of the JSON payload. */}
-            <br />
-            <Button disabled={formData || stepCompleted === 5}>
-              Create JSON Request Body
-            </Button>
-          </form>
-        </Card>
-
-        {flowCompleted && (
+        {flowCompleted ? (
           <>
             <p className={styles.callout}>
               A previous flow <b>{flowId}</b> has already been completed. Please{" "}
@@ -332,27 +206,155 @@ export default function CreateFlow({ operation }) {
               </ToolTip>
             </Button>
           </>
+        ) : (
+          <>
+            <p className={styles.centerLabel}>
+              Click <b>Create JSON Request Body</b> to continue.
+            </p>
+            <Card small>
+              <form onSubmit={handleSubmit} method="post">
+                <label htmlFor="network_code">Network</label>
+                <select
+                  id="network_code"
+                  name="networkCode"
+                  required
+                  defaultValue="near"
+                  onChange={handleFormChange}
+                >
+                  <option disabled value="avalanche">
+                    Avalanche
+                  </option>
+                  <option disabled value="cosmos">
+                    Cosmos
+                  </option>
+                  <option disabled value="ethereum">
+                    Ethereum
+                  </option>
+                  <option value="near">NEAR</option>
+                  <option disabled value="polkadot">
+                    Polkadot
+                  </option>
+                  <option disabled value="polygon">
+                    Polygon
+                  </option>
+                  <option disabled value="solana">
+                    Solana
+                  </option>
+                </select>
+
+                <label htmlFor="chain_code">Chain Code</label>
+                <select
+                  id="chain_code"
+                  name="chainCode"
+                  required
+                  defaultValue="testnet"
+                >
+                  <option disabled value="mainnet">
+                    Mainnet
+                  </option>
+                  {selectedNetwork === "polkadot" ? (
+                    <option value="westend">Westend</option>
+                  ) : (
+                    <option value="testnet">Testnet</option>
+                  )}
+                  {selectedNetwork === "solana" ? (
+                    <option value="devnet">Devnet</option>
+                  ) : (
+                    ""
+                  )}
+                </select>
+
+                {/* Networks support different operations, 
+              so we are using conditional rendering to make the form dynamic. */}
+                <label htmlFor="operation">Operation</label>
+                <select
+                  id="operation"
+                  name="operation"
+                  required
+                  defaultValue="staking"
+                >
+                  <option value="staking">Staking</option>
+                  {selectedNetwork === "solana" ||
+                  selectedNetwork === "near" ||
+                  selectedNetwork === "polkadot" ||
+                  selectedNetwork === "polygon" ||
+                  !selectedNetwork ? (
+                    <option value="unstaking" disabled>
+                      Unstaking
+                    </option>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "solana" ||
+                  selectedNetwork === "near" ||
+                  selectedNetwork === "polkadot" ||
+                  selectedNetwork === "cosmos" ||
+                  !selectedNetwork ? (
+                    <option value="transfer" disabled>
+                      Transfer
+                    </option>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "polkadot" ? (
+                    <>
+                      <option value="add_proxy">Add Proxy</option>
+                      <option value="remove_proxy">Remove Proxy</option>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "polygon" ? (
+                    <option value="claim_rewards">Claim Rewards</option>
+                  ) : (
+                    ""
+                  )}
+                  {selectedNetwork === "solana" ? (
+                    <option value="split_stake_account">
+                      Split Stake Account
+                    </option>
+                  ) : (
+                    ""
+                  )}
+                </select>
+
+                <label htmlFor="version">Version</label>
+                <select id="version" name="version" required defaultValue="v1">
+                  <option value="v1">v1</option>
+                </select>
+
+                {/* Submitting this form does not fetch from the Staking API,
+                it only populates the display of the JSON payload. */}
+                <br />
+                <Button disabled={formData || stepCompleted === 5}>
+                  Create JSON Request Body
+                </Button>
+              </form>
+            </Card>
+          </>
         )}
 
         {!flowCompleted && flowResponse && stepCompleted < 2 ? (
           <>
             <p>
               Flow ID{" "}
-              <Formatted>
+              <Formatted dark>
                 <ToolTip
+                  style={{ textDecoration: "underline" }}
                   placement="top"
                   title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
                 >
-                  <b>{flowResponse?.id}</b>
+                  {flowResponse?.id}
                 </ToolTip>
-              </Formatted>
+              </Formatted>{" "}
               is{" "}
               <Formatted>
                 <ToolTip
+                  style={{ textDecoration: "underline" }}
                   placement="top"
-                  title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until the transaction has been sent to the network.`}
+                  title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until it is updated by an action.`}
                 >
-                  <b>{flowResponse?.state}</b>
+                  {flowResponse?.state}
                 </ToolTip>
               </Formatted>{" "}
             </p>
@@ -376,7 +378,7 @@ export default function CreateFlow({ operation }) {
           </>
         ) : (
           <>
-            {!formData && stepCompleted !== 5 && (
+            {!flowCompleted && !formData && stepCompleted !== 5 && (
               <>
                 <p className="spacer">
                   The request body will appear when you click{" "}
@@ -400,21 +402,13 @@ export default function CreateFlow({ operation }) {
                 </p>
                 <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
                 <br />
-                <Button
-                  style={{ width: "auto" }}
-                  type="primary"
-                  htmlType="button"
-                  onClick={() => handleCreateFlow()}
-                >
-                  Send request to the Staking API
+                <Button onClick={() => handleCreateFlow()}>
+                  Create Staking API Flow
                 </Button>
                 <br />
                 <Button
                   destructive={true}
-                  type="text"
-                  htmlType="button"
                   onClick={() => handleClearFormData()}
-                  icon={<WarningOutlined />}
                 >
                   Clear JSON Request Body
                 </Button>

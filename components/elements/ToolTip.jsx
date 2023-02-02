@@ -6,10 +6,16 @@ export default function ToolTipComponent({
   children,
   placement = "top",
   title,
+  ...props
 }) {
   return (
-    <Tooltip placement={placement} title={title} arrowPointAtCenter>
-      {children}
+    <Tooltip
+      color={"#111111"}
+      placement={placement}
+      title={title}
+      arrowPointAtCenter
+    >
+      <span {...props}>{children}</span>
     </Tooltip>
   );
 }

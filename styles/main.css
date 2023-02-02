@@ -144,36 +144,3 @@ pre {
   display: block;
   background-color: #a2a2a2;
 }
-
-pre::-webkit-scrollbar {
-  width: 10px;
-  /* Mostly for vertical scrollbars */
-  height: 10px;
-  /* Mostly for horizontal scrollbars */
-}
-
-pre::-webkit-scrollbar-thumb {
-  /* Foreground */
-  background: #b1b1b1;
-  border-radius: 15px;
-}
-
-pre::-webkit-scrollbar-track {
-  /* Background */
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-}
-
-pre::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-}
-
-pre::-webkit-scrollbar-button {
-  /* Background */
-  background: #333;
-}
-
-pre::-webkit-scrollbar:horizontal {
-  display: none;
-}

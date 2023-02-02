@@ -4,16 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Modal, Steps } from "antd";
 import styles from "/styles/Home.module.css";
 import { useAppState } from "@utilities/appState";
-import {
-  WarningOutlined,
-  SolutionOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 
-import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
-import Description from "@components/elements/Description";
-import Footer from "@components/elements/Footer";
 
 import {
   Title,
@@ -21,6 +13,8 @@ import {
   Button,
   Card,
   Formatted,
+  Layout,
+  Footer,
 } from "@pages/ui-components";
 
 export default function SubmitData({ operation }) {
@@ -212,159 +206,172 @@ const handleSubmit = async (event) => {
   return (
     <>
       <BreadCrumbs step={2} />
-      <Title title="Submit Data to the Staking API" />
+      <Layout>
+        <Title>Submit Data to the Staking API</Title>
 
-      <Card>
-        After creating a flow, the next step is to check the response to
-        understand which actions are available, and which data needs to be
-        provided to continue the flow.
-        <br />
-        <br />
-        The form below has been created based on the Staking API response and
-        provided with default values.
-        <br />
-        <Button size="large" type="text" onClick={() => showModal()}>
-          Click Here For More Information
-        </Button>
-      </Card>
+        <Card small>
+          <p>
+            After creating a flow, the next step is to check the response to
+            understand which actions are available, and which data needs to be
+            provided to continue the flow.
+            <br />
+            <br />
+            The form below has been created based on the Staking API response
+            and provided with default values.
+            <br />
+            <Button size="large" type="text" onClick={() => showModal()}>
+              Click Here For More Information
+            </Button>
+          </p>
+        </Card>
 
-      {!accountAddress && !accountPublicKey ? (
-        <>
-          <Card>
-            Please create an account first &rarr;
-            <Button type="primary" href="/create-near-account">
-              Create a .testnet account
+        {!accountAddress && !accountPublicKey ? (
+          <>
+            <Card small>
+              <p>
+                Please create an account first!
+                <Button href="/create-near-account">
+                  Create a NEAR testnet account
+                </Button>
+              </p>
+            </Card>
+          </>
+        ) : (
+          <>
+            <p>
+              Please review the inputs, then click <b>Create Inputs Payload</b>{" "}
+              to continue.
+            </p>
+            <Card small>
+              <form onSubmit={handleSubmit} method="post">
+                <label htmlFor="actions">Action(s):</label>
+                <select
+                  id="actions"
+                  name="actions"
+                  required
+                  defaultValue={flowActions}
+                  key="actions"
+                >
+                  {Object.keys(flowActions).map((key) => (
+                    <>
+                      <option key={flowActions[key]} value={flowActions[key]}>
+                        {flowActions[key]}
+                      </option>
+                    </>
+                  ))}
+                </select>
+
+                {inputs.map(({ name, label }, index) => {
+                  return (
+                    <span key={name}>
+                      <label htmlFor={name}>{label}:</label>
+                      <input
+                        key={name}
+                        type="text"
+                        id={name}
+                        name={name}
+                        defaultValue={defaultValues[name]}
+                      />
+                    </span>
+                  );
+                })}
+                <Button disabled={formData} type="primary" htmlType="submit">
+                  Create Inputs Payload
+                </Button>
+              </form>
+            </Card>
+          </>
+        )}
+
+        {formData ? (
+          <>
+            <p>
+              Send this JSON request body to the{" "}
+              <ToolTip
+                placement="top"
+                title={`/api/v1/flows/<flow_id>/next - Refer to the Figment Docs for more information.`}
+              >
+                Staking API endpoint
+              </ToolTip>{" "}
+              to continue with the flow:
+            </p>
+
+            <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
+
+            {!inputsSent && (
+              <>
+                <Button onClick={() => handleStakingAPI()}>
+                  Submit Data to Staking API
+                </Button>
+                <br />
+                <Button
+                  destructive
+                  type="text"
+                  htmlType="button"
+                  onClick={() => handleClearFormData()}
+                >
+                  Reset Inputs Payload
+                </Button>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <br />
+            <br />
+            <p className={styles.spacer}>
+              Request body displayed here after clicking{" "}
+              <b>Create Inputs Payload</b>
+            </p>
+          </>
+        )}
+
+        {unsignedTransactionPayload && inputsSent && (
+          <Card small>
+            <p>
+              The flow state has changed from <Formatted>initialized</Formatted>{" "}
+              to <Formatted>delegate_tx_signature</Formatted>, indicating that
+              the Staking API now requires a signed transaction. In the next
+              step, we will examine the signing process.
+            </p>
+            <details>
+              <summary>Click here to see the full response</summary>
+              <Formatted block maxHeight="510px">
+                {JSON.stringify(flowResponse, null, 2)}
+              </Formatted>{" "}
+            </details>
+
+            <p>
+              An unsigned{" "}
+              <ToolTip
+                style={{ textDecoration: "underline" }}
+                placement="top"
+                title={`In terms of the Staking API, a transaction payload is a hashed representation of the inputs belonging to an action. It must be signed before it can be broadcast by the Staking API.`}
+              >
+                transaction payload
+              </ToolTip>{" "}
+              has been created by the Staking API based on the submitted{" "}
+              <Formatted>action</Formatted> and <Formatted>inputs</Formatted>.
+            </p>
+
+            <details>
+              <summary>Click here to see the payload</summary>
+              <Formatted block>{unsignedTransactionPayload}</Formatted>{" "}
+            </details>
+
+            <Button
+              size="large"
+              type="primary"
+              onClick={() => setAppState({ stepCompleted: 2 })}
+              href={`/operations/${operation}/sign-payload`}
+            >
+              Proceed to the next step &rarr;
             </Button>
           </Card>
-        </>
-      ) : (
-        <>
-          <p className={styles.centerLabel}>
-            Click <b>Create Inputs Payload</b> to continue.
-          </p>
-          {/* This dynamic form is explained in the More Information modal when viewing the page */}
-          <Card>
-            <form onSubmit={handleSubmit} method="post">
-              <label htmlFor="actions">Action(s):</label>
-              <select
-                id="actions"
-                name="actions"
-                required
-                defaultValue={flowActions}
-                key="actions"
-              >
-                {Object.keys(flowActions).map((key) => (
-                  <>
-                    <option key={flowActions[key]} value={flowActions[key]}>
-                      {flowActions[key]}
-                    </option>
-                  </>
-                ))}
-              </select>
+        )}
 
-              {inputs.map(({ name, label }, index) => {
-                return (
-                  <span key={name}>
-                    <label htmlFor={name}>{label}:</label>
-                    <input
-                      key={name}
-                      type="text"
-                      id={name}
-                      name={name}
-                      defaultValue={defaultValues[name]}
-                    />
-                  </span>
-                );
-              })}
-              <Button disabled={formData} type="primary" htmlType="submit">
-                Create Inputs Payload
-              </Button>
-            </form>
-          </Card>
-        </>
-      )}
-
-      {formData ? (
-        <>
-          <p>
-            Send this JSON request body to the{" "}
-            <ToolTip
-              placement="top"
-              title={`/api/v1/flows/<flow_id>/next - Refer to the Figment Docs for more information.`}
-            >
-              Staking API endpoint
-            </ToolTip>{" "}
-            to continue with the flow:
-          </p>
-
-          <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
-
-          {!inputsSent && (
-            <>
-              <Button onClick={() => handleStakingAPI()}>
-                Submit Data to Staking API
-              </Button>
-              <br />
-              <Button
-                destructive
-                type="text"
-                htmlType="button"
-                onClick={() => handleClearFormData()}
-              >
-                Reset Inputs Payload
-              </Button>
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <br />
-          <br />
-          <p className={styles.spacer}>
-            Request body displayed here after clicking{" "}
-            <b>Create Inputs Payload</b>
-          </p>
-        </>
-      )}
-
-      {unsignedTransactionPayload && inputsSent && (
-        <>
-          <p className={styles.explanation}>
-            An unsigned{" "}
-            <ToolTip
-              placement="top"
-              title={`In terms of the Staking API, a transaction payload is a hashed representation of the inputs belonging to an action. It must be signed before it can be broadcast by the Staking API.`}
-            >
-              transaction payload
-            </ToolTip>{" "}
-            has been created by the Staking API
-            <br />
-            based on the submitted <Formatted>action</Formatted> and{" "}
-            <Formatted>inputs</Formatted>:<br />
-          </p>
-          <details>
-            <summary>Click here to see the payload</summary>
-            <Formatted block>{unsignedTransactionPayload}</Formatted>{" "}
-          </details>
-          <details>
-            <summary>Click here to see the full response</summary>
-            <Formatted block maxHeight="500px">
-              {JSON.stringify(flowResponse, null, 2)}
-            </Formatted>{" "}
-          </details>
-
-          <Button
-            size="large"
-            type="primary"
-            onClick={() => setAppState({ stepCompleted: 2 })}
-            href={`/operations/${operation}/sign-payload`}
-          >
-            Proceed to the next step &rarr;
-          </Button>
-        </>
-      )}
-
-      <Footer />
+        <Footer />
+      </Layout>
 
       <Modal
         title="Details"
@@ -379,8 +386,9 @@ const handleSubmit = async (event) => {
             {" & "}
             <Formatted>inputs</Formatted> names and{" "}
             <Formatted>display</Formatted> labels used to build the form on this
-            page come from the Staking API response when the flow is created.
-            The values shown here are taken directly from the response:
+            page. These values are included in the Staking API response when the
+            flow is created. The values shown here are taken directly from the
+            response:
           </li>
           <li>
             <details>

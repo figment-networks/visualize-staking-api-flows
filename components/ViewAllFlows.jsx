@@ -15,6 +15,7 @@ import {
   Card,
   Formatted,
   Footer,
+  Layout,
 } from "@pages/ui-components";
 
 export default function ViewAllFlows() {
@@ -83,111 +84,111 @@ export default function ViewAllFlows() {
   return (
     <>
       <BreadCrumbs step={6} />
-      <Title>View All Flows</Title>
-
-      <Card>
-        <p>
-          As you create new flows, their current state and response data can be
-          viewed at any time in a paginated format. This works differently from
-          querying details of a specific flow using its{" "}
-          <Formatted>flowId</Formatted> as illustrated in the previous step.
-          <br />
-          <br />
-          To view all flows created by your account, send a GET request to the{" "}
-          <ToolTip
-            placement="bottom"
-            title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
-            arrowPointAtCenter
-            className={styles.tooltip}
-          >
-            Staking API endpoint
-          </ToolTip>{" "}
-          without specifying a <Formatted>flowId</Formatted>. Select a page
-          number, then click <b>Get Page of Flows</b> to continue.
-          <form method="post" onSubmit={handleSubmit}>
-            <label htmlFor="page" className={styles.centerLabel}>
-              Select Page Number
-            </label>
-            <input
-              type="number"
-              id="page"
-              name="page"
-              defaultValue="1"
-              min="1"
-              className={styles.pageNumberInput}
-            />
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={() => {
-                setAppState({ flowCompleted: true });
-              }}
-            >
-              Get Page of Flows
-            </Button>
-            {responseData?.page && (
-              <>
-                <Button
-                  destructive
-                  type="text"
-                  htmlType="button"
-                  onClick={handleReset}
-                >
-                  Reset Page
-                </Button>
-              </>
-            )}
-          </form>
-          When you are done here you can{" "}
-          <Link href="/">return to the main page</Link>, or stop the Next.js
-          server and close this browser tab to close the app.{" "}
-          <b>
-            Thank you for taking the time to visualize Figment&apos;s Staking
-            API!
-          </b>
-        </p>
-        <Button size="large" type="text" onClick={() => showModal()}>
-          Click Here For More Information
-        </Button>
-      </Card>
-
-      {responseData && !responseData.page && !isLoading && (
-        <>
-          <h6>&darr; Recently completed flow</h6>
-          <Formatted block maxHeight="500px">
-            {JSON.stringify(responseData, null, 2)}
-          </Formatted>
-        </>
-      )}
-
-      {isLoading && <p>Loading...</p>}
-
-      {responseData?.page && !isLoading && (
-        <>
+      <Layout>
+        <Title>View All Flows</Title>
+        <Card small>
           <p>
-            In this response from the Staking API, the{" "}
-            <Formatted>data[]</Formatted> array contains{" "}
-            <b>{responseData?.data.length}</b> results per page &mdash;
+            As you create new flows, their current state and response data can
+            be viewed at any time in a paginated format. This works differently
+            from querying details of a specific flow using its{" "}
+            <Formatted>flowId</Formatted> as illustrated in the previous step.
             <br />
-            You are curently viewing page <b>{responseData?.page}</b> of{" "}
-            <b>{responseData?.pages}</b>. Use the pagination control below to
-            move between results.
+            <br />
+            To view all flows created by your account, send a GET request to the{" "}
+            <ToolTip
+              placement="bottom"
+              title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
+              arrowPointAtCenter
+              className={styles.tooltip}
+            >
+              Staking API endpoint
+            </ToolTip>{" "}
+            without specifying a <Formatted>flowId</Formatted>. Select a page
+            number, then click <b>Get Page of Flows</b> to continue.
+            <form method="post" onSubmit={handleSubmit}>
+              <label htmlFor="page" className={styles.centerLabel}>
+                Select Page Number
+              </label>
+              <input
+                type="number"
+                id="page"
+                name="page"
+                defaultValue="1"
+                min="1"
+                className={styles.pageNumberInput}
+              />
+              <Button
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setAppState({ flowCompleted: true });
+                }}
+              >
+                Get Page of Flows
+              </Button>
+              {responseData?.page && (
+                <>
+                  <Button
+                    destructive
+                    type="text"
+                    htmlType="button"
+                    onClick={handleReset}
+                  >
+                    Reset Page
+                  </Button>
+                </>
+              )}
+            </form>
+            <br />
+            When you are done here you can{" "}
+            <Link href="/">return to the main page</Link>, or stop the Next.js
+            server and close this browser tab to close the app.{" "}
+            <b>
+              Thank you for taking the time to visualize Figment&apos;s Staking
+              API!
+            </b>
           </p>
-          <Pagination
-            className={styles.paginationControls}
-            total={responseData?.data?.length ? responseData.data.length : 1}
-            pageSize={1}
-            responsive={true}
-            defaultCurrent={1}
-            onChange={handlePaginationChange}
-          />
-          <Formatted block maxHeight="450px">
-            {JSON.stringify(pageItem, null, 2)}
-          </Formatted>
-        </>
-      )}
+          <Button size="large" type="text" onClick={() => showModal()}>
+            Click Here For More Information
+          </Button>
+        </Card>
 
-      <Footer />
+        {responseData && !responseData.page && !isLoading && (
+          <Card small>
+            <h6>&darr; Recently completed flow</h6>
+            <Formatted block maxHeight="500px">
+              {JSON.stringify(responseData, null, 2)}
+            </Formatted>
+          </Card>
+        )}
+
+        {isLoading && <p>Loading...</p>}
+
+        {responseData?.page && !isLoading && (
+          <Card medium>
+            <p>
+              In this response from the Staking API, the{" "}
+              <Formatted>data[]</Formatted> array contains{" "}
+              <b>{responseData?.data.length}</b> results per page &mdash;
+              <br />
+              You are curently viewing page <b>{responseData?.page}</b> of{" "}
+              <b>{responseData?.pages}</b>. Use the pagination control below to
+              move between results.
+            </p>
+            <Pagination
+              total={responseData?.data?.length ? responseData.data.length : 1}
+              pageSize={1}
+              responsive={true}
+              defaultCurrent={1}
+              onChange={handlePaginationChange}
+            />
+            <Formatted block maxHeight="450px">
+              {JSON.stringify(pageItem, null, 2)}
+            </Formatted>
+          </Card>
+        )}
+
+        <Footer />
+      </Layout>
 
       <Modal
         title="Details"

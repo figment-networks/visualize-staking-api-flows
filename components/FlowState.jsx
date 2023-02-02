@@ -12,6 +12,7 @@ import {
   Card,
   Formatted,
   Footer,
+  Layout,
 } from "@pages/ui-components";
 
 export default function FlowState({ operation }) {
@@ -42,99 +43,104 @@ export default function FlowState({ operation }) {
   return (
     <>
       <BreadCrumbs step={5} />
-      <Title>Get Flow State</Title>
+      <Layout>
+        <Title>Get Flow State</Title>
 
-      <Card>
-        {flowState === "delegate_tx_broadcasting" && (
-          <p>
-            <p>
-              Once the signed transaction has been broadcast by the Staking API,
-              it will take a moment to be confirmed on the network. Check the
-              final state of the flow with a GET request to the{" "}
-              <ToolTip
-                placement="right"
-                title={`/api/v1/flows/${flowId} - Refer to the Figment Docs for more information.`}
-              >
-                Staking API endpoint
-              </ToolTip>{" "}
-              , specifying the flow ID you want to query.
-            </p>
-            <p>
-              For example: GET <Formatted>/api/v1/flows/{flowId}</Formatted>
-            </p>
-          </p>
-        )}
-        {flowState === "delegated" && (
-          <>
-            <p>
-              Congratulations! Flow {flowId.toString().slice(0, -27)}
-              &apos;s state is <Formatted>{flowState}</Formatted>, the
-              transaction status is{" "}
-              <Formatted>
-                {responseData.data.delegate_transaction.status}
-              </Formatted>{" "}
-              and the staking flow is complete!
-              <br />
-              <br />
-              If you&apos;re interested, you can{" "}
-              <ToolTip
-                placement="top"
-                title={`Click here to view the transaction details in a new tab.`}
-              >
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={`https://explorer.testnet.near.org/transactions/${responseData?.data.delegate_transaction.hash}`}
+        <Card small>
+          {flowState === "delegate_tx_broadcasting" && (
+            <>
+              <p>
+                Once the signed transaction has been broadcast by the Staking
+                API, it will take a moment to be confirmed on the network. Check
+                the final state of the flow with a GET request to the{" "}
+                <ToolTip
+                  placement="right"
+                  title={`/api/v1/flows/${flowId} - Refer to the Figment Docs for more information.`}
                 >
-                  view the transaction
-                </Link>
-              </ToolTip>{" "}
-              on the NEAR Block Explorer.
-              <br />
-              <br />
-              In the final step, we will examine how to view all of the flows
-              that you have created.
-            </p>
+                  Staking API endpoint
+                </ToolTip>{" "}
+                , specifying the flow ID you want to query.
+              </p>
+              <p>
+                For example: GET <Formatted>/api/v1/flows/{flowId}</Formatted>
+              </p>
+            </>
+          )}
+          {flowState === "delegated" && (
+            <>
+              <p>
+                Congratulations! Flow {flowId.toString().slice(0, -27)}
+                &apos;s state is <Formatted>{flowState}</Formatted>, the
+                transaction status is{" "}
+                <Formatted>
+                  {responseData.data.delegate_transaction.status}
+                </Formatted>{" "}
+                and the staking flow is complete!
+                <br />
+                <br />
+                If you&apos;re interested, you can{" "}
+                <ToolTip
+                  placement="top"
+                  title={`Click here to view the transaction details in a new tab.`}
+                >
+                  <Link
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://explorer.testnet.near.org/transactions/${responseData?.data.delegate_transaction.hash}`}
+                  >
+                    view the transaction
+                  </Link>
+                </ToolTip>{" "}
+                on the NEAR Block Explorer.
+                <br />
+                <br />
+                In the final step, we will examine how to view all of the flows
+                that you have created.
+              </p>
+            </>
+          )}
+        </Card>
+
+        {flowState !== "delegated" && (
+          <Button onClick={() => handleGetState()}>
+            Get Current Flow State
+          </Button>
+        )}
+
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            {responseData && flowState === "delegate_tx_broadcasting" && (
+              <Card small>
+                <h6>&darr; Staking API Response</h6>
+                <Formatted block maxHeight="500px">
+                  {JSON.stringify(responseData, null, 2)}
+                </Formatted>
+              </Card>
+            )}
+            {responseData && flowState === "delegated" && (
+              <Card small>
+                <h6>&darr; Staking API Response</h6>
+                <Formatted block maxHeight="500px">
+                  {JSON.stringify(responseData, null, 2)}
+                </Formatted>
+              </Card>
+            )}
+
+            {flowState === "delegated" && (
+              <Button
+                onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
+                href="/view-all-flows"
+              >
+                Proceed to the final step &rarr;
+              </Button>
+            )}
           </>
         )}
-      </Card>
 
-      {flowState !== "delegated" && (
-        <Button onClick={() => handleGetState()}>Get Current Flow State</Button>
-      )}
-      {flowState === "delegated" && (
-        <Button
-          onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
-          href="/view-all-flows"
-        >
-          Proceed to the final step &rarr;
-        </Button>
-      )}
-
-      {isLoading ? (
-        "Loading..."
-      ) : (
-        <>
-          {responseData && flowState === "delegate_tx_broadcasting" && (
-            <>
-              <h6>&darr; Staking API Response</h6>
-              <Formatted block maxHeight="500px">
-                {JSON.stringify(responseData, null, 2)}
-              </Formatted>
-            </>
-          )}
-          {responseData && flowState === "delegated" && (
-            <>
-              <h6>&darr; Staking API Response</h6>
-              <Formatted block maxHeight="500px">
-                {JSON.stringify(responseData, null, 2)}
-              </Formatted>
-            </>
-          )}
-        </>
-      )}
-
-      <Footer />
+        <Footer />
+      </Layout>
     </>
   );
 }

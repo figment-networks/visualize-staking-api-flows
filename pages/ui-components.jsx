@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { default as HeadComponent } from "next/head";
+import ToolTip from "@components/elements/ToolTip";
 
 export const Head = ({ title, description }) => (
   <HeadComponent>
@@ -15,7 +16,7 @@ export const Title = ({ children }) => (
   <h3>
     <style jsx>{`
       h3 {
-        margin-top: 4rem;
+        margin-top: 8rem;
         margin-bottom: 2.8rem;
         text-align: center;
       }
@@ -90,10 +91,9 @@ export const Card = ({
       }
 
       div > :global(*) {
-        content: "";
         ${justify ? "text-align: justify;" : ""}
         white-space: pre-wrap;
-        word-break: break-all;
+        word-break: break-word;
       }
     `}</style>
     {children}
@@ -184,11 +184,26 @@ export const Footer = () => (
         margin: 0;
       }
     `}</style>
-    <Link href="https://figment.io/" target="_blank">
+    <Link
+      href="https://www.figment.io/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
       Figment.io
     </Link>
-    <Image src="/f.svg" alt="Figment Logo" width={64} height={32} />
-    <Link href="https://docs.figment.io/" target="_blank">
+    <ToolTip
+      placement="top"
+      title={`Click here to return to the main page of this app`}
+    >
+      <Link href="/">
+        <Image src="/f.svg" alt="Figment Logo" width={64} height={32} />
+      </Link>
+    </ToolTip>
+    <Link
+      href="https://docs.figment.io/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
       Documentation
     </Link>
   </footer>
@@ -269,9 +284,9 @@ export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
   <code>
     <style jsx>{`
       code {
-        border-radius: 4px;
+        border-radius: 5px;
         white-space: pre-wrap;
-        background-color: #f1f4f3;
+        background-color: rgba(0, 0, 0, 0.2);
         line-height: calc(1em + 0.8rem);
         padding: ${block ? "2rem" : "0 .4rem"};
         display: ${block ? "block" : "inline"};
@@ -279,6 +294,35 @@ export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
         max-height: ${maxHeight};
         overflow-y: auto;
         vertical-align: baseline;
+      }
+
+      /* Width for vertical scrollbars */
+      code::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Hide horizontal scrollbars */
+      code::-webkit-scrollbar:horizontal {
+        display: none;
+      }
+
+      /* Scrollbar foreground */
+      code::-webkit-scrollbar-thumb {
+        background: #b1b1b1;
+        border-radius: inherit;
+        /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); */
+      }
+
+      /* Scrollbar background */
+      code::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: inherit;
+        /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+      }
+
+      code::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: inherit;
       }
     `}</style>
     {children}
@@ -290,7 +334,7 @@ export const Layout = ({ children, centerVertical = false, ...props }) => (
     <style jsx>{`
       div {
         position: absolute;
-        min-height: 100%;
+        min-height: 100vh;
         width: 100%;
         display: flex;
         padding: calc(4.8rem + 2.4rem) 2.4rem;
