@@ -291,92 +291,96 @@ const handleSubmit = async (event) => {
           )}
         </ColumnLayout.Column>
 
-        {formData ? (
-          <>
-            <p>
-              Send this JSON request body to the{" "}
-              <ToolTip
-                placement="top"
-                title={`/api/v1/flows/<flow_id>/next - Refer to the Figment Docs for more information.`}
-              >
-                Staking API endpoint
-              </ToolTip>{" "}
-              to continue with the flow:
-            </p>
-
-            <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
-
-            {!inputsSent && (
-              <>
-                <Button onClick={() => handleStakingAPI()}>
-                  Submit Data to Staking API
-                </Button>
-                <br />
-                <Button
-                  destructive
-                  type="text"
-                  htmlType="button"
-                  onClick={() => handleClearFormData()}
+        <ColumnLayout.Column>
+          {formData ? (
+            <>
+              <p>
+                Send this JSON request body to the{" "}
+                <ToolTip
+                  placement="top"
+                  title={`/api/v1/flows/<flow_id>/next - Refer to the Figment Docs for more information.`}
                 >
-                  Reset Inputs Payload
-                </Button>
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <br />
-            <br />
-            <p>
-              Request body displayed here after clicking{" "}
-              <b>Create Inputs Payload</b>
-            </p>
-          </>
-        )}
+                  Staking API endpoint
+                </ToolTip>{" "}
+                to continue with the flow:
+              </p>
 
-        {unsignedTransactionPayload && inputsSent && (
-          <Card small>
-            <p>
-              The flow state has changed from <Formatted>initialized</Formatted>{" "}
-              to <Formatted>delegate_tx_signature</Formatted>, indicating that
-              the Staking API now requires a signed transaction. In the next
-              step, we will examine the signing process.
-            </p>
-            <details>
-              <summary>Click here to see the full response</summary>
-              <Formatted block maxHeight="510px">
-                {JSON.stringify(flowResponse, null, 2)}
-              </Formatted>{" "}
-            </details>
+              <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
 
-            <p>
-              An unsigned{" "}
-              <ToolTip
-                style={{ textDecoration: "underline" }}
-                placement="top"
-                title={`In terms of the Staking API, a transaction payload is a hashed representation of the inputs belonging to an action. It must be signed before it can be broadcast by the Staking API.`}
+              {!inputsSent && (
+                <div
+                  style={{ display: "flex", justifyContent: "space-around" }}
+                >
+                  <Button
+                    secondary
+                    type="text"
+                    htmlType="button"
+                    onClick={() => handleClearFormData()}
+                  >
+                    Reset Inputs Payload
+                  </Button>
+                  <Button onClick={() => handleStakingAPI()}>
+                    Submit Data to Staking API
+                  </Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <br />
+              <br />
+              <p className={styles.spacer}>
+                Request body displayed here after clicking{" "}
+                <b>Create Inputs Payload</b>
+              </p>
+            </>
+          )}
+
+          {unsignedTransactionPayload && inputsSent && (
+            <Card small>
+              <p>
+                The flow state has changed from{" "}
+                <Formatted>initialized</Formatted> to{" "}
+                <Formatted>delegate_tx_signature</Formatted>, indicating that
+                the Staking API now requires a signed transaction. In the next
+                step, we will examine the signing process.
+              </p>
+              <details>
+                <summary>Click here to see the full response</summary>
+                <Formatted block maxHeight="510px">
+                  {JSON.stringify(flowResponse, null, 2)}
+                </Formatted>{" "}
+              </details>
+
+              <p>
+                An unsigned{" "}
+                <ToolTip
+                  style={{ textDecoration: "underline" }}
+                  placement="top"
+                  title={`In terms of the Staking API, a transaction payload is a hashed representation of the inputs belonging to an action. It must be signed before it can be broadcast by the Staking API.`}
+                >
+                  transaction payload
+                </ToolTip>{" "}
+                has been created by the Staking API based on the submitted{" "}
+                <Formatted>action</Formatted> and <Formatted>inputs</Formatted>.
+              </p>
+
+              <details>
+                <summary>Click here to see the payload</summary>
+                <Formatted block>{unsignedTransactionPayload}</Formatted>{" "}
+              </details>
+
+              <Button
+                size="large"
+                type="primary"
+                onClick={() => setAppState({ stepCompleted: 2 })}
+                href={`/operations/${operation}/sign-payload`}
               >
-                transaction payload
-              </ToolTip>{" "}
-              has been created by the Staking API based on the submitted{" "}
-              <Formatted>action</Formatted> and <Formatted>inputs</Formatted>.
-            </p>
-
-            <details>
-              <summary>Click here to see the payload</summary>
-              <Formatted block>{unsignedTransactionPayload}</Formatted>{" "}
-            </details>
-
-            <Button
-              size="large"
-              type="primary"
-              onClick={() => setAppState({ stepCompleted: 2 })}
-              href={`/operations/${operation}/sign-payload`}
-            >
-              Proceed to the next step &rarr;
-            </Button>
-          </Card>
-        )}
+                Proceed to the next step &rarr;
+              </Button>
+            </Card>
+          )}
+        </ColumnLayout.Column>
 
         <Footer />
       </ColumnLayout>
