@@ -9,7 +9,6 @@ import { useAppState } from "@utilities/appState";
 import Heading from "@components/elements/Heading";
 import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
-import Footer from "@components/elements/Footer";
 
 import {
   Title,
@@ -17,6 +16,8 @@ import {
   Button,
   Card,
   Formatted,
+  ColumnLayout,
+  Footer,
 } from "@pages/ui-components";
 
 export default function BroadcastTransaction({ operation }) {
@@ -62,81 +63,91 @@ export default function BroadcastTransaction({ operation }) {
   return (
     <>
       <BreadCrumbs step={4} />
-      <Title title="Broadcast Transaction" />
+      <ColumnLayout title={<Title>Broadcast Transaction</Title>}>
+        <ColumnLayout.Column
+          style={{
+            padding: "0",
+            flexShrink: "0",
+            width: "100%",
+            marginBottom: "2.4rem",
+          }}
+        >
+          <Card large>
+            <p>
+              Provide the signed <Formatted>transaction_payload</Formatted> to
+              the Staking API. The transaction is then broadcast to the network
+              via the Staking APIs dedicated infrastructure.
+            </p>
+            <Button size="large" type="text" onClick={() => showModal()}>
+              Click Here For More Information
+            </Button>
+          </Card>
+        </ColumnLayout.Column>
 
-      <Card small>
-        <p>
-          Provide the signed <Formatted>transaction_payload</Formatted> to the
-          Staking API. The transaction is then broadcast to the network via the
-          Staking APIs dedicated infrastructure.
-        </p>
-        <Button size="large" type="text" onClick={() => showModal()}>
-          Click Here For More Information
-        </Button>
-      </Card>
+        <ColumnLayout.Column>
+          <Card medium>
+            <form onSubmit={handleSubmit} method="post">
+              <h6>&darr; Signed Transaction Payload</h6>
+              <textarea
+                className={styles.decodeTextArea}
+                id="signed_payload"
+                name="signed_payload"
+                required
+                defaultValue={signedTransactionPayload}
+              />
+              <Button
+                disabled={flowState === "delegate_tx_broadcasting"}
+                style={{ width: "auto" }}
+                type="primary"
+                htmlType="submit"
+              >
+                Submit Signed Transaction Payload
+              </Button>
+            </form>
+          </Card>
+        </ColumnLayout.Column>
 
-      <Card small>
-        <form onSubmit={handleSubmit} method="post">
-          <h6>&darr; Signed Transaction Payload</h6>
-          <textarea
-            className={styles.decodeTextArea}
-            id="signed_payload"
-            name="signed_payload"
-            required
-            defaultValue={signedTransactionPayload}
-          />
-          <Button
-            disabled={flowState === "delegate_tx_broadcasting"}
-            style={{ width: "auto" }}
-            type="primary"
-            htmlType="submit"
-          >
-            Submit Signed Transaction Payload
-          </Button>
-        </form>
-      </Card>
-
-      {flowState && (
-        <>
-          <p>
-            Flow ID: <Formatted>{flowId}</Formatted>
-          </p>
-          <p>
-            Flow state: <Formatted>{flowState}</Formatted>{" "}
-          </p>
-
-          {flowState === "delegate_tx_broadcasting" && (
-            <Card small>
+        <ColumnLayout.Column>
+          {flowState && (
+            <>
               <p>
-                The signed payload has been broadcast to the NEAR network by the
-                Staking API,
-                <br />
-                the flow state changed from <Formatted>
-                  initialized
-                </Formatted>{" "}
-                to <Formatted>delegate_tx_broadcasting</Formatted>.<br />
-                <br />
-                At this point in the flow, the only action remaining is to check
-                the flow state to ensure it is <Formatted>delegated</Formatted>.
+                Flow ID <Formatted>{flowId}</Formatted>
+                Flow state: <Formatted>{flowState}</Formatted>{" "}
               </p>
 
-              <Button
-                size="large"
-                type="primary"
-                htmlType="button"
-                className={styles.proceedButton}
-                onClick={() => setAppState({ stepCompleted: 4 })}
-                href={`/operations/${operation}/flow-state`}
-              >
-                Proceed to the next step &rarr;
-              </Button>
-            </Card>
+              {flowState === "delegate_tx_broadcasting" && (
+                <Card small>
+                  <p>
+                    The signed payload has been broadcast to the NEAR network by
+                    the Staking API,
+                    <br />
+                    the flow state changed from{" "}
+                    <Formatted>initialized</Formatted> to{" "}
+                    <Formatted>delegate_tx_broadcasting</Formatted>.<br />
+                    <br />
+                    At this point in the flow, the only action remaining is to
+                    check the flow state to ensure it is{" "}
+                    <Formatted>delegated</Formatted>.
+                  </p>
+
+                  <Button
+                    size="large"
+                    type="primary"
+                    htmlType="button"
+                    className={styles.proceedButton}
+                    onClick={() => setAppState({ stepCompleted: 4 })}
+                    href={`/operations/${operation}/flow-state`}
+                  >
+                    Proceed to the next step &rarr;
+                  </Button>
+                </Card>
+              )}
+            </>
           )}
-        </>
-      )}
+        </ColumnLayout.Column>
 
-      <Footer />
-
+        <Footer />
+      </ColumnLayout>
       <Modal
         title="Details"
         width="calc(40% - 10px)"
