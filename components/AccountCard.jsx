@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useState } from "next/router";
 import React from "react";
 import { useAppState } from "@utilities/appState";
 import ToolTip from "@components/elements/ToolTip";
@@ -29,7 +29,11 @@ const stepLabel = (step, completed, flowId) => {
 const explorerUrl = (address) =>
   `https://explorer.testnet.near.org/accounts/${address}`;
 
-const isIndex = () => useRouter().pathname === "/";
+function useIsIndex() {
+  if (useRouter().pathname === "/") {
+    setIsIndex(true);
+  }
+}
 
 const trimmedAccount = (account) => {
   let trimmedAccount = account.slice(0, 6);
@@ -39,6 +43,8 @@ const trimmedAccount = (account) => {
 };
 
 export default function AccountCard() {
+  const [isIndex, setIsIndex] = useState(false);
+
   const {
     appState: {
       flowId,
@@ -54,7 +60,7 @@ export default function AccountCard() {
 
   return (
     <>
-      {accountAddress && isIndex() ? (
+      {accountAddress && isIndex ? (
         <Card small>
           <p>
             Testnet Account:{" "}
@@ -74,7 +80,7 @@ export default function AccountCard() {
       ) : (
         <>
           <Card medium>
-            <h5 className="address">Account Address &rarr;</h5>
+            <h5>Account Address &rarr;</h5>
             <Link className="ext_link" href={explorerUrl(accountAddress)}>
               {accountAddress}
             </Link>

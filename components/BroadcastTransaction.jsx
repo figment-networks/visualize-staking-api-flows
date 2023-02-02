@@ -74,17 +74,22 @@ export default function BroadcastTransaction({ operation }) {
         >
           <Card large>
             <p>
-              Provide the signed <Formatted>transaction_payload</Formatted> to
-              the Staking API. The transaction is then broadcast to the network
-              via the Staking APIs dedicated infrastructure.
+              Provide the signed <Formatted>transaction_payload</Formatted> back
+              to the Staking API. The transaction is then broadcast to the
+              network via the Staking APIs dedicated infrastructure.
             </p>
+            {/* <p>
+              It is also possible to sign and broadcast payloads elsewhere, and
+              complete a Staking API flow by providing the transaction hash
+              &mdash; This method is described in the Figment Docs.
+            </p> */}
             <Button small secondary onClick={() => showModal()}>
               Click Here For More Information
             </Button>
           </Card>
         </ColumnLayout.Column>
 
-        <ColumnLayout.Column style={{ width: "100%", maxWidth: "600px" }}>
+        <ColumnLayout.Column style={{ width: "100%", maxWidth: "700px" }}>
           <Card medium>
             <form onSubmit={handleSubmit} method="post">
               <h6>&darr; Signed Transaction Payload</h6>
@@ -112,17 +117,18 @@ export default function BroadcastTransaction({ operation }) {
           {flowState && (
             <>
               <p>
-                Flow ID <Formatted>{flowId}</Formatted>
-                Flow state: <Formatted>{flowState}</Formatted>{" "}
+                Flow ID <Formatted>{flowId}</Formatted> state is{" "}
+                <Formatted>{flowState}</Formatted>{" "}
               </p>
+              <br />
 
               {flowState === "delegate_tx_broadcasting" && (
                 <Card small>
                   <p>
-                    The signed payload has been broadcast to the NEAR network by
-                    the Staking API,
+                    After the signed payload has been broadcast to the NEAR
+                    network by the Staking API,
                     <br />
-                    the flow state changed from{" "}
+                    the flow state changes from{" "}
                     <Formatted>initialized</Formatted> to{" "}
                     <Formatted>delegate_tx_broadcasting</Formatted>.<br />
                     <br />

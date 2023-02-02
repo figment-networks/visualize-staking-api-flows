@@ -273,7 +273,8 @@ export default function CreateFlow({ operation }) {
                   </select>
 
                   {/* Networks support different operations, 
-                so we are using conditional rendering to make the form dynamic. */}
+                      so we are using conditional rendering 
+                      to make the form dynamic. */}
                   <label htmlFor="operation">Operation</label>
                   <select
                     id="operation"
@@ -360,7 +361,7 @@ export default function CreateFlow({ operation }) {
                 <Formatted dark>
                   <ToolTip
                     style={{ textDecoration: "underline" }}
-                    placement="top"
+                    placement="topLeft"
                     title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
                   >
                     {flowResponse?.id}
@@ -371,7 +372,7 @@ export default function CreateFlow({ operation }) {
                   <ToolTip
                     style={{ textDecoration: "underline" }}
                     placement="top"
-                    title={`This is the flow's state, meaning that it has been created and the flow ID assigned. The flow will remain in this state until it is updated by an action.`}
+                    title={`This is the flow's current state. The flow will remain in the initialized state until it is updated by an action.`}
                   >
                     {flowResponse?.state}
                   </ToolTip>
@@ -401,8 +402,8 @@ export default function CreateFlow({ operation }) {
               {!flowCompleted && !formData && stepCompleted !== 5 && (
                 <>
                   <br />
-                  <p>
-                    The request body will appear when you click{" "}
+                  <p className={styles.spacer}>
+                    The request body will be displayed when you click{" "}
                     <b>Create JSON Request Body</b>.
                   </p>
                 </>
@@ -421,6 +422,7 @@ export default function CreateFlow({ operation }) {
                     </ToolTip>{" "}
                     to create a new flow:
                   </p>
+                  <br />
                   <Formatted block>
                     {JSON.stringify(formData, null, 2)}
                   </Formatted>

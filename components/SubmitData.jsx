@@ -225,7 +225,7 @@ const handleSubmit = async (event) => {
               The form below has been created based on the Staking API response
               and provided with default values.
             </p>
-            <Button small onClick={() => showModal()}>
+            <Button secondary small onClick={() => showModal()}>
               Click Here For More Information
             </Button>
           </Card>
@@ -298,6 +298,7 @@ const handleSubmit = async (event) => {
               <p>
                 Send this JSON request body to the{" "}
                 <ToolTip
+                  style={{ textDecoration: "underline" }}
                   placement="top"
                   title={`/api/v1/flows/<flow_id>/next - Refer to the Figment Docs for more information.`}
                 >

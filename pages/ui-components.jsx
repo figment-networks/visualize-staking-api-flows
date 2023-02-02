@@ -197,7 +197,7 @@ export const Footer = () => (
     </Link>
     <ToolTip
       placement="top"
-      title={`Click here to return to the main page of this app`}
+      title={`Click on the Figment logo at any time to return to the main page of this app`}
     >
       <Link href="/">
         <Image src="/f.svg" alt="Figment Logo" width={64} height={32} />
@@ -407,6 +407,7 @@ export const ColumnLayout = ({ children, title }) => (
   </div>
 );
 
+// eslint-disable-next-line react/display-name
 ColumnLayout.Column = ({ children, ...props }) => (
   <div className="column" {...props}>
     {children}
@@ -417,9 +418,10 @@ export default function UIComponents() {
   return (
     <>
       <BreadCrumbs step={4} />
-      <Title>Visualize Figment's Staking API</Title>
+      <Title>Visualize Figment&apos;s Staking API</Title>
       <Headline>
-        Learn how to use Figment's Staking API in an intuitive, visual format
+        Learn how to use Figment&apos;s Staking API in an intuitive, visual
+        format
       </Headline>
       <Card>
         <h5>Hey</h5>

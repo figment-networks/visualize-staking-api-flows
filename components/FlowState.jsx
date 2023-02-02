@@ -46,7 +46,7 @@ export default function FlowState({ operation }) {
       <VerticalLayout>
         <Title>Get Flow State</Title>
 
-        <Card small>
+        <Card large>
           {flowState === "delegate_tx_broadcasting" && (
             <>
               <p>
@@ -54,8 +54,9 @@ export default function FlowState({ operation }) {
                 API, it will take a moment to be confirmed on the network. Check
                 the final state of the flow with a GET request to the{" "}
                 <ToolTip
-                  placement="right"
-                  title={`/api/v1/flows/${flowId} - Refer to the Figment Docs for more information.`}
+                  style={{ textDecoration: "underline" }}
+                  placement="bottom"
+                  title={`/api/v1/flows/<flow_id> - Refer to the Figment Docs for more information regarding endpoints.`}
                 >
                   Staking API endpoint
                 </ToolTip>{" "}
@@ -123,7 +124,7 @@ export default function FlowState({ operation }) {
                   }}
                 >
                   <h6>&darr; Staking API Response</h6>
-                  <Formatted block>
+                  <Formatted block maxHeight="360px">
                     {JSON.stringify(responseData, null, 2)}
                   </Formatted>
                 </Card>

@@ -176,7 +176,14 @@ export default function DecodeAndSignPayload({ operation }) {
           </Card>
         </ColumnLayout.Column>
 
-        <ColumnLayout.Column>
+        <ColumnLayout.Column
+          style={{
+            padding: "0",
+            flexShrink: "0",
+            width: "30%",
+            marginBottom: "2.4rem",
+          }}
+        >
           <form onSubmit={handleDecode} method="post">
             <h6>&darr; Unsigned Transaction Payload</h6>
             <textarea
@@ -196,6 +203,8 @@ export default function DecodeAndSignPayload({ operation }) {
         <ColumnLayout.Column>
           {!decodedTransactionPayload && (
             <>
+              <br />
+              <br />
               <p className={styles.spacer}>
                 {isLoading && <p>Decoding Payload...</p>}
                 The decoded payload will appear here after you click{" "}
@@ -316,6 +325,7 @@ export default function DecodeAndSignPayload({ operation }) {
                     >
                       <Button
                         secondary
+                        small
                         style={{ margin: 0 }}
                         onClick={() => handleResetDecodedPayload()}
                       >
@@ -456,7 +466,8 @@ export default function DecodeAndSignPayload({ operation }) {
                   style={{ display: "flex", justifyContent: "space-around" }}
                 >
                   <Button
-                    destructive
+                    secondary
+                    small
                     onClick={() => handleResetSignedPayload()}
                   >
                     Reset Signed Transaction Payload

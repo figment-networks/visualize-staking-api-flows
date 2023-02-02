@@ -99,10 +99,9 @@ export default function ViewAllFlows() {
             <br />
             To view all flows created by your account, send a GET request to the{" "}
             <ToolTip
-              placement="bottom"
+              style={{ textDecoration: "underline" }}
+              placement="right"
               title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
-              arrowPointAtCenter
-              className={styles.tooltip}
             >
               Staking API endpoint
             </ToolTip>{" "}
