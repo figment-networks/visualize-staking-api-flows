@@ -67,6 +67,7 @@ export const Card = ({
         ${medium ? "max-width: 120rem;" : ""}
         ${large ? "max-width: none;" : ""}
         overflow: hidden;
+        margin-bottom: 2.4rem;
       }
 
       div :global(button.btn),

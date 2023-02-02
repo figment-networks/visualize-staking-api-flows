@@ -282,6 +282,7 @@ const handleSubmit = async (event) => {
                       </span>
                     );
                   })}
+                  <br />
                   <Button disabled={formData} type="primary" htmlType="submit">
                     Create Inputs Payload
                   </Button>
