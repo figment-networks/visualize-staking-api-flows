@@ -410,10 +410,10 @@ export default function DecodeAndSignPayload({ operation }) {
               <Card medium>
                 <br />
                 <h6>&darr; Signed Transaction Payload</h6>
-                <Formatted block>
+                <Formatted block contrast>
                   <ToolTip
                     placement="top"
-                    title={`The blue text is the unsigned transaction payload, also shown on the left.`}
+                    title={`The cyan text is the unsigned transaction payload, also shown on the left.`}
                   >
                     {/* payload highlight span - 
                   
@@ -425,6 +425,7 @@ export default function DecodeAndSignPayload({ operation }) {
                     color: "#FEC70D"
                     color: "#FFF29B"
                     color: "#034d76"
+                    color: "#10726d"
                   */}
                     <span style={{ color: "#10726d" }}>
                       {unsignedTransactionPayload}
@@ -433,7 +434,7 @@ export default function DecodeAndSignPayload({ operation }) {
 
                   <ToolTip
                     placement="bottom"
-                    title={`The yellow text is the signature, created by signing the payload using the private key of the delegator account.`}
+                    title={`The red text is the signature, created by signing the payload using the private key of the delegator account.`}
                   >
                     {/* signature highlight span - 
                   
@@ -447,9 +448,9 @@ export default function DecodeAndSignPayload({ operation }) {
                     color: "#FEC70D"
                     color: "#FFF29B"
                     color: "#034d76"
-
+                    color: "#a7431b"
                   */}
-                    <span style={{ color: "#a7431b" }}>
+                    <span style={{ color: "#a7431f" }}>
                       {signedTransactionPayload.slice(434, 562)}
                     </span>
                   </ToolTip>
