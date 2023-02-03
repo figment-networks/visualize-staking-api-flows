@@ -240,6 +240,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
           display: flex;
           border-bottom: solid 1px #d4d6d4;
           padding: 0 2rem;
+          justify-content: center;
         }
         header div {
           position: relative;
@@ -407,12 +408,13 @@ export const ColumnLayout = ({ children, title }) => (
   </div>
 );
 
-// eslint-disable-next-line react/display-name
 ColumnLayout.Column = ({ children, ...props }) => (
   <div className="column" {...props}>
     {children}
   </div>
 );
+
+ColumnLayout.Column.displayName = "Column";
 
 export default function UIComponents() {
   return (

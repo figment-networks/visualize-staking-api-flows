@@ -78,6 +78,15 @@ button {
   margin: 0.3em 0;
 }
 
+li {
+  font-size: 1.8rem;
+}
+
+li > a {
+  font-size: 1.8rem;
+  text-decoration: underline;
+}
+
 form {
   margin-bottom: 2.4rem;
 }
@@ -136,7 +145,7 @@ li details {
 
 details summary {
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   line-height: 2.4rem;
 }
 
@@ -144,16 +153,7 @@ details summary > * {
   display: inline;
 }
 
-/* Preformatted codeblocks, anywhere <pre></pre> is used */
-pre {
-  overflow-x: hidden;
-  font-family: "Fira Code";
-  border-radius: 8px;
-  padding: 8px;
-  display: block;
-  background-color: #a2a2a2;
-}
-
+/* Used to obfuscate the Private Key when creating an account */
 p.secret {
   word-wrap: break-word;
   color: transparent;

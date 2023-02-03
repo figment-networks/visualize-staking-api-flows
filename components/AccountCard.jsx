@@ -53,6 +53,8 @@ export default function AccountCard() {
 
   const stepLink = !flowCompleted ? stepRoute(stepCompleted) : stepRoute(7);
 
+  console.log(stepLink);
+
   return (
     <>
       {accountAddress && isIndex() ? (
@@ -75,7 +77,7 @@ export default function AccountCard() {
       ) : (
         <>
           <Card medium>
-            <h5>Account Address &rarr;</h5>
+            <h6>Account Address &rarr;</h6>
             <Link
               href={explorerUrl(accountAddress)}
               rel="noopener noreferrer"

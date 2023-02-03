@@ -353,6 +353,7 @@ export default function CreateFlow({ operation }) {
             </>
           )}
         </ColumnLayout.Column>
+
         <ColumnLayout.Column style={{ marginBottom: "2.4rem" }}>
           {!flowCompleted && flowResponse && stepCompleted < 2 ? (
             <>
@@ -443,11 +444,12 @@ export default function CreateFlow({ operation }) {
           )}
         </ColumnLayout.Column>
       </ColumnLayout>
+
       <Footer />
 
       <Modal
         title="Details"
-        width="calc(40% - 10px)"
+        width="calc(50% - 10px)"
         footer={null}
         open={isModalOpen}
         onCancel={closeModal}
@@ -460,17 +462,15 @@ export default function CreateFlow({ operation }) {
           <br />
           <li>
             Figment&apos;s Staking API supports several networks, each network
-            has its own set of available operations.
+            has its own set of available operations. Upon creation, each flow is
+            given a unique ID. Flows can be created on testnet or mainnet.
             <br />
-            Upon creation, each flow is given a unique ID.
+            Flows change state when an action has been completed.
             <br />
-            A flow can be created on testnet or mainnet.
+            Flow actions relate to each part of an operation &mdash; for
+            example, a <Formatted>staking</Formatted> operation has the actions
             <br />
-            A flow will change state when an action has been completed.
-            <br />
-            Depending on the operation, flow actions relate to each part of an
-            operation &mdash; for example, a <Formatted>staking</Formatted>{" "}
-            operation has the actions <Formatted>create_delegate_tx</Formatted>,{" "}
+            <Formatted>create_delegate_tx</Formatted>,{" "}
             <Formatted>refresh_delegate_tx</Formatted> and{" "}
             <Formatted>sign_delegate_tx</Formatted>.
           </li>
