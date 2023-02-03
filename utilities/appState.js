@@ -13,6 +13,7 @@ const initialState = {
   inputs: [], // An array of combined inputs and labels used to construct a form based on the Staking API response
   flowResponse: "", // Used to capture the Staking API response
   responseData: "", // Used to capture the Staking API response
+  errorResponse: "", // Used to capture any error response from the Staking API
   unsignedTransactionPayload: "", // Returned by the Staking API
   decodedTransactionPayload: "", // Decoded using @figmentio/slate or Rust crate
   signedTransactionPayload: "", // Signed using @figmentio/slate or Rust crate

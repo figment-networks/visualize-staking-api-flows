@@ -46,7 +46,7 @@ export default function FlowState({ operation }) {
       <VerticalLayout>
         <Title>Get Flow State</Title>
 
-        <Card large>
+        <Card small>
           {flowState === "delegate_tx_broadcasting" && (
             <>
               <p>

@@ -31,8 +31,10 @@ export default function SubmitData({ operation }) {
     unsignedTransactionPayload,
     accountPublicKey,
     accountAddress,
+    errorResponse,
   } = appState;
 
+  const [isLoading, setIsLoading] = useState(false);
   const [inputsSent, setInputsSent] = useState(false);
   const [formData, setFormData] = useState();
 
@@ -69,12 +71,6 @@ export default function SubmitData({ operation }) {
   };
 
   const handleStakingAPI = async () => {
-    const accountBackup = localStorage.getItem(
-      "visualize-staking-api-flows_accountBackup"
-    );
-
-    // setAppState({ accountAddress: accountBackup.accountAddress , accountPublicKey: accountPublicKey})
-
     const data = {
       ...formData,
       flow_id: flowId,
@@ -94,10 +90,16 @@ export default function SubmitData({ operation }) {
 
     console.log("submit-data result: ", result);
 
-    // Alert user if there is an error message from the Staking API
+    // Alert user if there is a general error message from the Staking API
     if (result.code) {
       alert(`${result.code}: ${result.message}`);
     }
+
+    // Alert user if there are validation errors from the Staking API
+    // if (result.code === "invalid") {
+    //   alert(`${result.code}: ${JSON.stringify(result.errors, null, 2)}`);
+    //   setAppState({ errorResponse: result });
+    // }
 
     if (result.data) {
       console.log(
@@ -173,9 +175,6 @@ export default function SubmitData({ operation }) {
   })}
   <Button
     disabled={formData}
-    className={styles.submitButton}
-    type="primary"
-    htmlType="submit"
   >
     Create Inputs Payload
   </Button>
@@ -213,9 +212,11 @@ const handleSubmit = async (event) => {
             flexShrink: "0",
             width: "100%",
             marginBottom: "2.4rem",
+            justifyContent: "center",
+            display: "flex",
           }}
         >
-          <Card large>
+          <Card small>
             <p>
               After creating a flow, the next step is to check the response to
               understand which actions are available, and which data needs to be
@@ -256,7 +257,8 @@ const handleSubmit = async (event) => {
                     id="actions"
                     name="actions"
                     required
-                    defaultValue={flowActions}
+                    defaultValue={flowActions[0]}
+                    multiple={false}
                     key="actions"
                   >
                     {Object.keys(flowActions).map((key) => (
@@ -283,9 +285,7 @@ const handleSubmit = async (event) => {
                     );
                   })}
                   <br />
-                  <Button disabled={formData} type="primary" htmlType="submit">
-                    Create Inputs Payload
-                  </Button>
+                  <Button disabled={formData}>Create Inputs Payload</Button>
                 </form>
               </Card>
             </>
@@ -309,23 +309,16 @@ const handleSubmit = async (event) => {
 
               <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
 
-              {!inputsSent && (
-                <div
-                  style={{ display: "flex", justifyContent: "space-around" }}
-                >
-                  <Button
-                    secondary
-                    type="text"
-                    htmlType="button"
-                    onClick={() => handleClearFormData()}
-                  >
-                    Reset Inputs Payload
-                  </Button>
-                  <Button onClick={() => handleStakingAPI()}>
-                    Submit Data to Staking API
-                  </Button>
-                </div>
-              )}
+              {/* {!inputsSent && ( */}
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+                <Button secondary onClick={() => handleClearFormData()}>
+                  Reset Inputs Payload
+                </Button>
+                <Button onClick={() => handleStakingAPI()}>
+                  Submit Data to Staking API
+                </Button>
+              </div>
+              {/* )} */}
             </>
           ) : (
             <>
@@ -335,6 +328,34 @@ const handleSubmit = async (event) => {
                 Request body displayed here after clicking{" "}
                 <b>Create Inputs Payload</b>
               </p>
+            </>
+          )}
+
+          {!unsignedTransactionPayload && inputsSent && (
+            <>
+              <br />
+              <Card small>
+                <p className={styles.callout}>
+                  Validation error(s) occurred when submitting this data to the
+                  Staking API.
+                  <br />
+                  <br />
+                  Default values supplied by this app should not cause
+                  validation errors under normal circumstances. If the inputs
+                  you sent are known to be valid, this could indicate an issue
+                  with the Staking API.
+                  <br />
+                  <br />
+                  Please contact Figment Support via email:{" "}
+                  <Link href="mailto:technical.support@figment.io?cc=rogan%40figment.io&subject=Visualize%20Flows%20Validation%20Errors&body=Hello%2C%0D%0A%0D%0AWhile%20using%20the%20Visualize%20Staking%20API%20Flows%20app%20from%20Figment%2C%20I%20encountered%20validation%20errors%20while%20attempting%20to%20create%20a%20delegate%20transaction.%0D%0A%0D%0A----%0D%0APlease%20include%20any%20other%20information%20regarding%20your%20use%20of%20the%20Visualize%20Flows%20app%20that%20you%20would%20like%20to%20pass%20along%20to%20Figment%20Technical%20Support%20below%3A">
+                    technical.support@figment.io
+                  </Link>
+                  .
+                </p>
+                <Formatted block>
+                  {JSON.stringify(errorResponse, null, 2)}
+                </Formatted>
+              </Card>
             </>
           )}
 

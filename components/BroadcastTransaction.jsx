@@ -70,9 +70,11 @@ export default function BroadcastTransaction({ operation }) {
             flexShrink: "0",
             width: "100%",
             marginBottom: "2.4rem",
+            justifyContent: "center",
+            display: "flex",
           }}
         >
-          <Card large>
+          <Card small>
             <p>
               Provide the signed <Formatted>transaction_payload</Formatted> back
               to the Staking API. The transaction is then broadcast to the
@@ -104,8 +106,6 @@ export default function BroadcastTransaction({ operation }) {
               <Button
                 disabled={flowState === "delegate_tx_broadcasting"}
                 style={{ width: "auto" }}
-                type="primary"
-                htmlType="submit"
               >
                 Submit Signed Transaction Payload
               </Button>
@@ -138,10 +138,6 @@ export default function BroadcastTransaction({ operation }) {
                   </p>
 
                   <Button
-                    size="large"
-                    type="primary"
-                    htmlType="button"
-                    className={styles.proceedButton}
                     onClick={() => setAppState({ stepCompleted: 4 })}
                     href={`/operations/${operation}/flow-state`}
                   >
