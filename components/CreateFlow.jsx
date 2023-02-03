@@ -517,10 +517,10 @@ export default function CreateFlow({ operation }) {
           </li>
           <h6>Network specific operations:</h6>
           <li>
-            Avalanche, Cosmos and Ethereum <b>do not</b> have an{" "}
+            Avalanche and Ethereum <b>do not</b> have an{" "}
             <Formatted>unstaking</Formatted> operation.
-            <br /> For Avalanche and Cosmos, this is due to how delegations are
-            handled on those networks.
+            <br /> For Avalanche, this is due to how delegations are handled by
+            the network.
             <br />
             <b>Note</b>:{" "}
             <Link
@@ -530,7 +530,18 @@ export default function CreateFlow({ operation }) {
             >
               Unstaking on Ethereum
             </Link>{" "}
-            will become possible in the future, after the Shanghai upgrade.
+            will become possible in the future, after the Shanghai/Capella
+            upgrade.
+            <br />
+            Please refer to the{" "}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href=" https://notes.ethereum.org/@launchpad/withdrawals-faq#Q-What-is-ShanghaiCapella"
+            >
+              Ethereum Withdrawals FAQ
+            </Link>{" "}
+            for more information.
           </li>
           <br />
           <li>

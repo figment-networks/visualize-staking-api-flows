@@ -383,10 +383,10 @@ export const ColumnLayout = ({ children, title }) => (
       div.container {
         position: relative;
         padding: calc(4.8rem + 2.4rem) 2.4rem;
-
         width: 100%;
         height: 100%;
       }
+
       div > :global(h3) {
         margin-top: 2.8rem;
       }

@@ -143,9 +143,11 @@ export default function DecodeAndSignPayload({ operation }) {
             flexShrink: "0",
             width: "100%",
             marginBottom: "2.4rem",
+            justifyContent: "center",
+            display: "flex",
           }}
         >
-          <Card large>
+          <Card small>
             <p>
               After receiving the unsigned{" "}
               <Formatted>transaction_payload</Formatted>, the next step is to
@@ -413,7 +415,7 @@ export default function DecodeAndSignPayload({ operation }) {
                 <Formatted block contrast>
                   <ToolTip
                     placement="top"
-                    title={`The cyan text is the unsigned transaction payload, also shown on the left.`}
+                    title={`This portion is the unsigned transaction payload, also shown on the left.`}
                   >
                     {/* payload highlight span - 
                   
@@ -434,7 +436,7 @@ export default function DecodeAndSignPayload({ operation }) {
 
                   <ToolTip
                     placement="bottom"
-                    title={`The red text is the signature, created by signing the payload using the private key of the delegator account.`}
+                    title={`This portion is the signature, created by signing the payload using the private key of the delegator account.`}
                   >
                     {/* signature highlight span - 
                   
