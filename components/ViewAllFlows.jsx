@@ -9,6 +9,8 @@ import { useAppState } from "@utilities/appState";
 import ToolTip from "@components/elements/ToolTip";
 
 import {
+  DESCRIPTION,
+  Head,
   Title,
   BreadCrumbs,
   Button,
@@ -20,7 +22,7 @@ import {
 
 export default function ViewAllFlows() {
   const { appState, setAppState } = useAppState();
-  const { flowId, responseData, pageItem } = appState;
+  const { flowId, responseData, pageItem, stepCompleted } = appState;
 
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +68,7 @@ export default function ViewAllFlows() {
     setIsLoading(false);
     document.getElementById("page").value = "1";
   };
-  0;
+
   const handlePaginationChange = async (page) => {
     // responseData.data[0] through responseData.data[19] are valid
     // but the Pagination component's page parameter starts at 1,
@@ -84,11 +86,14 @@ export default function ViewAllFlows() {
   </>))
 )}`;
 
+  const title = "View All Flows";
+
   return (
     <>
+      <Head title={title} description={DESCRIPTION} />
       <BreadCrumbs step={6} />
       <VerticalLayout>
-        <Title>View All Flows</Title>
+        <Title>{title}</Title>
         <Card small>
           <p>
             As you create new flows, their current state and response data can
@@ -155,19 +160,24 @@ export default function ViewAllFlows() {
           </Button>
         </Card>
 
-        {responseData && !responseData.page && !isLoading && (
-          <Card
-            small
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "stretch",
-            }}
-          >
-            <h6>&darr; Recently completed flow</h6>
-            <Formatted block>{JSON.stringify(responseData, null, 2)}</Formatted>
-          </Card>
-        )}
+        {responseData &&
+          !responseData.page &&
+          !isLoading &&
+          stepCompleted === 2 && (
+            <Card
+              small
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "stretch",
+              }}
+            >
+              <h6>&darr; Recently completed flow</h6>
+              <Formatted block>
+                {JSON.stringify(responseData, null, 2)}
+              </Formatted>
+            </Card>
+          )}
 
         {isLoading && <p>Loading...</p>}
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@pages/ui-components";
+import { Button, Card, Headline } from "@pages/ui-components";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -18,12 +18,17 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="container">
-          <h2>Oops, there is an error!</h2>
-          <Button secondary onClick={() => this.setState({ hasError: false })}>
-            Try again?
-          </Button>
-        </div>
+        <Card large>
+          <div className="container">
+            <Headline>Oops, there is an error!</Headline>
+            <Button
+              secondary
+              onClick={() => this.setState({ hasError: false })}
+            >
+              Try again?
+            </Button>
+          </div>
+        </Card>
       );
     }
 

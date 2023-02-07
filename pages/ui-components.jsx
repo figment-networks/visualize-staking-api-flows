@@ -4,6 +4,9 @@ import React from "react";
 import { default as HeadComponent } from "next/head";
 import ToolTip from "@components/elements/ToolTip";
 
+// This description is used in the <head> tag metadata across the app
+export const DESCRIPTION = "Visualize Figment's Staking API";
+
 export const Head = ({ title, description }) => (
   <HeadComponent>
     <title>{title}</title>
@@ -108,6 +111,7 @@ export const Button = ({
   href = null,
   small = false,
   style = {},
+  onClick = null,
   ...props
 }) => {
   return (
@@ -155,13 +159,13 @@ export const Button = ({
         }
       `}</style>
       {href ? (
-        <Link href={href} {...props} legacyBehavior>
-          <button className="btn" style={style}>
+        <Link href={href} style={style} {...props}>
+          <button className="btn" {...props}>
             {children}
           </button>
         </Link>
       ) : (
-        <button className="btn" style={style} {...props}>
+        <button className="btn" style={style} onClick={onClick} {...props}>
           {children}
         </button>
       )}
@@ -224,6 +228,17 @@ export const BreadCrumbs = ({ step = 0 }) => {
     "View All Flows",
   ];
 
+  const stepRoute = (step) =>
+    ({
+      0: "/create-near-account",
+      1: "/operations/staking/create-flow",
+      2: "/operations/staking/submit-data",
+      3: "/operations/staking/sign-payload",
+      4: "/operations/staking/broadcast-transaction",
+      5: "/operations/staking/flow-state",
+      6: "/view-all-flows",
+    }[step]);
+
   return (
     <header>
       <style jsx>{`
@@ -270,14 +285,16 @@ export const BreadCrumbs = ({ step = 0 }) => {
       `}</style>
       {steps.map((text, index) => (
         <React.Fragment key={`bc_step_${index}`}>
-          {index !== 0 && <span>{index === step + 1 ? "→" : "-"}</span>}
+          {index !== 0 && <span>{index === step + 1 ? "→" : "—"}</span>}
           <div
             style={{
               flexShrink: step === index ? 0 : step + 1 === index ? 1 : 99,
             }}
             className={step === index ? "current" : ""}
           >
-            {text}
+            <Link href={stepRoute(index)} style={{ textDecoration: "none" }}>
+              {text}
+            </Link>
           </div>
         </React.Fragment>
       ))}

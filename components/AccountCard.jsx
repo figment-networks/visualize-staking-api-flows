@@ -64,13 +64,13 @@ export default function AccountCard() {
             <Formatted>
               <ToolTip
                 style={{ textDecoration: "underline" }}
-                title="For your reference, this is a shortened version of the NEAR testnet address created by this app"
+                title="For your reference, this is a shortened version of the NEAR testnet address created by this app."
               >
                 {trimmedAccount(accountAddress)}
               </ToolTip>
             </Formatted>
           </p>
-          <Button href={stepLink}>
+          <Button href={stepLink} style={{ textDecoration: "none" }}>
             {stepLabel(stepCompleted, flowCompleted, flowId)}
           </Button>
         </Card>

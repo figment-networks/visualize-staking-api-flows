@@ -3,6 +3,7 @@ import Link from "next/link";
 import AccountCard from "@components/AccountCard";
 import { useAppState } from "@utilities/appState";
 import {
+  DESCRIPTION,
   Head,
   Title,
   Card,
@@ -17,12 +18,11 @@ export default function IndexPage() {
     appState: { accountAddress, flowCompleted, loaded },
   } = useAppState();
 
+  const title = "Visualize Figment's Staking API";
+
   return (
     <>
-      <Head
-        title="Visualize Figment's Staking API"
-        description="Visualize Figment's Staking API"
-      />
+      <Head title={title} description={DESCRIPTION} />
       <LayoutCenter>
         <Title>
           Visualize Figment&apos;s&nbsp;
@@ -47,7 +47,12 @@ export default function IndexPage() {
         {loaded && !accountAddress && (
           <Card small>
             <h5>Get started by creating a NEAR testnet account &rarr;</h5>
-            <Button href="/create-near-account">Create NEAR Account</Button>
+            <Button
+              href="/create-near-account"
+              style={{ textDecoration: "none" }}
+            >
+              Create NEAR Account
+            </Button>
           </Card>
         )}
 
@@ -56,7 +61,9 @@ export default function IndexPage() {
             <h5>
               Get information about all of the flows you have created &rarr;
             </h5>
-            <Button href="/view-all-flows">View All Flows</Button>
+            <Button href="/view-all-flows" style={{ textDecoration: "none" }}>
+              View All Flows
+            </Button>
           </Card>
         )}
       </LayoutCenter>

@@ -11,6 +11,8 @@ import ToolTip from "@components/elements/ToolTip";
 import Description from "@components/elements/Description";
 
 import {
+  DESCRIPTION,
+  Head,
   Title,
   BreadCrumbs,
   Button,
@@ -60,10 +62,14 @@ export default function BroadcastTransaction({ operation }) {
     setIsModalOpen(false);
   };
 
+  const title = "Broadcast Transaction";
+
   return (
     <>
+      <Head title={title} description={DESCRIPTION} />
+
       <BreadCrumbs step={4} />
-      <ColumnLayout title={<Title>Broadcast Transaction</Title>}>
+      <ColumnLayout title={<Title>{title}</Title>}>
         <ColumnLayout.Column
           style={{
             padding: "0",
@@ -75,46 +81,73 @@ export default function BroadcastTransaction({ operation }) {
           }}
         >
           <Card small>
-            <p>
-              Provide the signed <Formatted>transaction_payload</Formatted> back
-              to the Staking API. The transaction is then broadcast to the
-              network via the Staking APIs dedicated infrastructure.
-            </p>
-            {/* <p>
+            {!signedTransactionPayload && (
+              <>
+                <p>
+                  No signed transaction payload is available to broadcast.
+                  Please complete the previous step,{" "}
+                  <b>Decode & Sign Payload</b>.
+                </p>
+                <Button
+                  primary
+                  small
+                  href="/operations/staking/sign-payload"
+                  style={{
+                    display: "block",
+                    margin: "0 auto",
+                    marginTop: "2rem",
+                  }}
+                >
+                  &larr; Go Back
+                </Button>
+              </>
+            )}
+            {signedTransactionPayload && (
+              <>
+                <p>
+                  Provide the signed <Formatted>transaction_payload</Formatted>{" "}
+                  back to the Staking API. The transaction is then broadcast to
+                  the network via the Staking APIs dedicated infrastructure.
+                </p>
+                {/* <p>
               It is also possible to sign and broadcast payloads elsewhere, and
               complete a Staking API flow by providing the transaction hash
               &mdash; This method is described in the Figment Docs.
             </p> */}
-            <Button small secondary onClick={() => showModal()}>
-              Click Here For More Information
-            </Button>
+                <Button small secondary onClick={() => showModal()}>
+                  Click Here For More Information
+                </Button>
+              </>
+            )}
           </Card>
         </ColumnLayout.Column>
 
         <ColumnLayout.Column style={{ width: "100%", maxWidth: "700px" }}>
-          <Card medium>
-            <form onSubmit={handleSubmit} method="post">
-              <h6>&darr; Signed Transaction Payload</h6>
-              <textarea
-                className={styles.decodeTextArea}
-                id="signed_payload"
-                name="signed_payload"
-                required
-                defaultValue={signedTransactionPayload}
-              />
-              <br />
-              <Button
-                disabled={flowState === "delegate_tx_broadcasting"}
-                style={{ width: "auto" }}
-              >
-                Submit Signed Transaction Payload
-              </Button>
-            </form>
-          </Card>
+          {signedTransactionPayload && (
+            <Card medium>
+              <form onSubmit={handleSubmit} method="post">
+                <h6>&darr; Signed Transaction Payload</h6>
+                <textarea
+                  className={styles.decodeTextArea}
+                  id="signed_payload"
+                  name="signed_payload"
+                  required
+                  defaultValue={signedTransactionPayload}
+                />
+                <br />
+                <Button
+                  disabled={flowState === "delegate_tx_broadcasting"}
+                  style={{ width: "auto" }}
+                >
+                  Submit Signed Transaction Payload
+                </Button>
+              </form>
+            </Card>
+          )}
         </ColumnLayout.Column>
 
         <ColumnLayout.Column>
-          {flowState && (
+          {signedTransactionPayload && flowState && (
             <>
               <p>
                 Flow ID <Formatted>{flowId}</Formatted> state is{" "}

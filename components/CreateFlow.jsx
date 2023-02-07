@@ -9,6 +9,7 @@ import ToolTip from "@components/elements/ToolTip";
 import { useAppState } from "@utilities/appState";
 
 import {
+  Head,
   Title,
   BreadCrumbs,
   Button,
@@ -118,7 +119,7 @@ export default function CreateFlow({ operation }) {
     });
     setFormData(undefined);
     alert(
-      `Reset request body and current flowId!\n` +
+      `Reset flowId!\n` +
         `Refer to /view-all-flows for details of flow ${flowId}.`
     );
   };
@@ -168,6 +169,10 @@ export default function CreateFlow({ operation }) {
 
   return (
     <>
+      <Head
+        title="Create a Flow"
+        description="Visualize Figment's Staking API"
+      />
       <BreadCrumbs step={1} />
 
       <ColumnLayout title={<Title>Create a Flow</Title>}>
@@ -177,9 +182,11 @@ export default function CreateFlow({ operation }) {
             flexShrink: "0",
             width: "100%",
             marginBottom: "2.4rem",
+            justifyContent: "center",
+            display: "flex",
           }}
         >
-          <Card large>
+          <Card medium>
             <p>
               Figment&apos;s Staking API works with the concept of flows. When
               creating a flow, you must provide the{" "}
@@ -201,21 +208,19 @@ export default function CreateFlow({ operation }) {
 
         <ColumnLayout.Column style={{ marginBottom: "2.4rem" }}>
           {flowCompleted ? (
-            <>
+            <Card small>
               <p className={styles.callout}>
                 A previous flow <b>{flowId}</b> has already been completed.
                 Please <b>reset the flow</b> to continue.
               </p>
-
-              <Button destructive onClick={() => handleResetFlow()}>
-                <ToolTip
-                  placement="bottomLeft"
-                  title={`Click here to reset the current flow and appState`}
-                >
-                  Reset Flow
-                </ToolTip>
+              <Button
+                destructive
+                onClick={() => handleResetFlow()}
+                style={{ display: "block", margin: "0 auto" }}
+              >
+                Reset Flow
               </Button>
-            </>
+            </Card>
           ) : (
             <>
               <p className={styles.centerLabel}></p>
@@ -341,9 +346,6 @@ export default function CreateFlow({ operation }) {
                   it only populates the display of the JSON payload. */}
 
                   <br />
-                  <p>
-                    Click <b>Create JSON Request Body</b> to continue.
-                  </p>
                   <br />
                   <Button disabled={formData || stepCompleted === 5}>
                     Create JSON Request Body
@@ -389,8 +391,6 @@ export default function CreateFlow({ operation }) {
                 </Formatted>
               </details>
               <Button
-                size="large"
-                type="primary"
                 style={{ display: "block", margin: "0 auto" }}
                 onClick={() => setAppState({ stepCompleted: 1 })}
                 href={`/operations/${operation}/submit-data`}

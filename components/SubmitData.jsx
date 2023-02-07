@@ -2,6 +2,11 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { Row, Col, Modal, Steps } from "antd";
+import {
+  LoadingOutlined,
+  WarningOutlined,
+  LinkOutlined,
+} from "@ant-design/icons";
 import styles from "/styles/Home.module.css";
 import { useAppState } from "@utilities/appState";
 
@@ -32,6 +37,7 @@ export default function SubmitData({ operation }) {
     accountPublicKey,
     accountAddress,
     errorResponse,
+    errorResponseTimestamp,
   } = appState;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -76,6 +82,8 @@ export default function SubmitData({ operation }) {
       flow_id: flowId,
     };
 
+    setIsLoading(true);
+
     const response = await fetch(`/api/${operation}/submit-data`, {
       method: "POST",
       headers: {
@@ -83,23 +91,25 @@ export default function SubmitData({ operation }) {
       },
       body: JSON.stringify(data),
     });
-
-    const result = await response.json();
+    const { result, date } = await response.json();
 
     setInputsSent(true);
+    setIsLoading(false);
 
+    console.log("submit-data return timestamp: ", date);
     console.log("submit-data result: ", result);
 
     // Alert user if there is a general error message from the Staking API
     if (result.code) {
-      alert(`${result.code}: ${result.message}`);
+      // alert(`${result.code}: ${result.message}`);
+      setAppState({ errorResponse: result, errorResponseTimestamp: date });
     }
 
     // Alert user if there are validation errors from the Staking API
-    // if (result.code === "invalid") {
-    //   alert(`${result.code}: ${JSON.stringify(result.errors, null, 2)}`);
-    //   setAppState({ errorResponse: result });
-    // }
+    if (result.code === "invalid") {
+      // alert(`${result.code}: ${JSON.stringify(result.errors, null, 2)}`);
+      setAppState({ errorResponse: result, errorResponseTimestamp: date });
+    }
 
     if (result.data) {
       console.log(
@@ -119,6 +129,7 @@ export default function SubmitData({ operation }) {
 
   const handleClearFormData = async () => {
     setFormData(undefined);
+    setInputsSent(false);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -311,10 +322,14 @@ const handleSubmit = async (event) => {
 
               {/* {!inputsSent && ( */}
               <div style={{ display: "flex", justifyContent: "space-around" }}>
-                <Button secondary onClick={() => handleClearFormData()}>
+                <Button
+                  disabled={isLoading}
+                  secondary
+                  onClick={() => handleClearFormData()}
+                >
                   Reset Inputs Payload
                 </Button>
-                <Button onClick={() => handleStakingAPI()}>
+                <Button disabled={isLoading} onClick={() => handleStakingAPI()}>
                   Submit Data to Staking API
                 </Button>
               </div>
@@ -331,30 +346,67 @@ const handleSubmit = async (event) => {
             </>
           )}
 
-          {!unsignedTransactionPayload && inputsSent && (
+          {isLoading && (
             <>
               <br />
               <Card small>
-                <p className={styles.callout}>
-                  Validation error(s) occurred when submitting this data to the
-                  Staking API.
-                  <br />
-                  <br />
-                  Default values supplied by this app should not cause
-                  validation errors under normal circumstances. If the inputs
-                  you sent are known to be valid, this could indicate an issue
-                  with the Staking API.
-                  <br />
-                  <br />
-                  Please contact Figment Support via email:{" "}
-                  <Link href="mailto:technical.support@figment.io?cc=rogan%40figment.io&subject=Visualize%20Flows%20Validation%20Errors&body=Hello%2C%0D%0A%0D%0AWhile%20using%20the%20Visualize%20Staking%20API%20Flows%20app%20from%20Figment%2C%20I%20encountered%20validation%20errors%20while%20attempting%20to%20create%20a%20delegate%20transaction.%0D%0A%0D%0A----%0D%0APlease%20include%20any%20other%20information%20regarding%20your%20use%20of%20the%20Visualize%20Flows%20app%20that%20you%20would%20like%20to%20pass%20along%20to%20Figment%20Technical%20Support%20below%3A">
-                    technical.support@figment.io
-                  </Link>
-                  .
+                <p>
+                  <LoadingOutlined /> Loading...
                 </p>
-                <Formatted block>
-                  {JSON.stringify(errorResponse, null, 2)}
-                </Formatted>
+              </Card>
+            </>
+          )}
+
+          {!isLoading && !unsignedTransactionPayload && inputsSent && (
+            <>
+              <Card small style={{ marginTop: "2rem" }}>
+                <ToolTip
+                  placement="left"
+                  title={`Data was submitted to /api/v1/flows/${flowId} at ${errorResponseTimestamp} - the presence of validation errors does not mean that the inputs were incorrect.`}
+                >
+                  <p className={styles.callout}>
+                    <b>
+                      <WarningOutlined /> Validation error(s) occurred when
+                      submitting this data to the Staking API.
+                    </b>
+                    <br />
+                    <br />
+                    Default values supplied by this app should not cause
+                    validation errors under normal circumstances. If the inputs
+                    you sent are known to be valid, this could indicate an issue
+                    with NEAR testnet nodes used by the Staking API.
+                    <br />
+                    <br />
+                    <LinkOutlined />{" "}
+                    <Link
+                      href={`https://explorer.testnet.near.org/accounts/${formData.inputs.delegator_address}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Check Delegator Address
+                    </Link>
+                    <br />
+                    <LinkOutlined />{" "}
+                    <Link
+                      href={`https://explorer.testnet.near.org/nodes/validators/${formData.inputs.validator_address}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Check Validator Address
+                    </Link>
+                    <br />
+                    <br />
+                    If both the Delegator address and Validator address exist,
+                    please contact Figment Support via email:{" "}
+                    <Link href="mailto:technical.support@figment.io?cc=rogan%40figment.io&subject=Visualize%20Flows%20Validation%20Errors&body=Hello%2C%0D%0A%0D%0AWhile%20using%20the%20Visualize%20Staking%20API%20Flows%20app%20from%20Figment%2C%20I%20encountered%20validation%20errors%20while%20attempting%20to%20create%20a%20delegate%20transaction.%0D%0A%0D%0A----%0D%0APlease%20include%20any%20other%20information%20regarding%20your%20use%20of%20the%20Visualize%20Flows%20app%20that%20you%20would%20like%20to%20pass%20along%20to%20Figment%20Technical%20Support%20below%3A">
+                      technical.support@figment.io
+                    </Link>
+                    .
+                  </p>
+                  <Formatted block>
+                    {JSON.stringify(errorResponse, null, 2)}
+                  </Formatted>
+                </ToolTip>
               </Card>
             </>
           )}
@@ -394,8 +446,6 @@ const handleSubmit = async (event) => {
               </details>
 
               <Button
-                size="large"
-                type="primary"
                 onClick={() => setAppState({ stepCompleted: 2 })}
                 href={`/operations/${operation}/sign-payload`}
               >

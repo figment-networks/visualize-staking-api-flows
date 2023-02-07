@@ -4,6 +4,7 @@ import styles from "@styles/Home.module.css";
 import AccountCard from "@components/AccountCard";
 import { useAppState } from "@utilities/appState";
 import {
+  Head,
   Title,
   BreadCrumbs,
   Button,
@@ -50,6 +51,10 @@ export default function CreateNEARAccountPage() {
 
   return (
     <>
+      <Head
+        title="Create NEAR Account"
+        description="Visualize Figment's Staking API"
+      />
       <BreadCrumbs step={0} />
       <VerticalLayout>
         <Title>Create NEAR Account</Title>

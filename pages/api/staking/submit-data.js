@@ -25,12 +25,13 @@ export default async function connection(req, res) {
     });
 
     if (response.status >= 400) {
+      const date = new Date().toLocaleTimeString();
       const result = await response.json();
-      res.status(200).json(result);
+      res.status(200).json({ date, result });
 
       Error.stackTraceLimit = 0; // Prevent stack trace
       throw new Error(
-        `${response.status} response from server: ${JSON.stringify(
+        `${date}: ${response.status} response from server: ${JSON.stringify(
           result,
           null,
           2

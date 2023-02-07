@@ -8,6 +8,7 @@ import styles from "/styles/Home.module.css";
 import ToolTip from "@components/elements/ToolTip";
 
 import {
+  Head,
   Title,
   BreadCrumbs,
   Button,
@@ -135,6 +136,10 @@ export default function DecodeAndSignPayload({ operation }) {
 
   return (
     <>
+      <Head
+        title="Decode & Sign Transaction Payloads"
+        description="Visualize Figment's Staking API"
+      />
       <BreadCrumbs step={3} />
       <ColumnLayout title={<Title>Decode & Sign Transaction Payloads</Title>}>
         <ColumnLayout.Column
@@ -148,33 +153,57 @@ export default function DecodeAndSignPayload({ operation }) {
           }}
         >
           <Card small>
-            <p>
-              After receiving the unsigned{" "}
-              <Formatted>transaction_payload</Formatted>, the next step is to
-              verify & sign it.
-            </p>
-
-            <p>
-              Developers can write their own verification script, or leverage
-              Figment’s npm package{" "}
-              <ToolTip
-                placement="top"
-                title={`Click here to view the package details on npmjs.com in a new tab.`}
-              >
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.npmjs.com/package/@figmentio/slate"
+            {!unsignedTransactionPayload && (
+              <>
+                <p>
+                  No unsigned transaction payload is available to decode or
+                  sign. Please complete the previous step, <b>Submit Data</b>.
+                </p>
+                <Button
+                  primary
+                  small
+                  href="/operations/staking/submit-data"
+                  style={{
+                    display: "block",
+                    margin: "0 auto",
+                    marginTop: "2rem",
+                  }}
                 >
-                  <b>@figmentio/slate</b>
-                </Link>
-              </ToolTip>
-              .
-            </p>
-            <br />
-            <Button secondary small onClick={() => showModal()}>
-              Click Here For More Information
-            </Button>
+                  &larr; Go Back
+                </Button>
+              </>
+            )}
+            {unsignedTransactionPayload && (
+              <>
+                <p>
+                  After receiving the unsigned{" "}
+                  <Formatted>transaction_payload</Formatted>, the next step is
+                  to verify & sign it.
+                </p>
+
+                <p>
+                  Developers can write their own verification script, or
+                  leverage Figment’s npm package{" "}
+                  <ToolTip
+                    placement="top"
+                    title={`Click here to view the package details on npmjs.com in a new tab.`}
+                  >
+                    <Link
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="https://www.npmjs.com/package/@figmentio/slate"
+                    >
+                      <b>@figmentio/slate</b>
+                    </Link>
+                  </ToolTip>
+                  .
+                </p>
+                <br />
+                <Button secondary small onClick={() => showModal()}>
+                  Click Here For More Information
+                </Button>
+              </>
+            )}
           </Card>
         </ColumnLayout.Column>
 
@@ -186,24 +215,28 @@ export default function DecodeAndSignPayload({ operation }) {
             marginBottom: "2.4rem",
           }}
         >
-          <form onSubmit={handleDecode} method="post">
-            <h6>&darr; Unsigned Transaction Payload</h6>
-            <textarea
-              className={styles.decodeTextArea}
-              id="transaction_payload"
-              name="transaction_payload"
-              defaultValue={unsignedTransactionPayload}
-              required
-            />
-            <br />
-            {!signedTransactionPayload && (
-              <Button type="submit">Decode Transaction Payload</Button>
-            )}
-          </form>
+          {unsignedTransactionPayload && (
+            <>
+              <form onSubmit={handleDecode} method="post">
+                <h6>&darr; Unsigned Transaction Payload</h6>
+                <textarea
+                  className={styles.decodeTextArea}
+                  id="transaction_payload"
+                  name="transaction_payload"
+                  defaultValue={unsignedTransactionPayload}
+                  required
+                />
+                <br />
+                {!signedTransactionPayload && (
+                  <Button type="submit">Decode Transaction Payload</Button>
+                )}
+              </form>
+            </>
+          )}
         </ColumnLayout.Column>
 
         <ColumnLayout.Column>
-          {!decodedTransactionPayload && (
+          {!decodedTransactionPayload && unsignedTransactionPayload && (
             <>
               <br />
               <br />

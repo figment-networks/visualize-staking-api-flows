@@ -3,9 +3,17 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useAppState } from "@utilities/appState";
 
+import {
+  LoadingOutlined,
+  WarningOutlined,
+  LinkOutlined,
+} from "@ant-design/icons";
+
 import ToolTip from "@components/elements/ToolTip";
 
 import {
+  DESCRIPTION,
+  Head,
   Title,
   BreadCrumbs,
   Button,
@@ -40,13 +48,39 @@ export default function FlowState({ operation }) {
     setIsLoading(false);
   };
 
+  const title = "Get Flow State";
+
   return (
     <>
+      <Head title={title} description={DESCRIPTION} />
+
       <BreadCrumbs step={5} />
       <VerticalLayout>
         <Title>Get Flow State</Title>
 
         <Card small>
+          {flowState === "initialized" && (
+            <>
+              <p>
+                <WarningOutlined /> The flow state is{" "}
+                <Formatted>{flowState}</Formatted>. This indicates that previous
+                steps are incomplete. Please complete the steps{" "}
+                <b>Submit Data</b> and <b>Decode & Sign Payload</b> first.
+              </p>
+              <Button
+                primary
+                small
+                href="/operations/staking/broadcast-transaction"
+                style={{
+                  display: "block",
+                  margin: "0 auto",
+                  marginTop: "2rem",
+                }}
+              >
+                &larr; Go Back
+              </Button>
+            </>
+          )}
           {flowState === "delegate_tx_broadcasting" && (
             <>
               <p>
@@ -103,13 +137,16 @@ export default function FlowState({ operation }) {
         </Card>
 
         {flowState !== "delegated" && (
-          <Button onClick={() => handleGetState()}>
+          <Button disabled={isLoading} onClick={() => handleGetState()}>
             Get Current Flow State
           </Button>
         )}
 
         {isLoading ? (
-          <p>Loading...</p>
+          <p>
+            {" "}
+            <LoadingOutlined /> Loading...
+          </p>
         ) : (
           <>
             {responseData &&

@@ -11,12 +11,13 @@ const initialState = {
   flowInputs: [], // Inputs for a given action
   flowLabels: [], // Title Case, matches inputs
   inputs: [], // An array of combined inputs and labels used to construct a form based on the Staking API response
-  flowResponse: "", // Used to capture the Staking API response
-  responseData: "", // Used to capture the Staking API response
-  errorResponse: "", // Used to capture any error response from the Staking API
+  flowResponse: "", // Capture the Staking API response
+  responseData: "", // Capture the Staking API response
+  errorResponse: "", // Capture any error response from the Staking API
+  errorResponseTimestamp: "", // Capture error response timestamp from the Staking API
   unsignedTransactionPayload: "", // Returned by the Staking API
-  decodedTransactionPayload: "", // Decoded using @figmentio/slate or Rust crate
-  signedTransactionPayload: "", // Signed using @figmentio/slate or Rust crate
+  decodedTransactionPayload: "", // Decoded using @figmentio/slate or multi-chain-signer-sdk
+  signedTransactionPayload: "", // Signed using @figmentio/slate or multi-chain-signer-sdk
   validatorAddress: "", // Store the validator address for verification during decode/sign
   delegateAmount: "", // Store the delegation amount for verification during decode/sign
   stepCompleted: 0, // Which step has been completed
