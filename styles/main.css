@@ -1,0 +1,253 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.4rem;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  background-image: url("../public/img/background-image.png");
+}
+
+body * {
+  line-height: calc(1em + 0.8rem);
+  color: #111111;
+  font-family: inherit;
+  box-sizing: inherit;
+  margin: 0;
+}
+
+#__next {
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 7.2rem;
+  margin: 0.3em 0;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 5.6rem;
+  margin: 0.3em 0;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 4rem;
+  margin: 0.3em 0;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 3.2rem;
+  margin: 0.3em 0;
+}
+
+h5 {
+  font-weight: 600;
+  font-size: 2.4rem;
+  margin: 0.3em 0;
+}
+
+h6 {
+  font-weight: 600;
+  font-size: 2.1rem;
+  margin: 0.3em 0;
+}
+
+a {
+  color: #0e5048;
+}
+
+a:hover {
+  color: #111111;
+}
+
+li > a:hover {
+  color: #111111;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+p,
+a,
+label,
+span:not(.anticon):not(.ant-modal-close-x),
+input,
+select,
+textarea,
+button {
+  font-size: 1.8rem;
+  margin: 0.3em 0;
+}
+
+li {
+  font-size: 1.8rem;
+}
+
+li > a {
+  text-decoration: underline;
+}
+
+tr {
+  text-align: left;
+}
+
+form {
+  margin-bottom: 2.4rem;
+}
+
+form button {
+  margin: 0 auto;
+  display: block;
+}
+
+textarea {
+  resize: none;
+}
+
+pre,
+code {
+  font-family: "Fira Code";
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  margin: 0.3em 0;
+}
+
+caption {
+  font-size: 1.4rem;
+}
+
+label,
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+}
+
+input,
+select,
+textarea {
+  padding: 0.8rem 1.2rem;
+}
+
+details {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  width: 725px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 5px;
+}
+
+li details {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  margin: 10px 10px;
+  padding: 15px;
+}
+
+details summary {
+  cursor: pointer;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+}
+
+details summary > * {
+  display: inline;
+}
+
+li.ant-pagination-item {
+  text-decoration: none;
+  padding-bottom: 35px;
+}
+
+span.ant-pagination-item-ellipsis {
+  padding-top: 10px;
+}
+
+span.ant-pagination-item-link-icon {
+  padding-top: 14px;
+}
+
+.center {
+  text-align: center;
+}
+
+/* Used for the flow diagram on /create-flow */
+.inline_image {
+  border-radius: 4px;
+  box-shadow: -10px 10px 20px grey;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Used to display transaction payloads */
+.textArea {
+  padding: 10px;
+  border-radius: 15px;
+  width: 100%;
+  border: 2px solid #ccc;
+  background: rgba(100, 100, 100, 0.2);
+  height: 350px;
+}
+
+/* Applies to the page number input on /view-all-flows  */
+.pageNumberInput {
+  width: 17.5rem;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Used to obfuscate the Private Key when creating an account */
+p.secret {
+  word-wrap: break-word;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+  background-color: rgba(100, 100, 100, 0.5);
+  padding: 0.5rem;
+  border-radius: 6px;
+  text-align: center;
+  font-size: medium !important;
+}
+
+/* Shows the Private Key on mouseover, with a green background */
+p.secret:hover {
+  color: #000;
+  background-color: rgba(0, 100, 0, 0.5);
+  font-size: medium;
+}
+
+/* Used to call attention to an error */
+p.callout {
+  background-color: rgba(100, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 10px;
+  text-align: justify;
+}
+
+/* Used as a placeholder when a response requires user interaction */
+p.spacer {
+  display: inline-block;
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 15px;
+  min-height: 300px;
+  min-width: 650px;
+  width: auto;
+  text-align: center;
+  padding: 125px 20px;
+}

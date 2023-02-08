@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "esnext",
+    "module": "esnext",
+    "checkJs": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["pages/*"],
+      "@images/*": ["public/img/*"],
+      "@styles/*": ["styles/*"],
+      "@components/*": ["components/*"],
+      "@utilities/*": ["utilities/*"]
+    }
+  },
+  "include": ["**/*.js", "**/*.jsx", "utilities/*.js"],
+  "exclude": ["node_modules"]
+}
