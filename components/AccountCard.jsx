@@ -28,10 +28,20 @@ const stepLabel = (step, completed, flowId) => {
 const explorerUrl = (address) =>
   `https://explorer.testnet.near.org/accounts/${address}`;
 
+const solanaExplorerUrl = (address, cluster) =>
+  `https://explorer.solana.com/address/${address}?cluster=${cluster}`;
+
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const isIndex = () => useRouter().pathname === "/";
 
 const trimmedAccount = (account) => {
+  let trimmedAccount = account.slice(0, 6);
+  trimmedAccount += `...${account.slice(42, -8)}`;
+  trimmedAccount += `.testnet`;
+  return trimmedAccount;
+};
+
+const trimmedSolanaAccount = (account) => {
   let trimmedAccount = account.slice(0, 6);
   trimmedAccount += `...${account.slice(42, -8)}`;
   trimmedAccount += `.testnet`;
@@ -47,12 +57,14 @@ export default function AccountCard() {
       accountAddress,
       accountPublicKey,
       accountPrivateKey,
+      sol_accountPrivateKey,
+      sol_accountPublicKey,
+      sol_walletMnemonic,
+      sol_txhashAirdrop,
     },
   } = useAppState();
 
   const stepLink = !flowCompleted ? stepRoute(stepCompleted) : stepRoute(7);
-
-  console.log(stepLink);
 
   return (
     <>
@@ -76,6 +88,41 @@ export default function AccountCard() {
         <>
           <Card medium>
             <h6>Account Address &rarr;</h6>
+            {sol_accountPublicKey && (
+              <>
+                {" "}
+                <Link
+                  href={solanaExplorerUrl(sol_accountPublicKey, "devnet")}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {sol_accountPublicKey}
+                </Link>{" "}
+                <ul>
+                  <li>
+                    1 SOL has been{" "}
+                    <ToolTip
+                      style={{ textDecoration: "underline" }}
+                      title={`Transaction Hash: ${sol_txhashAirdrop}`}
+                    >
+                      airdropped
+                    </ToolTip>{" "}
+                    to this address on Devnet
+                  </li>
+                  <li>
+                    {" "}
+                    Request additional Devnet airdrops from the{" "}
+                    <Link
+                      href="https://solfaucet.com/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      SolFaucet
+                    </Link>
+                  </li>
+                </ul>
+              </>
+            )}
             <Link
               href={explorerUrl(accountAddress)}
               rel="noopener noreferrer"
@@ -91,12 +138,24 @@ export default function AccountCard() {
               </>
             )}
 
-            {accountPrivateKey && (
+            {accountPrivateKey ||
+              (sol_accountPrivateKey && (
+                <>
+                  <h6 className="pubkey">
+                    Account Private Key (hover to reveal) &rarr;
+                  </h6>
+                  <p className="secret">
+                    {accountPrivateKey || JSON.stringify(sol_accountPrivateKey)}
+                  </p>
+                </>
+              ))}
+
+            {sol_walletMnemonic && !accountPrivateKey && (
               <>
                 <h6 className="pubkey">
-                  Account Private Key (hover to reveal) &rarr;
+                  Solana Wallet Mnemonic (hover to reveal) &rarr;
                 </h6>
-                <p className="secret">{accountPrivateKey}</p>
+                <p className="secret">{sol_walletMnemonic}</p>
               </>
             )}
           </Card>

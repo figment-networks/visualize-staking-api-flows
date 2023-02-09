@@ -25,6 +25,11 @@ const initialState = {
   flowCompleted: false, // Have all steps of a flow been completed
   pageItem: [], // Paginated flow data used on the View All Flows page
   loaded: false, // loaded from localstorage
+  sol_accountKeyPair: [], // Store the
+  sol_walletMnemonic: "", // Store the
+  sol_accountPublicKey: "", // Store the
+  sol_accountPrivateKey: [], // Store the
+  sol_txhashAirdrop: "", // Store the
 };
 
 const AppStateContext = createContext({

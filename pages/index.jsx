@@ -45,11 +45,18 @@ export default function IndexPage() {
         {loaded && accountAddress && <AccountCard />}
 
         {loaded && !accountAddress && (
-          <Card small>
-            <h5>Get started by creating a NEAR testnet account &rarr;</h5>
-            <Button href="/create-near-account">Create NEAR Account</Button>
-          </Card>
+          <>
+            <Card small>
+              <h5>Get started by creating a NEAR testnet account &rarr;</h5>
+              <Button href="/create-near-account">Create NEAR Account</Button>
+            </Card>
+          </>
         )}
+
+        <Card small>
+          <h5>Get started by creating a Solana testnet account &rarr;</h5>
+          <Button href="/create-solana-account">Create Solana Account</Button>
+        </Card>
 
         {flowCompleted && (
           <Card small>
