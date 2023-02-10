@@ -19,19 +19,30 @@ import {
 
 export default function BroadcastTransaction({ operation }) {
   const { appState, setAppState } = useAppState();
-  const { flowId, flowState, flowResponse, signedTransactionPayload } =
-    appState;
+  const {
+    flowId,
+    flowState,
+    flowResponse,
+    signedTransactionPayload,
+    sol_accountPrivateKey,
+    sol_fundingAccountPubkey,
+    sol_createStakeAccountAmount,
+    errorResponse,
+  } = appState;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
     const data = {
       flow_id: flowId,
-      action: "sign_delegate_tx",
+      action: "sign_stake_account_tx",
       signed_payload: form.signed_payload.value,
+      funding_account_pubkey: sol_fundingAccountPubkey,
+      amount: sol_createStakeAccountAmount,
+      privateKey: sol_accountPrivateKey,
     };
 
-    const response = await fetch(`/api/${operation}/broadcast-transaction`, {
+    const response = await fetch(`/api/sol-staking/broadcast-transaction`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,6 +50,10 @@ export default function BroadcastTransaction({ operation }) {
       body: JSON.stringify(data),
     });
     const result = await response.json();
+
+    if (result?.code === "invalid") {
+      setAppState({ errorResponse: result, errorResponseTimestamp: date });
+    }
 
     if (result.code) {
       alert(`${result.code}: ${result.message}`);
@@ -59,7 +74,7 @@ export default function BroadcastTransaction({ operation }) {
     setIsModalOpen(false);
   };
 
-  const title = "Broadcast Transaction";
+  const title = "Broadcast Transaction (SOL)";
 
   return (
     <>
@@ -133,10 +148,13 @@ export default function BroadcastTransaction({ operation }) {
                 <br />
                 <Button
                   disabled={
-                    flowState === "delegate_tx_broadcasting" ||
+                    // flowState === "stake_account_tx_broadcasting" ||
                     flowState === "delegated"
                   }
                   style={{ width: "auto" }}
+                  onClick={() => {
+                    setAppState({ errorResponse: undefined });
+                  }}
                 >
                   Submit Signed Transaction Payload
                 </Button>
@@ -146,6 +164,15 @@ export default function BroadcastTransaction({ operation }) {
         </LayoutColumn.Column>
 
         <LayoutColumn.Column>
+          {errorResponse && (
+            <>
+              <p className="callout">
+                <Formatted block>
+                  {JSON.stringify(errorResponse, null, 2)}
+                </Formatted>
+              </p>
+            </>
+          )}
           {signedTransactionPayload && flowState && (
             <>
               <Card small>
@@ -154,15 +181,21 @@ export default function BroadcastTransaction({ operation }) {
                   <Formatted>{flowResponse.state}</Formatted>.{" "}
                 </p>
 
-                {flowResponse.state === "delegate_tx_broadcasting" && (
+                {flowResponse.state === "stake_account_tx_broadcasting" && (
                   <>
                     <p>
-                      After the signed payload has been broadcast to the NEAR
-                      network by the Staking API,
+                      After the signed payload has been broadcast to the Solana
+                      cluster by the Staking API,
                       <br />
                       the flow state changes from{" "}
-                      <Formatted>delegate_tx_signature</Formatted> to{" "}
-                      <Formatted>delegate_tx_broadcasting</Formatted>.
+                      <Formatted>stake_account_tx_signature</Formatted> to{" "}
+                      <Formatted>stake_account_tx_broadcasting</Formatted>.
+                      <br />
+                      <br />
+                      You can see the Stake Account&apos;s public key (
+                      <b>{flowResponse.data.stake_account_pubkey}</b>) in the
+                      response:
+                      <br />
                       <br />
                       <details>
                         <summary>Click to view the full response</summary>

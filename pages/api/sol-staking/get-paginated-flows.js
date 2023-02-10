@@ -1,35 +1,22 @@
-export default async function connection(req, res) {
+export default async function getFlows(req, res) {
   const body = req.body;
   const HOSTNAME = "near-slate.datahub.figment.io";
-  const ENDPOINT = `/api/v1/flows/${body?.flow_id}/next`;
-
+  const ENDPOINT = `/api/v1/flows?page=${body.page}`;
   try {
     const response = await fetch(`https://${HOSTNAME}${ENDPOINT}`, {
-      method: "PUT",
+      method: "GET",
       headers: {
         Authorization: process.env.API_KEY,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: "sign_delegate_tx",
-        inputs: {
-          transaction_payload: body.signed_payload,
-        },
-      }),
     });
-
     if (response.status >= 400) {
-      res.status(response.status).json(await response.text());
-
+      res.status(200).json(await response.text());
       throw new Error(
         `${response.status} response from server - ${JSON.stringify(
-          response.body,
-          null,
-          2
+          response.body
         )}`
       );
     }
-
     if (response.status === 200) {
       res.status(200).json(await response.json());
     }

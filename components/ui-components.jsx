@@ -257,6 +257,17 @@ export const BreadCrumbs = ({ step = 0 }) => {
     "View All Flows",
   ];
 
+  const solana_steps = [
+    "Create Account",
+    "Create a Flow",
+    "Submit Data",
+    "Decode & Sign Payload",
+    "Broadcast Transaction",
+    "Get Flow State",
+    "Create Delegate Transaction",
+    "View All Flows",
+  ];
+
   const stepRoute = (step) =>
     ({
       0: "/create-near-account",
@@ -266,6 +277,18 @@ export const BreadCrumbs = ({ step = 0 }) => {
       4: "/operations/staking/broadcast-transaction",
       5: "/operations/staking/flow-state",
       6: "/view-all-flows",
+    }[step]);
+
+  const stepRouteSolana = (step) =>
+    ({
+      0: "/create-solana-account",
+      1: "/operations/sol-staking/create-flow",
+      2: "/operations/sol-staking/submit-data",
+      3: "/operations/sol-staking/sign-payload",
+      4: "/operations/sol-staking/broadcast-transaction",
+      5: "/operations/sol-staking/flow-state",
+      6: "/operations/sol-staking/delegate",
+      7: "/view-all-flows",
     }[step]);
 
   return (
@@ -312,7 +335,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
           padding: 0 2rem;
         }
       `}</style>
-      {steps.map((text, index) => (
+      {solana_steps.map((text, index) => (
         <React.Fragment key={`bc_step_${index}`}>
           {index !== 0 && <span>{index === step + 1 ? "→" : "—"}</span>}
           <div
@@ -322,7 +345,10 @@ export const BreadCrumbs = ({ step = 0 }) => {
             }}
             className={step === index ? "current" : ""}
           >
-            <Link href={stepRoute(index)} style={{ textDecoration: "none" }}>
+            <Link
+              href={stepRouteSolana(index)}
+              style={{ textDecoration: "none" }}
+            >
               {text}
             </Link>
           </div>

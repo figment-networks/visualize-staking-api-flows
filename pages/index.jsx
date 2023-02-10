@@ -15,7 +15,7 @@ import {
 
 export default function IndexPage() {
   const {
-    appState: { accountAddress, flowCompleted, loaded },
+    appState: { sol_accountPublicKey, accountAddress, flowCompleted, loaded },
   } = useAppState();
 
   const title = "Visualize Figment's Staking API";
@@ -52,6 +52,8 @@ export default function IndexPage() {
             </Card>
           </>
         )}
+
+        {loaded && sol_accountPublicKey && <AccountCard />}
 
         <Card small>
           <h5>Get started by creating a Solana testnet account &rarr;</h5>

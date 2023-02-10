@@ -22,6 +22,10 @@ import {
 } from "@components/ui-components";
 
 import { useAppState } from "@utilities/appState";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
+const solscanUrl = (op, address, cluster) =>
+  `https://solscan.io/${op}/${address}?cluster=${cluster}`;
 
 export default function SubmitData({ operation }) {
   const { appState, setAppState } = useAppState();
@@ -35,6 +39,8 @@ export default function SubmitData({ operation }) {
     flowLabels,
     inputs,
     actionInputs,
+    action0Inputs,
+    action1Inputs,
     unsignedTransactionPayload,
     stepCompleted,
     accountPublicKey,
@@ -42,40 +48,148 @@ export default function SubmitData({ operation }) {
     errorResponse,
     errorResponseTimestamp,
     transitionErrorResponse,
+    sol_accountPublicKey,
+    sol_accountPrivateKey,
+    sol_stakeAccount,
+    responseData,
   } = appState;
 
   const [isLoading, setIsLoading] = useState(false);
   const [inputsSent, setInputsSent] = useState(false);
   const [formData, setFormData] = useState();
+  const [selectedAction, setSelectedAction] = useState("create_delegate_tx");
+  const [transactionBroadcast, setTransactionBroadcast] = useState(false);
+
+  // For a list of Solana Devnet validators, see https://docs.solana.com/clusters#devnet
+  const knownDevnetValidatorAddresses = [
+    "7bgCqKDWhZdVrfM9QY39uEiU2qb8W7FN3cXeiz5YFRyK",
+  ];
 
   // Default values for the input collection form of a `staking` flow operation
   const defaultValues = {
-    delegator_address: accountAddress
-      ? accountAddress
+    validator_address: knownDevnetValidatorAddresses[0],
+  };
+
+  const defaultValuesNewStakingAccount = {
+    funding_account_pubkey: sol_accountPublicKey
+      ? sol_accountPublicKey
       : "Please generate an account first!",
-    delegator_pubkey: accountPublicKey
-      ? accountPublicKey
-      : "Please generate an account first!",
-    // For a list of NEAR testnet validators, see https://explorer.testnet.near.org/nodes/validators
-    validator_address: "legends.pool.f863973.m0",
-    amount: 10,
-    max_gas: null,
+    stake_authority_pubkey: null,
+    withdraw_authority_pubkey: null,
+    amount: 2.0,
+  };
+
+  const handleCreateDelegateTx = async (event) => {
+    function getInputsForAction(action) {
+      return action?.inputs.flatMap((input) => [
+        {
+          action: action.name,
+          name: input.name,
+          display: input.display,
+        },
+      ]);
+    }
+
+    setAppState({
+      flowActions: responseData.actions.map((action) => action.name),
+      flowInputs: responseData.actions.flatMap((action) =>
+        getInputsForAction(action)
+      ),
+      flowLabels: responseData.actions.flatMap((action) =>
+        action.inputs.map((input) => input.display)
+      ),
+      action0Inputs: getInputsForAction(responseData.actions[0]),
+      action1Inputs: getInputsForAction(responseData.actions[1]),
+    });
+  };
+
+  const handleSubmitDelegate = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    let data = {};
+    if (selectedAction === "create_delegate_tx") {
+      data = {
+        action: form.actions.value,
+        inputs: {
+          validator_address: form.validator_address.value,
+        },
+      };
+    }
+    setFormData(data);
+    setInputsSent(false);
+  };
+
+  const handleSignAndBroadcastPayload = async () => {
+    // Note: This is NOT a production-grade pattern to provide
+    // the private key for signing. This is only being done as
+    // part of this action to simplify the signing process for
+    // the purposes of this walkthrough.
+    // Your implementation will need to account for security.
+    const data = {
+      flow_id: flowId,
+      transaction_payload: unsignedTransactionPayload,
+      privateKey: sol_accountPrivateKey,
+    };
+
+    setIsLoading(true);
+    const response = await fetch(`/api/sol-staking/sign-payload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    setAppState({ signedTransactionPayload: result });
+
+    const dataNext = {
+      flow_id: flowId,
+      action: "sign_delegate_tx",
+      signed_payload: result,
+      privateKey: sol_accountPrivateKey,
+    };
+
+    const responseNext = await fetch(`/api/sol-staking/broadcast-transaction`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataNext),
+    });
+    const resultNext = await responseNext.json();
+
+    setIsLoading(false);
+    setTransactionBroadcast(true);
+
+    if (resultNext?.code === "invalid") {
+      setAppState({ errorResponse: result, errorResponseTimestamp: date });
+    }
+
+    if (resultNext.code) {
+      alert(`${result.code}: ${result.message}`);
+    }
+
+    if (resultNext.data) {
+      setAppState({ flowState: result.state, flowResponse: result });
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
+    let data = {};
 
-    const data = {
-      action: form.actions.value,
-      inputs: {
-        delegator_address: form.delegator_address.value,
-        delegator_pubkey: form.delegator_pubkey.value,
-        validator_address: form.validator_address.value,
-        amount: form.amount.value,
-        max_gas: form.max_gas.value ? form.max_gas.value : null,
-      },
-    };
+    if (selectedAction === "create_new_stake_account") {
+      data = {
+        action: form.actions.value,
+        inputs: {
+          funding_account_pubkey: form.funding_account_pubkey.value,
+          amount: form.amount.value,
+        },
+      };
+    }
     setFormData(data);
     setInputsSent(false);
   };
@@ -86,15 +200,15 @@ export default function SubmitData({ operation }) {
       flow_id: flowId,
     };
 
-    if (flowState !== "initialized") {
+    if (flowState !== "stake_account") {
       alert(
-        `Flow state is not initialized - create_delegate_tx will fail with a transition error.`
+        `Flow state is not stake_account - create_delegate_tx will fail with a transition error.`
       );
     }
 
     setIsLoading(true);
 
-    const response = await fetch(`/api/${operation}/submit-data`, {
+    const response = await fetch(`/api/sol-staking/submit-data`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,15 +223,16 @@ export default function SubmitData({ operation }) {
     if (result?.data) {
       console.log(
         "The unsigned transaction payload for a staking flow can be found in the Staking API response - data.delegate_transaction.raw: ",
-        result.data.delegate_transaction.raw
+        result.data.create_stake_account_transaction.raw
       );
 
       // Retain these values in appState so they can be confirmed by decoding the payload
       setAppState({
         flowResponse: result,
-        unsignedTransactionPayload: result.data.delegate_transaction.raw,
-        validatorAddress: result.data.validator_address,
-        delegateAmount: result.data.amount,
+        unsignedTransactionPayload:
+          result.data.create_stake_account_transaction.raw,
+        sol_createStakeAccountAmount: result.data.amount,
+        sol_fundingAccountPubkey: result.data.funding_account_pubkey,
       });
     }
 
@@ -139,6 +254,10 @@ export default function SubmitData({ operation }) {
     setFormData(undefined);
     setInputsSent(false);
   };
+
+  async function handleFormChange(event) {
+    setSelectedAction(event.target.value);
+  }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -219,7 +338,7 @@ export default function SubmitData({ operation }) {
 };
 `;
 
-  const title = "Submit Data to the Staking API";
+  const title = "Submit Data to the Staking API (SOL)";
 
   return (
     <>
@@ -237,7 +356,7 @@ export default function SubmitData({ operation }) {
             display: "flex",
           }}
         >
-          <Card small justify>
+          <Card small>
             <p>
               After creating a flow, the next step is to check the response to
               understand which actions are available, and which data needs to be
@@ -247,6 +366,28 @@ export default function SubmitData({ operation }) {
               The form below has been created based on the Staking API response
               and provided with default values.
             </p>
+            <p>
+              <details>
+                <summary>Click to view the full response</summary>
+                <Formatted block maxHeight="510px">
+                  {JSON.stringify(responseData, null, 2)}
+                </Formatted>
+              </details>
+            </p>
+            <p>
+              <Button small onClick={handleCreateDelegateTx}>
+                Create tx
+              </Button>
+            </p>
+
+            {flowState === "delegation_activating" && (
+              <>
+                <p>
+                  The flow state is now <Formatted>{flowState}</Formatted>, ...
+                </p>
+              </>
+            )}
+
             <Button secondary small onClick={() => showModal()}>
               Click Here For More Information
             </Button>
@@ -254,61 +395,76 @@ export default function SubmitData({ operation }) {
         </LayoutColumn.Column>
 
         <LayoutColumn.Column>
-          {!accountAddress && !accountPublicKey ? (
+          {!sol_accountPublicKey ? (
             <>
               <Card small>
                 <p style={{ textAlign: "center" }}>
                   Please create an account first!
                 </p>
-                <Button href="/create-near-account">
-                  Create a NEAR testnet account
+                <Button href="/create-solana-account">
+                  Create a Solana devnet account
                 </Button>
               </Card>
             </>
           ) : (
             <>
-              <Card small>
-                <p>
-                  Please review the inputs below, then click{" "}
-                  <b>Create Inputs Payload</b> to continue.
-                </p>
-                <form onSubmit={handleSubmit} method="post">
-                  <label htmlFor="actions">Action(s):</label>
-                  <select
-                    id="actions"
-                    name="actions"
-                    required
-                    defaultValue={flowActions[0]}
-                    multiple={false}
-                    key="actions"
-                  >
-                    {Object.keys(flowActions).map((key) => (
-                      <>
-                        <option key={flowActions[key]} value={flowActions[key]}>
-                          {flowActions[key]}
-                        </option>
-                      </>
-                    ))}
-                  </select>
-
-                  {inputs.map(({ name, label }, index) => {
-                    return (
-                      <span key={name}>
-                        <label htmlFor={name}>{label}:</label>
-                        <input
-                          key={name}
-                          type="text"
-                          id={name}
-                          name={name}
-                          defaultValue={defaultValues[name]}
-                        />
-                      </span>
-                    );
-                  })}
-                  <br />
-                  <Button disabled={formData}>Create Inputs Payload</Button>
-                </form>
-              </Card>
+              {flowState === "stake_account" && (
+                <>
+                  <Card small>
+                    <p>
+                      Stake account:{" "}
+                      <b>{flowResponse.data.stake_account_pubkey}</b>
+                    </p>
+                    <p>
+                      <form onSubmit={handleSubmitDelegate} method="post">
+                        <label htmlFor="actions">Action(s):</label>
+                        <select
+                          id="actions"
+                          name="actions"
+                          required
+                          defaultValue={flowActions[1]}
+                          multiple={false}
+                          key="actions"
+                          onChange={handleFormChange}
+                        >
+                          {Object.keys(flowActions).map((key) => (
+                            <>
+                              <option
+                                key={flowActions[key]}
+                                value={flowActions[key]}
+                                defaultValue={flowActions[1]}
+                              >
+                                {flowActions[key]}
+                              </option>
+                            </>
+                          ))}
+                        </select>
+                        {selectedAction === "create_delegate_tx" && (
+                          <>
+                            {action0Inputs.map(({ name, display }, index) => {
+                              return (
+                                <span key={name}>
+                                  <label htmlFor={name}>{display}:</label>
+                                  <input
+                                    key={`${name}${index}`}
+                                    type="text"
+                                    id={name}
+                                    name={name}
+                                    defaultValue={defaultValues[name]}
+                                  />
+                                </span>
+                              );
+                            })}
+                          </>
+                        )}
+                        <Button disabled={formData}>
+                          Create Inputs Payload
+                        </Button>
+                      </form>
+                    </p>
+                  </Card>
+                </>
+              )}
             </>
           )}
         </LayoutColumn.Column>
@@ -325,7 +481,8 @@ export default function SubmitData({ operation }) {
                 >
                   Staking API endpoint
                 </ToolTip>{" "}
-                to continue an <Formatted>initialized</Formatted> flow.
+                to continue a flow in the state{" "}
+                <Formatted>stake_account</Formatted>.
               </p>
 
               <Formatted block>{JSON.stringify(formData, null, 2)}</Formatted>
@@ -338,15 +495,14 @@ export default function SubmitData({ operation }) {
                 >
                   Reset Inputs Payload
                 </Button>
-                {flowState !== "initialized" || stepCompleted >= 2 ? (
+                {flowState !== "stake_account" ? (
                   <ToolTip
                     color="#C01005"
-                    title={`Flow state is not initialized`}
+                    title={`Flow state is not stake_account`}
                   >
                     <Button
                       disabled={
                         isLoading ||
-                        stepCompleted >= 2 ||
                         flowResponse.state === "delegate_tx_signature"
                       }
                       onClick={() => handleStakingAPI()}
@@ -462,31 +618,27 @@ export default function SubmitData({ operation }) {
                       Default values supplied by this app should not cause
                       validation errors under normal circumstances. If the
                       inputs you sent are known to be valid, this could indicate
-                      an issue with NEAR testnet nodes used by the Staking API.
+                      an issue with Solana devnet nodes used by the Staking API.
                       <br />
                       <br />
                       <LinkOutlined />{" "}
                       <Link
-                        href={`https://explorer.testnet.near.org/accounts/${formData.inputs.delegator_address}`}
+                        // ${formData.inputs.funding_account_pubkey}
+                        href={solscanUrl(
+                          "address",
+                          formData.inputs.funding_account_pubkey,
+                          "devnet"
+                        )}
                         rel="noopener noreferrer"
                         target="_blank"
                       >
-                        Check Delegator Address
-                      </Link>
-                      <br />
-                      <LinkOutlined />{" "}
-                      <Link
-                        href={`https://explorer.testnet.near.org/nodes/validators/${formData.inputs.validator_address}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        Check Validator Address
+                        Check Funding Account Address
                       </Link>
                       <br />
                       <br />
-                      If both the Delegator address and Validator address exist,
-                      please contact Figment Support via email:{" "}
-                      <Link href="mailto:technical.support@figment.io?subject=Visualize%20Flows%20Validation%20Errors&body=Hello%2C%0D%0A%0D%0AWhile%20using%20the%20Visualize%20Staking%20API%20Flows%20app%20from%20Figment%2C%20I%20encountered%20validation%20errors%20while%20attempting%20to%20create%20a%20delegate%20transaction.%0D%0A%0D%0A----%0D%0APlease%20include%20any%20other%20information%20regarding%20your%20use%20of%20the%20Visualize%20Flows%20app%20that%20you%20would%20like%20to%20pass%20along%20to%20Figment%20Technical%20Support%20below%3A">
+                      If the inputs are correct, please contact Figment
+                      Technical Support via email:{" "}
+                      <Link href="mailto:technical.support@figment.io?subject=Visualize%20Flows%20Validation%20Errors%20Solana&body=Hello%2C%0D%0A%0D%0AWhile%20using%20the%20Visualize%20Staking%20API%20Flows%20app%20from%20Figment%2C%20I%20encountered%20validation%20errors%20while%20attempting%20to%20create%20a%20delegate%20transaction.%0D%0A%0D%0A----%0D%0APlease%20include%20any%20other%20information%20regarding%20your%20use%20of%20the%20Visualize%20Flows%20app%20that%20you%20would%20like%20to%20pass%20along%20to%20Figment%20Technical%20Support%20below%3A">
                         technical.support@figment.io
                       </Link>
                       .
@@ -506,10 +658,15 @@ export default function SubmitData({ operation }) {
                 <p>
                   Completing the <Formatted>create_delegate_tx</Formatted>{" "}
                   action causes the flow state to change from{" "}
-                  <Formatted>initialized</Formatted> to{" "}
+                  <Formatted>stake_account</Formatted> to{" "}
                   <Formatted>delegate_tx_signature</Formatted>, indicating that
-                  the Staking API is waiting for a signed transaction. In the
-                  next step, we will examine the signing process.
+                  the Staking API is waiting for a signed transaction. The{" "}
+                  <Formatted>actions</Formatted> for this step are{" "}
+                  <Formatted>{flowResponse?.actions[0].name}</Formatted> and{" "}
+                  <Formatted>{flowResponse?.actions[1].name}</Formatted>.
+                  <br />
+                  <br />
+                  We&apos;ll handle the signing below.
                 </p>
                 <details>
                   <summary>Click here to see the full response</summary>
@@ -519,7 +676,7 @@ export default function SubmitData({ operation }) {
                 </details>
 
                 <p>
-                  An unsigned{" "}
+                  Another unsigned{" "}
                   <ToolTip
                     style={{ textDecoration: "underline" }}
                     placement="top"
@@ -537,12 +694,30 @@ export default function SubmitData({ operation }) {
                   <Formatted block>{unsignedTransactionPayload}</Formatted>{" "}
                 </details>
 
+                <p>
+                  We won&apos;t cover the details of signing the payload this
+                  time, just click the button below to sign and broadcast the
+                  transaction.
+                </p>
+
                 <Button
-                  onClick={() => setAppState({ stepCompleted: 2 })}
-                  href={`/operations/${operation}/sign-payload`}
+                  disabled={transactionBroadcast}
+                  onClick={handleSignAndBroadcastPayload}
                 >
-                  Proceed to the next step &rarr;
+                  {isLoading && <LoadingOutlined />}
+                  Sign & Broadcast the Payload
                 </Button>
+
+                {transactionBroadcast && (
+                  <>
+                    <Button
+                      onClick={() => setAppState({ stepCompleted: 6 })}
+                      href={`/view-all-flows`}
+                    >
+                      Proceed to the final step &rarr;
+                    </Button>
+                  </>
+                )}
               </Card>
             </>
           )}

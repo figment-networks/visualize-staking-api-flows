@@ -3,8 +3,6 @@ export default async function connection(req, res) {
   const HOSTNAME = "near-slate.datahub.figment.io";
   const ENDPOINT = `/api/v1/flows/${body.flow_id}/next`;
 
-  console.log(body);
-
   try {
     const response = await fetch(`https://${HOSTNAME}${ENDPOINT}`, {
       method: "PUT",
@@ -27,7 +25,6 @@ export default async function connection(req, res) {
     if (response.status >= 400) {
       const date = new Date().toLocaleTimeString();
       const result = await response.json();
-      console.log(result);
       res.status(200).json({ date, result });
 
       Error.stackTraceLimit = 0; // Prevent stack trace
@@ -43,7 +40,6 @@ export default async function connection(req, res) {
     if (response.status === 200) {
       const date = new Date().toLocaleTimeString();
       const result = await response.json();
-      console.log(result);
       res.status(200).json({ date, result });
     }
   } catch (err) {

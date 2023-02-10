@@ -19,9 +19,9 @@ import {
 
 import { useAppState } from "@utilities/appState";
 
-import img1 from "@images/Workflows::V1::Near::StakingFlow_workflow.png";
+import img1 from "@images/Workflows::V1::Solana::StakingFlow_workflow.png";
 
-export default function CreateFlow({ operation }) {
+export default function CreateFlowSolana({ operation }) {
   const { appState, setAppState } = useAppState();
   const {
     flowId,
@@ -34,8 +34,6 @@ export default function CreateFlow({ operation }) {
     accountPublicKey,
     accountPrivateKey,
     flowCompleted,
-    action0Inputs,
-    action1Inputs,
   } = appState;
 
   const [formData, setFormData] = useState("");
@@ -59,6 +57,8 @@ export default function CreateFlow({ operation }) {
   // objects containing both the input names and labels:
   // { name: "delegator_address", label: "Delegator Address" }
   useEffect(() => {
+    setSelectedNetwork("solana");
+
     if (!!appState.inputs.length) return; // Return early if the inputs are already defined
     const inputs = Array(flowInputs.length)
       .fill(null)
@@ -148,7 +148,6 @@ export default function CreateFlow({ operation }) {
       function getInputsForAction(action) {
         return action.inputs.flatMap((input) => [
           {
-            action: action.name,
             name: input.name,
             display: input.display,
           },
@@ -190,12 +189,12 @@ export default function CreateFlow({ operation }) {
     }
   };
 
-  const title = "Create a Flow";
+  const title = "Create a Solana Flow";
 
   return (
     <>
       <Head title={title} description={DESCRIPTION} />
-      <BreadCrumbs step={1} />
+      <BreadCrumbs step={1} network="solana" />
 
       <LayoutColumn title={<Title>{title}</Title>}>
         <LayoutColumn.Column
@@ -208,7 +207,7 @@ export default function CreateFlow({ operation }) {
             display: "flex",
           }}
         >
-          <Card medium>
+          <Card large>
             <p>
               Figment&apos;s Staking API works with the concept of flows. When
               creating a flow, you must provide the{" "}
@@ -226,8 +225,8 @@ export default function CreateFlow({ operation }) {
               src={img1}
               alt="Flow Diagram"
               className="inline_image"
-              width={1150}
-              height={150}
+              width={1800}
+              height={175}
             />
 
             <Button secondary type="text" onClick={() => showModal()}>
@@ -260,7 +259,7 @@ export default function CreateFlow({ operation }) {
                     id="network_code"
                     name="networkCode"
                     required
-                    defaultValue="near"
+                    defaultValue="solana"
                     onChange={handleFormChange}
                   >
                     <option disabled value="avalanche">
@@ -272,7 +271,9 @@ export default function CreateFlow({ operation }) {
                     <option disabled value="ethereum">
                       Ethereum
                     </option>
-                    <option value="near">NEAR</option>
+                    <option disabled value="near">
+                      NEAR
+                    </option>
                     <option disabled value="polkadot">
                       Polkadot
                     </option>
@@ -283,19 +284,16 @@ export default function CreateFlow({ operation }) {
                   </select>
 
                   <label htmlFor="chain_code">Chain Code</label>
-                  <select
-                    id="chain_code"
-                    name="chainCode"
-                    required
-                    defaultValue="testnet"
-                  >
+                  <select id="chain_code" name="chainCode" required>
                     <option disabled value="mainnet">
                       Mainnet
                     </option>
                     {selectedNetwork === "polkadot" ? (
                       <option value="westend">Westend</option>
                     ) : (
-                      <option value="testnet">Testnet</option>
+                      <option disabled value="testnet">
+                        Testnet
+                      </option>
                     )}
                     {selectedNetwork === "solana" ? (
                       <option value="devnet">Devnet</option>
@@ -407,13 +405,20 @@ export default function CreateFlow({ operation }) {
                     >
                       {flowResponse?.state}
                     </ToolTip>
-                  </Formatted>{" "}
+                  </Formatted>
+                  .
                 </p>
 
                 <p>
                   After creating a flow, the next step is to check the response
                   to understand which actions are available, and which input
                   data must be provided to continue the flow.
+                </p>
+
+                <p>
+                  The <Formatted>actions</Formatted> for this flow are:{" "}
+                  <Formatted>{flowResponse?.actions[0].name}</Formatted> and{" "}
+                  <Formatted>{flowResponse?.actions[1].name}</Formatted>.
                 </p>
 
                 <details>
@@ -425,7 +430,7 @@ export default function CreateFlow({ operation }) {
 
                 <Button
                   style={{ display: "block", margin: "0 auto" }}
-                  href={`/operations/${operation}/submit-data`}
+                  href={`/operations/sol-staking/submit-data`}
                   onClick={() => setAppState({ stepCompleted: 1 })}
                 >
                   Proceed to the next step &rarr;

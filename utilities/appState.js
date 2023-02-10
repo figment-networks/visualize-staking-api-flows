@@ -8,9 +8,11 @@ const initialState = {
   flowId: "", // Unique Flow ID
   flowState: "", // Flow state: initialized > sign_delegate_tx > delegate_tx_broadcasting > delegated
   flowActions: "", // Action(s) for initialized state
-  flowInputs: [], // Inputs for a given action
+  flowInputs: [], // Inputs for all actions in a flow
   flowLabels: [], // Title Case, matches inputs
   inputs: [], // An array of combined inputs and labels used to construct a form based on the Staking API response
+  action0Inputs: [], // Inputs for a given action
+  action1Inputs: [], // Inputs for a given action
   flowResponse: "", // Capture the Staking API response
   responseData: "", // Capture the Staking API response
   errorResponse: "", // Capture any error response from the Staking API
@@ -25,11 +27,15 @@ const initialState = {
   flowCompleted: false, // Have all steps of a flow been completed
   pageItem: [], // Paginated flow data used on the View All Flows page
   loaded: false, // loaded from localstorage
-  sol_accountKeyPair: [], // Store the
+  sol_accountKeyPair: new Uint8Array(), // Store the
   sol_walletMnemonic: "", // Store the
   sol_accountPublicKey: "", // Store the
-  sol_accountPrivateKey: [], // Store the
+  sol_accountPrivateKey: new Uint8Array(), // Store the
   sol_txhashAirdrop: "", // Store the
+  sol_airDropsRequested: 0, // Number of airdrops requested by user
+  sol_createStakeAccountAmount: 0, // Amount used to create a stake account
+  solBalance: 0, // SOL balance
+  stateChange: "", // State change
 };
 
 const AppStateContext = createContext({

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Pagination } from "antd";
 
 import {
@@ -21,8 +21,27 @@ import { useAppState } from "@utilities/appState";
 
 export default function ViewAllFlows() {
   const { appState, setAppState } = useAppState();
-  const { flowId, responseData, pageItem, stepCompleted, flowCompleted } =
-    appState;
+  const {
+    flowId,
+    responseData,
+    pageItem,
+    stepCompleted,
+    flowCompleted,
+    flowState,
+    flowResponse,
+    stateChange,
+  } = appState;
+
+  useEffect(() => {
+    if (responseData.actions) {
+      setAppState({
+        stateChange: new Date(
+          responseData.actions[0]?.estimated_state_change_at
+        ).toString(),
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [responseData?.actions]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -185,6 +204,17 @@ export default function ViewAllFlows() {
               }}
             >
               <h6>&darr; Recently completed flow</h6>
+              {flowState === "delegation_activating" && (
+                <>
+                  <p>
+                    The Solana delegation is activating, and is estimated to be
+                    complete by
+                    <br /> <Formatted>{stateChange}</Formatted>.
+                  </p>
+                  <p>{}</p>
+                </>
+              )}
+
               <Formatted block>
                 {JSON.stringify(responseData, null, 2)}
               </Formatted>

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import AccountCard from "@components/AccountCard";
+import * as bs58 from "bs58";
 
 import {
   DESCRIPTION,
@@ -23,6 +24,7 @@ export default function CreateSolanaAccountPage() {
     sol_accountPrivateKey,
     sol_accountPublicKey,
     sol_walletMnemonic,
+    sol_airDropsRequested,
   } = appState;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,31 +39,30 @@ export default function CreateSolanaAccountPage() {
       method: "POST",
     });
 
-    let { txhash, keypair, secretKey, publicKey, mnemonic } =
+    let { signature, solBalance, keypair, secretKey, publicKey, mnemonic } =
       await response.json();
-
-    console.log(
-      "Remove this logging before pushing",
-      txhash,
-      keypair,
-      secretKey,
-      publicKey,
-      mnemonic
-    );
 
     setAppState({
       ...appState,
-      sol_accountKeyPair: JSON.stringify(Uint8Array.from(keypair).toString()),
-      sol_accountPrivateKey: Uint8Array.from(secretKey),
+      sol_accountKeyPair: keypair,
+      sol_accountPrivateKey: secretKey,
       sol_accountPublicKey: publicKey.toString(),
       sol_walletMnemonic: mnemonic,
-      sol_txhashAirdrop: txhash,
+      sol_txhashAirdrop: signature,
+      solBalance: solBalance,
     });
 
     setIsLoading(false);
   };
 
   const handleAirdrop = async (event) => {
+    const data = {
+      keyPair: sol_accountKeyPair,
+      mnemonic: sol_walletMnemonic,
+      publicKey: sol_accountPublicKey,
+      privateKey: sol_accountPrivateKey,
+    };
+
     setIsLoading(true);
 
     const response = await fetch(`api/accounts/solana-airdrop`, {
@@ -69,27 +70,24 @@ export default function CreateSolanaAccountPage() {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify(sol_accountKeyPair),
+      body: JSON.stringify(data),
     });
 
-    let { txhash } = await response.json();
+    let { confirmation, signature, solBalance } = await response.json();
 
-    console.log("Remove this logging before pushing 2 --", txhash);
-
-    // setAppState({
-    //   ...appState,
-    //   sol_accountKeyPair: keypair,
-    //   sol_accountPrivateKey: Uint8Array.from(secretKey),
-    //   sol_accountPublicKey: publicKey.toString(),
-    //   sol_walletMnemonic: mnemonic,
-    //   sol_txhashAirdrop: txhash,
-    // });
+    setAppState({
+      sol_txhashAirdrop: signature,
+      sol_airDropsRequested: sol_airDropsRequested + 1,
+      solBalance: solBalance,
+    });
 
     setIsLoading(false);
   };
 
   const handleResetAccount = async () => {
     setAppState({
+      sol_airDropsRequested: undefined,
+      sol_accountKeyPair: undefined,
       sol_accountPrivateKey: undefined,
       sol_accountPublicKey: undefined,
       sol_walletMnemonic: undefined,
@@ -108,13 +106,13 @@ export default function CreateSolanaAccountPage() {
         {!sol_walletMnemonic && (
           <Card small>
             <p>
-              Click the <b>Create Account</b> button to generate a random NEAR
-              testnet account ID and keypair, which is only intended for use
-              with this demo of Figment&apos;s Staking API.
+              Click the <b>Create Account</b> button to generate a Solana devnet
+              account and wallet mnemonic, which is only intended for use with
+              this demo of Figment&apos;s Staking API.
             </p>
             <p>
-              The private key of this keypair will be used to sign a transaction
-              payload during the flow.
+              The private key of the account keypair will be used to sign a
+              transaction payload during the flow.
             </p>
             <form onSubmit={handleSubmit} method="post">
               <Button disabled={isLoading ? true : false}>
@@ -127,12 +125,22 @@ export default function CreateSolanaAccountPage() {
         {sol_accountPublicKey && (
           <>
             <Card medium>
-              <p>
+              <p style={{ textAlign: "center" }}>
                 Your Solana account Public Key is <b>{sol_accountPublicKey}</b>
               </p>
+              <p style={{ textAlign: "center" }}>
+                You have requested {sol_airDropsRequested} airdrops with this
+                account.
+              </p>
+
               <p>
-                <Button small secondary onClick={() => handleAirdrop()}>
-                  Request 1 SOL Devnet Airdrop
+                <Button
+                  disabled={isLoading}
+                  small
+                  secondary
+                  onClick={() => handleAirdrop()}
+                >
+                  Request 2 SOL airdrop on Devnet
                 </Button>
               </p>
             </Card>
@@ -148,7 +156,7 @@ export default function CreateSolanaAccountPage() {
 
         {sol_accountPublicKey && (
           <>
-            <Button href="/operations/staking/create-flow">
+            <Button href="/operations/sol-staking/create-flow">
               Proceed to the next step &rarr;
             </Button>
             <br />

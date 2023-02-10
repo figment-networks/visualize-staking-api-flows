@@ -1,33 +1,43 @@
 // @ts-nocheck
-const solana = require("@solana/web3.js");
 import crypto from "crypto";
-import { Connection, Keypair } from "@solana/web3.js";
+import { Connection, Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import * as bip39 from "bip39";
 import * as bs58 from "bs58";
 
-import { setTimeout } from "timers/promises";
-
 export default async function airdropToSolanaAccount(req, res) {
-  console.log("Airdrop Request body: ", req.body);
+  const body = req.body;
+  let signature = "";
 
-  // connection
+  const seed = bip39.mnemonicToSeedSync(body.mnemonic, ""); // (mnemonic, password)
+  const keypair = Keypair.fromSeed(seed.subarray(0, 32));
+
   const connection = new Connection("https://api.devnet.solana.com");
-  //   console.log("Solana connection to Devnet: ", connection);
-  const feePayer = Keypair.fromSecretKey(req.body.secretKey);
 
-  console.log("Airdrop Fee payer: ", feePayer);
+  try {
+    signature = await connection.requestAirdrop(
+      keypair.publicKey,
+      2 * LAMPORTS_PER_SOL
+    );
+  } catch (error) {
+    console.log(error);
+  }
 
-  let txhash = await connection.requestAirdrop(
-    feePayer.publicKey,
-    1 * solana.LAMPORTS_PER_SOL
+  const { blockhash, lastValidBlockHeight } =
+    await connection.getLatestBlockhash();
+
+  const confirmation = await connection.confirmTransaction(
+    {
+      blockhash,
+      lastValidBlockHeight,
+      signature,
+    },
+    "finalized"
   );
-  console.log(`txhash: ${txhash}`);
 
-  //   let txhash2 = await connection.requestAirdrop(
-  //     feePayer.publicKey,
-  //     1 * solana.LAMPORTS_PER_SOL
-  //   );
-  //   console.log(`txhash2: ${txhash2}`);
+  const solBalance = await connection.getBalance(
+    keypair.publicKey,
+    "finalized"
+  );
 
-  return res.status(200).json({ txhash });
+  return res.status(200).json({ confirmation, signature, solBalance });
 }

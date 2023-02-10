@@ -53,7 +53,7 @@ export default function FlowState({ operation }) {
       <LayoutVertical>
         <Title>Get Flow State</Title>
 
-        <Card small justify>
+        <Card small>
           {!flowState && (
             <>
               <p style={{ textAlign: "center" }}>
@@ -61,6 +61,45 @@ export default function FlowState({ operation }) {
               </p>
             </>
           )}
+
+          {/* {flowState && (
+            <>
+              <p>
+                <Formatted block>
+                  {JSON.stringify(responseData, null, 2)}
+                </Formatted>
+              </p>
+            </>
+          )} */}
+
+          {flowState === "stake_account" && (
+            <>
+              <p>
+                The flow <Formatted>{flowId}</Formatted>&apos;s state is{" "}
+                <Formatted>{flowState}</Formatted>, indicating that the Staking
+                API now expects you to create a delegate transaction.
+                <br />
+                <br />
+                For Solana, the <Formatted>create_delegate_tx</Formatted> action
+                has a single input: a Validator address. <br />
+                <br />
+                It is also possible to assign a different stake account with the
+                action <Formatted>assign_stake_account</Formatted>.
+                <br />
+                <br />
+                <details>
+                  <summary>Click to view the full response</summary>
+                  <Formatted block maxHeight="510px">
+                    {JSON.stringify(responseData, null, 2)}
+                  </Formatted>
+                </details>
+                <Button small href="/operations/sol-staking/delegate">
+                  Proceed to the next step &rarr;
+                </Button>
+              </p>
+            </>
+          )}
+
           {flowState === "initialized" && (
             <>
               <p>
@@ -83,6 +122,7 @@ export default function FlowState({ operation }) {
               </Button>
             </>
           )}
+
           {flowState === "delegate_tx_broadcasting" && (
             <>
               <p>
@@ -103,6 +143,7 @@ export default function FlowState({ operation }) {
               </p>
             </>
           )}
+
           {flowState === "delegated" && (
             <>
               <p>
@@ -136,6 +177,7 @@ export default function FlowState({ operation }) {
               </p>
             </>
           )}
+
           {flowState === "delegate_tx_signature" && (
             <>
               <p>

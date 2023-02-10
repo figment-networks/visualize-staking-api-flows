@@ -1,53 +1,45 @@
 // @ts-nocheck
 const solana = require("@solana/web3.js");
-import crypto from "crypto";
-import { Connection, Keypair } from "@solana/web3.js";
+import { Connection, Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import * as bip39 from "bip39";
 import * as bs58 from "bs58";
 
 import { setTimeout } from "timers/promises";
 
+const SOLANA_CLUSTER_URL = `https://api.devnet.solana.com`;
+
 export default async function createSolanaAccount(req, res) {
-  console.log("solana: ", solana);
-
   const mnemonic = bip39.generateMnemonic();
-
   const seed = bip39.mnemonicToSeedSync(mnemonic, ""); // (mnemonic, password)
   const keypair = Keypair.fromSeed(seed.subarray(0, 32));
-  console.log(`Base58 PubKey: ${keypair.publicKey.toBase58()}`);
+  const secretKey = bs58.encode(keypair.secretKey);
+  const publicKey = keypair.publicKey.toBase58();
 
-  //   const keypair = Keypair.fromMnemonic(mnemonic);
-  const secretKey = keypair.secretKey.toString();
-  const publicKey = keypair.publicKey.toString();
+  const connection = new Connection(SOLANA_CLUSTER_URL);
 
-  console.log("m:", mnemonic);
-
-  console.log("kp:", keypair);
-
-  console.log("secret:", secretKey);
-
-  //   const accountId = `${crypto.randomBytes(16).toString("hex")}`;
-
-  // connection
-  const connection = new Connection("https://api.devnet.solana.com");
-  console.log(connection);
-  const feePayer = Keypair.fromSecretKey(keypair.secretKey);
-
-  console.log("Fee payer: ", feePayer);
-
-  let txhash = await connection.requestAirdrop(
-    feePayer.publicKey,
-    1 * solana.LAMPORTS_PER_SOL
+  let signature = await connection.requestAirdrop(
+    keypair.publicKey,
+    2 * LAMPORTS_PER_SOL
   );
-  console.log(`txhash: ${txhash}`);
 
-  //   let txhash2 = await connection.requestAirdrop(
-  //     feePayer.publicKey,
-  //     1 * solana.LAMPORTS_PER_SOL
-  //   );
-  //   console.log(`txhash2: ${txhash2}`);
+  const { blockhash, lastValidBlockHeight } =
+    await connection.getLatestBlockhash();
+
+  const confirmation = await connection.confirmTransaction(
+    {
+      blockhash,
+      lastValidBlockHeight,
+      signature,
+    },
+    "finalized"
+  );
+
+  const solBalance = await connection.getBalance(
+    keypair.publicKey,
+    "finalized"
+  );
 
   return res
     .status(200)
-    .json({ txhash, keypair, secretKey, publicKey, mnemonic });
+    .json({ signature, solBalance, keypair, secretKey, publicKey, mnemonic });
 }

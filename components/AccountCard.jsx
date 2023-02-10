@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button, Card, Formatted, ToolTip } from "@components/ui-components";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import { useAppState } from "@utilities/appState";
 
@@ -31,6 +32,9 @@ const explorerUrl = (address) =>
 const solanaExplorerUrl = (address, cluster) =>
   `https://explorer.solana.com/address/${address}?cluster=${cluster}`;
 
+const solscanUrl = (op, address, cluster) =>
+  `https://solscan.io/${op}/${address}?cluster=${cluster}`;
+
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const isIndex = () => useRouter().pathname === "/";
 
@@ -43,9 +47,9 @@ const trimmedAccount = (account) => {
 
 const trimmedSolanaAccount = (account) => {
   let trimmedAccount = account.slice(0, 6);
-  trimmedAccount += `...${account.slice(42, -8)}`;
-  trimmedAccount += `.testnet`;
-  return trimmedAccount;
+  trimmedAccount += `...${account.slice(30, -8)}`;
+  // trimmedAccount += `.sol`;
+  return <Formatted>{trimmedAccount}</Formatted>;
 };
 
 export default function AccountCard() {
@@ -57,10 +61,13 @@ export default function AccountCard() {
       accountAddress,
       accountPublicKey,
       accountPrivateKey,
+      sol_accountKeyPair,
       sol_accountPrivateKey,
       sol_accountPublicKey,
       sol_walletMnemonic,
+      sol_airDropsRequested,
       sol_txhashAirdrop,
+      solBalance,
     },
   } = useAppState();
 
@@ -87,75 +94,104 @@ export default function AccountCard() {
       ) : (
         <>
           <Card medium>
-            <h6>Account Address &rarr;</h6>
-            {sol_accountPublicKey && (
+            {sol_accountPublicKey && !isIndex() && (
               <>
-                {" "}
-                <Link
-                  href={solanaExplorerUrl(sol_accountPublicKey, "devnet")}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  {sol_accountPublicKey}
-                </Link>{" "}
-                <ul>
-                  <li>
-                    1 SOL has been{" "}
-                    <ToolTip
-                      style={{ textDecoration: "underline" }}
-                      title={`Transaction Hash: ${sol_txhashAirdrop}`}
-                    >
-                      airdropped
-                    </ToolTip>{" "}
-                    to this address on Devnet
-                  </li>
-                  <li>
-                    {" "}
-                    Request additional Devnet airdrops from the{" "}
+                <Card medium>
+                  <h4>Solana</h4>
+                  <p>
                     <Link
-                      href="https://solfaucet.com/"
+                      href={solanaExplorerUrl(sol_accountPublicKey, "devnet")}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      SolFaucet
-                    </Link>
-                  </li>
-                </ul>
+                      {sol_accountPublicKey}
+                    </Link>{" "}
+                    has {solBalance / LAMPORTS_PER_SOL} ◎
+                  </p>
+                  {sol_airDropsRequested >= 1 && (
+                    <ul>
+                      <li>
+                        2 SOL were{" "}
+                        <ToolTip
+                          style={{ textDecoration: "underline" }}
+                          title={`View airdrop transaction on SolScan`}
+                        >
+                          <Link
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            href={solscanUrl("tx", sol_txhashAirdrop, "devnet")}
+                          >
+                            airdropped
+                          </Link>
+                        </ToolTip>{" "}
+                        to this address on Devnet
+                      </li>
+                      {/* <li>
+                      {" "}
+                      Request additional Devnet airdrops from the{" "}
+                      <Link
+                        href="https://solfaucet.com/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        SolFaucet
+                      </Link>
+                    </li> */}
+                    </ul>
+                  )}
+                  {sol_accountPrivateKey && (
+                    <>
+                      <h6 className="pubkey">
+                        Account Private Key Base58 (hover to reveal) &rarr;
+                      </h6>
+                      <p className="secret">{sol_accountPrivateKey}</p>
+                    </>
+                  )}
+                  {sol_walletMnemonic && (
+                    <>
+                      <h6 className="pubkey">
+                        Solana Wallet Mnemonic (hover to reveal) &rarr;
+                      </h6>
+                      <p className="secret">{sol_walletMnemonic}</p>
+                    </>
+                  )}
+                </Card>
               </>
             )}
-            <Link
-              href={explorerUrl(accountAddress)}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {accountAddress}
-            </Link>
+
+            {sol_accountPublicKey && isIndex() && (
+              <>
+                <ToolTip
+                  title={`For your reference, this is the Solana account previously generated by this app.`}
+                >
+                  {trimmedSolanaAccount(sol_accountPublicKey)}
+                </ToolTip>
+              </>
+            )}
 
             {accountPublicKey && (
               <>
-                <h6 className="pubkey">Account Public Key &rarr;</h6>
-                <p>{accountPublicKey}</p>
-              </>
-            )}
+                <Card medium>
+                  <h4>NEAR</h4>
+                  <Link
+                    href={explorerUrl(accountAddress)}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {accountAddress}
+                  </Link>
 
-            {accountPrivateKey ||
-              (sol_accountPrivateKey && (
-                <>
-                  <h6 className="pubkey">
-                    Account Private Key (hover to reveal) &rarr;
-                  </h6>
-                  <p className="secret">
-                    {accountPrivateKey || JSON.stringify(sol_accountPrivateKey)}
-                  </p>
-                </>
-              ))}
-
-            {sol_walletMnemonic && !accountPrivateKey && (
-              <>
-                <h6 className="pubkey">
-                  Solana Wallet Mnemonic (hover to reveal) &rarr;
-                </h6>
-                <p className="secret">{sol_walletMnemonic}</p>
+                  <h6 className="pubkey">Account Public Key &rarr;</h6>
+                  <p>{accountPublicKey}</p>
+                  {accountPrivateKey && (
+                    <>
+                      <h6 className="pubkey">
+                        Account Private Key (hover to reveal) &rarr;
+                      </h6>
+                      <p className="secret">{accountPrivateKey}</p>
+                    </>
+                  )}
+                </Card>
               </>
             )}
           </Card>
