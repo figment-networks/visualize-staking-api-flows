@@ -33,7 +33,7 @@ export default function ViewAllFlows() {
   } = appState;
 
   useEffect(() => {
-    if (responseData.actions) {
+    if (responseData?.actions) {
       setAppState({
         stateChange: new Date(
           responseData.actions[0]?.estimated_state_change_at
@@ -83,7 +83,7 @@ export default function ViewAllFlows() {
   };
 
   const handleReset = async (event) => {
-    setAppState({ responseData: undefined });
+    setAppState({ responseData: undefined, pageItem: undefined });
     setIsLoading(false);
     document.getElementById("page").value = "1";
   };
@@ -110,7 +110,7 @@ export default function ViewAllFlows() {
   return (
     <>
       <Head title={title} description={DESCRIPTION} />
-      <BreadCrumbs step={6} />
+      <BreadCrumbs step={7} />
       <LayoutVertical>
         <Title>{title}</Title>
         <Card small justify>
@@ -123,7 +123,7 @@ export default function ViewAllFlows() {
           <p>
             To view all flows created by your account, send a GET request to the{" "}
             <ToolTip
-              style={{ textDecoration: "underline" }}
+              style={{ textDecoration: "underline dotted", cursor: "help" }}
               placement="right"
               title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
             >
@@ -139,53 +139,51 @@ export default function ViewAllFlows() {
             Try it out! Select a page number, then click{" "}
             <b>Get Page of Flows</b> to continue.
           </p>
-          <p>
-            <form method="post" onSubmit={handleSubmit}>
-              <label htmlFor="page" className="center">
-                Select Page Number
-              </label>
-              <input
-                type="number"
-                id="page"
-                name="page"
-                defaultValue="1"
-                min="1"
-                className="pageNumberInput"
-              />
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                {responseData?.page && (
-                  <>
-                    <Button
-                      secondary
-                      style={{ margin: "1rem" }}
-                      onClick={handleReset}
-                    >
-                      Reset Page
-                    </Button>
-                  </>
-                )}
-                <Button
-                  style={{ margin: "1rem" }}
-                  onClick={() => {
-                    setAppState({ flowCompleted: true });
-                  }}
-                >
-                  Get Page of Flows
-                </Button>
-              </div>
-            </form>
-            {flowCompleted && (
-              <p>
-                When you are done here you can{" "}
-                <Link href="/">return to the main page</Link>, or stop the
-                Next.js server and close this browser tab to close the app.{" "}
-                <b>
-                  Thank you for taking the time to visualize Figment&apos;s
-                  Staking API!
-                </b>
-              </p>
-            )}
-          </p>
+          <form method="post" onSubmit={handleSubmit}>
+            <label htmlFor="page" className="center">
+              Select Page Number
+            </label>
+            <input
+              type="number"
+              id="page"
+              name="page"
+              defaultValue="1"
+              min="1"
+              className="pageNumberInput"
+            />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {responseData?.page && (
+                <>
+                  <Button
+                    secondary
+                    style={{ margin: "1rem" }}
+                    onClick={handleReset}
+                  >
+                    Reset Page
+                  </Button>
+                </>
+              )}
+              <Button
+                style={{ margin: "1rem" }}
+                onClick={() => {
+                  setAppState({ flowCompleted: true });
+                }}
+              >
+                Get Page of Flows
+              </Button>
+            </div>
+          </form>
+          {flowCompleted && (
+            <p>
+              When you are done here you can{" "}
+              <Link href="/">return to the main page</Link>, or stop the Next.js
+              server and close this browser tab to close the app.{" "}
+              <b>
+                Thank you for taking the time to visualize Figment&apos;s
+                Staking API!
+              </b>
+            </p>
+          )}
           <Button small secondary onClick={() => showModal()}>
             Click Here For More Information
           </Button>
@@ -194,7 +192,8 @@ export default function ViewAllFlows() {
         {responseData &&
           !responseData.page &&
           !isLoading &&
-          stepCompleted >= 2 && (
+          stepCompleted >= 2 &&
+          flowResponse.state === "delegation_tx_broadcasting" && (
             <Card
               small
               style={{
@@ -205,6 +204,16 @@ export default function ViewAllFlows() {
             >
               <h6>&darr; Recently completed flow</h6>
               {flowState === "delegation_activating" && (
+                <>
+                  <p>
+                    The Solana delegation is activating, and is estimated to be
+                    complete by
+                    <br /> <Formatted>{stateChange}</Formatted>.
+                  </p>
+                  <p>{}</p>
+                </>
+              )}
+              {flowResponse.state === "delegation_tx_broadcasting" && (
                 <>
                   <p>
                     The Solana delegation is activating, and is estimated to be
@@ -305,36 +314,42 @@ export default function ViewAllFlows() {
             <b>
               {responseData?.data?.length ? responseData?.data?.length : "?"}
             </b>{" "}
-            flows per page (to a max of 20).
-            <br />
-            Access individual results (in this context) with{" "}
-            <Formatted>responseData.data[0]</Formatted> through{" "}
+            flows per page (to a max of 20). Access individual results (in this
+            context) with <Formatted>responseData.data[0]</Formatted> through{" "}
             <Formatted>responseData.data[19]</Formatted>.
           </li>
+          <br />
 
           <li>
-            Developers can <Formatted>map()</Formatted> to filter a page of
-            flows by their state (for example, <Formatted>delegated</Formatted>
+            Developers can <Formatted>map()</Formatted> the API response to
+            filter a page of flows by their state (for example,{" "}
+            <Formatted>delegation_activating</Formatted>
             ):
             <br />
             <details>
-              <summary>Click here to expand code snippet</summary>
+              <summary>Click here to expand JSX code snippet</summary>
               <Formatted block>{codeSnippet}</Formatted>
 
               <p>
-                &nbsp;Based on the current page being viewed, filtering by{" "}
+                Based on the current page being viewed, filtering by{" "}
                 <Formatted>
-                  responseData?.data[index].state === &apos;delegated&apos;
+                  responseData?.data[index].state ===
+                  &apos;delegation_activating&apos;
                 </Formatted>{" "}
-                returns any <Formatted>delegated</Formatted> flows:
+                returns any <Formatted>delegation_activating</Formatted> flows.
+                We&apos;ll just show their ID and state here:
               </p>
 
               <Formatted block>
                 {responseData?.data && responseData?.data.length > 1
                   ? Object?.keys(responseData.data).map((index) => (
                       <>
-                        {responseData?.data[index].state === "delegated" && (
-                          <Formatted block key={responseData?.data[index]}>
+                        {responseData?.data[index].state ===
+                          "delegation_activating" && (
+                          <Formatted
+                            block
+                            key={responseData?.data[index].toString()}
+                          >
                             {responseData?.data[index].id.toString() +
                               " " +
                               responseData?.data[index].state.toString()}
@@ -357,7 +372,10 @@ export default function ViewAllFlows() {
                   ? Object?.keys(responseData.data).map((index) => (
                       <>
                         {responseData?.data[index].state === "initialized" && (
-                          <Formatted block key={responseData?.data[index]}>
+                          <Formatted
+                            block
+                            key={responseData?.data[index].toString()}
+                          >
                             {responseData?.data[index].id.toString() +
                               " " +
                               responseData?.data[index].state.toString()}
@@ -372,17 +390,16 @@ export default function ViewAllFlows() {
           <br />
 
           <li>
-            Check the Figment{" "}
+            Also, check out the Figment{" "}
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              href="https://docs.figment.io/api-reference/staking-api/near#get%20flow%20status"
+              href="https://docs.figment.io/api-reference/staking-api/solana#get%20flow%20status"
             >
               API Reference
-            </Link>{" "}
-            for details.
+            </Link>
+            .
           </li>
-          <br />
         </ul>
       </Modal>
     </>

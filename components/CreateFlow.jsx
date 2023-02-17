@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Modal } from "antd";
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+
+import "yet-another-react-lightbox/styles.css";
 
 import {
   DESCRIPTION,
@@ -19,9 +23,9 @@ import {
 
 import { useAppState } from "@utilities/appState";
 
-import img1 from "@images/Workflows::V1::Near::StakingFlow_workflow.png";
+import img1 from "public/img/Workflows::V1::Solana::StakingFlow_workflow.png";
 
-export default function CreateFlow({ operation }) {
+export default function CreateFlowSolana({ operation }) {
   const { appState, setAppState } = useAppState();
   const {
     flowId,
@@ -34,12 +38,13 @@ export default function CreateFlow({ operation }) {
     accountPublicKey,
     accountPrivateKey,
     flowCompleted,
-    action0Inputs,
     action1Inputs,
+    action0Inputs,
   } = appState;
 
   const [formData, setFormData] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState("");
 
   async function handleFormChange(event) {
@@ -59,6 +64,8 @@ export default function CreateFlow({ operation }) {
   // objects containing both the input names and labels:
   // { name: "delegator_address", label: "Delegator Address" }
   useEffect(() => {
+    setSelectedNetwork("solana");
+
     if (!!appState.inputs.length) return; // Return early if the inputs are already defined
     const inputs = Array(flowInputs.length)
       .fill(null)
@@ -107,25 +114,29 @@ export default function CreateFlow({ operation }) {
       accountAddress: accountAddress,
       accountPublicKey: accountPublicKey,
       accountPrivateKey: accountPrivateKey,
-      stepCompleted: 0,
-      flowCompleted: false,
-      flowResponse: undefined,
-      responseData: undefined,
-      flowState: undefined,
+      action0Inputs: undefined,
+      action1Inputs: undefined,
+      createError: undefined,
       errorResponse: undefined,
       errorResponseTimestamp: undefined,
       transitionErrorResponse: undefined,
+      stepCompleted: 0,
+      flowActions: undefined,
+      flowId: undefined,
+      flowInputs: [],
+      flowLabels: [],
+      inputs: [],
+      flowCompleted: false,
+      flowResponse: undefined,
+      flowResponseDelegate: undefined,
+      responseData: undefined,
+      flowState: undefined,
       pageItem: [],
       decodedTransactionPayload: undefined,
       unsignedTransactionPayload: undefined,
       signedTransactionPayload: undefined,
       validatorAddress: undefined,
       delegateAmount: undefined,
-      flowActions: undefined,
-      flowId: undefined,
-      flowInputs: [],
-      flowLabels: [],
-      inputs: [],
     });
     setFormData(undefined);
     alert(
@@ -148,7 +159,6 @@ export default function CreateFlow({ operation }) {
       function getInputsForAction(action) {
         return action.inputs.flatMap((input) => [
           {
-            action: action.name,
             name: input.name,
             display: input.display,
           },
@@ -195,7 +205,7 @@ export default function CreateFlow({ operation }) {
   return (
     <>
       <Head title={title} description={DESCRIPTION} />
-      <BreadCrumbs step={1} />
+      <BreadCrumbs step={1} network="solana" />
 
       <LayoutColumn title={<Title>{title}</Title>}>
         <LayoutColumn.Column
@@ -210,8 +220,8 @@ export default function CreateFlow({ operation }) {
         >
           <Card medium>
             <p>
-              Figment&apos;s Staking API works with the concept of flows. When
-              creating a flow, you must provide the{" "}
+              Figment&apos;s Staking API operates with the concept of flows.
+              When creating a new flow, you must provide the{" "}
               <Formatted>network</Formatted>, <Formatted>chain_code</Formatted>,{" "}
               <Formatted>operation</Formatted> and Staking API{" "}
               <Formatted>version</Formatted>.
@@ -222,17 +232,25 @@ export default function CreateFlow({ operation }) {
               creates a JSON request body, which you can send to the Staking API
               to create a new flow.
             </p>
-            <Image
-              src={img1}
-              alt="Flow Diagram"
-              className="inline_image"
-              width={1150}
-              height={150}
-            />
+            <ToolTip
+              title={`Click here to view the flow diagram for this type of flow in a scrollable, zoomable lightbox. Click and drag to scroll, CTRL + Scrollwheel to zoom. Press ESC to close the lightbox.`}
+            >
+              <Button small onClick={() => setLightboxOpen(true)}>
+                View Flow Diagram in Lightbox
+              </Button>
+            </ToolTip>
+            <br />
 
             <Button secondary type="text" onClick={() => showModal()}>
               Click Here For More Information
             </Button>
+
+            <Lightbox
+              open={lightboxOpen}
+              close={() => setLightboxOpen(false)}
+              slides={[img1]}
+              plugins={[Zoom]}
+            />
           </Card>
         </LayoutColumn.Column>
 
@@ -254,13 +272,16 @@ export default function CreateFlow({ operation }) {
           ) : (
             <>
               <Card large>
+                <p>
+                  Click <b>Create JSON Request Body</b> to continue.
+                </p>
                 <form onSubmit={handleSubmit} method="post">
                   <label htmlFor="network_code">Network</label>
                   <select
                     id="network_code"
                     name="networkCode"
                     required
-                    defaultValue="near"
+                    defaultValue="solana"
                     onChange={handleFormChange}
                   >
                     <option disabled value="avalanche">
@@ -272,7 +293,9 @@ export default function CreateFlow({ operation }) {
                     <option disabled value="ethereum">
                       Ethereum
                     </option>
-                    <option value="near">NEAR</option>
+                    <option disabled value="near">
+                      NEAR
+                    </option>
                     <option disabled value="polkadot">
                       Polkadot
                     </option>
@@ -283,19 +306,16 @@ export default function CreateFlow({ operation }) {
                   </select>
 
                   <label htmlFor="chain_code">Chain Code</label>
-                  <select
-                    id="chain_code"
-                    name="chainCode"
-                    required
-                    defaultValue="testnet"
-                  >
+                  <select id="chain_code" name="chainCode" required>
                     <option disabled value="mainnet">
                       Mainnet
                     </option>
                     {selectedNetwork === "polkadot" ? (
                       <option value="westend">Westend</option>
                     ) : (
-                      <option value="testnet">Testnet</option>
+                      <option disabled value="testnet">
+                        Testnet
+                      </option>
                     )}
                     {selectedNetwork === "solana" ? (
                       <option value="devnet">Devnet</option>
@@ -374,9 +394,7 @@ export default function CreateFlow({ operation }) {
 
                   <br />
                   <br />
-                  <Button disabled={formData || stepCompleted === 5}>
-                    Create JSON Request Body
-                  </Button>
+                  <Button disabled={formData}>Create JSON Request Body</Button>
                 </form>
               </Card>
             </>
@@ -384,30 +402,37 @@ export default function CreateFlow({ operation }) {
         </LayoutColumn.Column>
 
         <LayoutColumn.Column style={{ marginBottom: "2.4rem" }}>
-          {!flowCompleted && flowResponse && stepCompleted < 2 ? (
+          {!flowCompleted && flowResponse ? (
             <>
               <Card small>
                 <p>
                   Flow ID{" "}
                   <Formatted dark>
                     <ToolTip
-                      style={{ textDecoration: "underline" }}
+                      style={{
+                        textDecoration: "underline dotted",
+                        cursor: "help",
+                      }}
                       placement="topLeft"
                       title={`This is the flow's unique ID, which can be used to continue the flow or to query the API for the current details of the flow.`}
                     >
                       {flowResponse?.id}
                     </ToolTip>
                   </Formatted>{" "}
-                  is{" "}
+                  state is{" "}
                   <Formatted>
                     <ToolTip
-                      style={{ textDecoration: "underline" }}
+                      style={{
+                        textDecoration: "underline dotted",
+                        cursor: "help",
+                      }}
                       placement="top"
                       title={`This is the flow's current state. The flow will remain in the initialized state until it is updated by an action.`}
                     >
                       {flowResponse?.state}
                     </ToolTip>
-                  </Formatted>{" "}
+                  </Formatted>
+                  .
                 </p>
 
                 <p>
@@ -416,32 +441,62 @@ export default function CreateFlow({ operation }) {
                   data must be provided to continue the flow.
                 </p>
 
+                <p>
+                  The actions available at this point in the flow are:{" "}
+                  <Formatted>{flowResponse?.actions[0]?.name}</Formatted> and{" "}
+                  <Formatted>{flowResponse?.actions[1]?.name}</Formatted>.
+                </p>
+                <ul>
+                  <li>
+                    <p>
+                      Use the <Formatted>create_new_stake_account</Formatted>{" "}
+                      action to create a stake account and assign it a balance.
+                      The inputs for this action are{" "}
+                      <Formatted>{action1Inputs[0].name}</Formatted>,{" "}
+                      <Formatted>{action1Inputs[1].name}</Formatted>,{" "}
+                      <Formatted>{action1Inputs[2].name}</Formatted>,{" "}
+                      <Formatted>{action1Inputs[3].name}</Formatted>.
+                    </p>
+                  </li>
+
+                  <li>
+                    <p>
+                      If you already have a stake account prepared (on Devnet),
+                      you can use the{" "}
+                      <Formatted>assign_stake_account</Formatted> action. The
+                      inputs for this action are{" "}
+                      <Formatted>{action0Inputs[0].name}</Formatted> and{" "}
+                      <Formatted>{action0Inputs[1].name}</Formatted>.{" "}
+                    </p>
+                  </li>
+                </ul>
+
                 <details>
                   <summary>Click to view the full Staking API response</summary>
                   <Formatted block maxHeight="500px">
                     {JSON.stringify(flowResponse, null, 2)}
                   </Formatted>
                 </details>
-
                 <Button
                   style={{ display: "block", margin: "0 auto" }}
-                  href={`/operations/${operation}/submit-data`}
+                  href={`/operations/staking/submit-data`}
                   onClick={() => setAppState({ stepCompleted: 1 })}
                 >
                   Proceed to the next step &rarr;
                 </Button>
+                {/* <br />
                 <Button
                   destructive
                   onClick={() => handleResetFlow()}
                   style={{ display: "block", margin: "0 auto" }}
                 >
                   Reset Flow
-                </Button>
+                </Button> */}
               </Card>
             </>
           ) : (
             <>
-              {!flowCompleted && !formData && stepCompleted !== 5 && (
+              {!flowCompleted && !formData && (
                 <>
                   <br />
                   <p className="spacer">
@@ -456,13 +511,16 @@ export default function CreateFlow({ operation }) {
                   <p>
                     Send this JSON request body to the{" "}
                     <ToolTip
-                      title={`/api/v1/flows - Refer to the Figment Docs for more information.`}
+                      title={`POST /api/v1/flows - Refer to the Figment Docs for more information.`}
+                      style={{
+                        textDecoration: "underline dotted",
+                        cursor: "help",
+                      }}
                     >
                       Staking API endpoint
                     </ToolTip>{" "}
                     to create a new flow:
                   </p>
-                  <br />
                   <Formatted block>
                     {JSON.stringify(formData, null, 2)}
                   </Formatted>
@@ -496,13 +554,14 @@ export default function CreateFlow({ operation }) {
         <ul>
           <p>
             <b>Note</b>: To provide a seamless experience, this app is currently
-            limited to the staking flow on NEAR testnet.
+            limited to the staking flow on Solana Devnet.
           </p>
           <br />
           <li>
             Figment&apos;s Staking API supports several networks, each network
             has its own set of available operations. Upon creation, each flow is
-            given a unique ID. Flows can be created on testnet or mainnet.
+            given a unique ID. Flows can be created on devnet, testnet or
+            mainnet.
             <br />
             Flows change state when an action has been completed.
             <br />
@@ -535,7 +594,7 @@ export default function CreateFlow({ operation }) {
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              href="https://docs.figment.io/guides/staking-api/near/delegate/create-new-flow"
+              href="https://docs.figment.io/guides/staking-api/solana/delegate/create-new-flow"
             >
               specific guides
             </Link>{" "}
@@ -548,9 +607,9 @@ export default function CreateFlow({ operation }) {
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              href="https://docs.figment.io/api-reference/staking-api/near#create%20new%20delegation%20flow"
+              href="https://docs.figment.io/api-reference/staking-api/solana#create%20new%20delegation%20flow"
             >
-              Create New Delegation Flow on NEAR
+              Create New Delegation Flow on Solana
             </Link>{" "}
             for sample request and response data.
           </li>

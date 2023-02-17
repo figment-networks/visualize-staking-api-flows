@@ -22,7 +22,7 @@ export default function FlowState({ operation }) {
   const { appState, setAppState } = useAppState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { flowId, responseData, flowState } = appState;
+  const { flowId, responseData, flowState, flowResponse } = appState;
 
   const handleGetState = async () => {
     const data = {
@@ -39,7 +39,11 @@ export default function FlowState({ operation }) {
     });
 
     const result = await response.json();
-    setAppState({ flowState: result.state, responseData: result });
+    setAppState({
+      flowState: result.state,
+      responseData: result,
+      flowResponse: result,
+    });
     setIsLoading(false);
   };
 
@@ -62,38 +66,54 @@ export default function FlowState({ operation }) {
             </>
           )}
 
-          {/* {flowState && (
+          {flowState === "delegation_activating" && (
             <>
               <p>
-                <Formatted block>
-                  {JSON.stringify(responseData, null, 2)}
-                </Formatted>
+                The flow <Formatted>{flowId}</Formatted>&apos;s state is{" "}
+                <Formatted>{flowState}</Formatted>, indicating that the Staking
+                API has broadcast the delegate transaction, and the delegation
+                will become active after the activation period.
+              </p>
+              <p>
+                You can proceed to the final step, <b>View All Flows</b>.
               </p>
             </>
-          )} */}
+          )}
+
+          {flowState === "delegate_tx_signature" && (
+            <>
+              <p>
+                The flow <Formatted>{flowId}</Formatted>&apos;s state is{" "}
+                <Formatted>{flowState}</Formatted>, indicating that the Staking
+                API now expects you to create a delegate transaction to complete
+                the flow.
+                <br />
+                <br />
+              </p>
+            </>
+          )}
 
           {flowState === "stake_account" && (
             <>
               <p>
                 The flow <Formatted>{flowId}</Formatted>&apos;s state is{" "}
                 <Formatted>{flowState}</Formatted>, indicating that the Staking
-                API now expects you to create a delegate transaction.
+                API now expects you to create a delegate transaction to complete
+                the flow.
                 <br />
                 <br />
                 For Solana, the <Formatted>create_delegate_tx</Formatted> action
-                has a single input: a Validator address. <br />
+                has a single input: a Validator address.
                 <br />
-                It is also possible to assign a different stake account with the
-                action <Formatted>assign_stake_account</Formatted>.
+                On Devnet, it is possible to use any Vote Account Address and we
+                will supply a default value in the next step. <br />
+                <br />
+                Since we just created and assigned a stake account and are now
+                ready to delegate our SOL, we will continue with the action{" "}
+                <Formatted>create_delegate_tx</Formatted>.
                 <br />
                 <br />
-                <details>
-                  <summary>Click to view the full response</summary>
-                  <Formatted block maxHeight="510px">
-                    {JSON.stringify(responseData, null, 2)}
-                  </Formatted>
-                </details>
-                <Button small href="/operations/sol-staking/delegate">
+                <Button href="/operations/staking/delegate">
                   Proceed to the next step &rarr;
                 </Button>
               </p>
@@ -123,14 +143,14 @@ export default function FlowState({ operation }) {
             </>
           )}
 
-          {flowState === "delegate_tx_broadcasting" && (
+          {flowState === "stake_account_tx_broadcasting" && (
             <>
               <p>
                 Once the signed transaction has been broadcast by the Staking
                 API, it will take a moment to be confirmed on the network. Check
                 the final state of the flow with a GET request to the{" "}
                 <ToolTip
-                  style={{ textDecoration: "underline" }}
+                  style={{ textDecoration: "underline dotted", cursor: "help" }}
                   placement="bottom"
                   title={`/api/v1/flows/<flow_id> - Refer to the Figment Docs for more information regarding endpoints.`}
                 >
@@ -144,7 +164,7 @@ export default function FlowState({ operation }) {
             </>
           )}
 
-          {flowState === "delegated" && (
+          {/* {flowState === "delegated" && (
             <>
               <p>
                 Congratulations! Flow{" "}
@@ -176,9 +196,9 @@ export default function FlowState({ operation }) {
                 that you have created.
               </p>
             </>
-          )}
+          )} */}
 
-          {flowState === "delegate_tx_signature" && (
+          {flowState === "stake_account_tx_signature" && (
             <>
               <p>
                 <WarningOutlined /> The flow state is
@@ -201,46 +221,39 @@ export default function FlowState({ operation }) {
           )}
         </Card>
 
-        {flowState !== "delegated" && (
-          <Button disabled={isLoading} onClick={() => handleGetState()}>
-            Get Current Flow State
+        <Button disabled={isLoading} onClick={() => handleGetState()}>
+          {isLoading && <LoadingOutlined />} Get Current Flow State
+        </Button>
+        <br />
+
+        {responseData &&
+          (flowState === "delegate_tx_broadcasting" ||
+            flowState === "delegated" ||
+            flowState === "stake_account_tx_broadcasting" ||
+            flowState === "stake_account" ||
+            flowState === "delegation_activating") && (
+            <Card
+              small
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "stretch",
+              }}
+            >
+              <h6>&darr; Staking API Response</h6>
+              <Formatted block maxHeight="360px">
+                {JSON.stringify(responseData, null, 2)}
+              </Formatted>
+            </Card>
+          )}
+
+        {flowState === "delegated" && (
+          <Button
+            onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
+            href="/view-all-flows"
+          >
+            Proceed to the final step &rarr;
           </Button>
-        )}
-
-        {isLoading ? (
-          <p>
-            {" "}
-            <LoadingOutlined /> Loading...
-          </p>
-        ) : (
-          <>
-            {responseData &&
-              (flowState === "delegate_tx_broadcasting" ||
-                flowState === "delegated") && (
-                <Card
-                  small
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "stretch",
-                  }}
-                >
-                  <h6>&darr; Staking API Response</h6>
-                  <Formatted block maxHeight="360px">
-                    {JSON.stringify(responseData, null, 2)}
-                  </Formatted>
-                </Card>
-              )}
-
-            {flowState === "delegated" && (
-              <Button
-                onClick={() => setAppState({ ...appState, stepCompleted: 5 })}
-                href="/view-all-flows"
-              >
-                Proceed to the final step &rarr;
-              </Button>
-            )}
-          </>
         )}
 
         <Footer />

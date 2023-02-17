@@ -14,6 +14,7 @@ const initialState = {
   action0Inputs: [], // Inputs for a given action
   action1Inputs: [], // Inputs for a given action
   flowResponse: "", // Capture the Staking API response
+  flowResponseDelegate: "", // Staking API response to delegate transaction
   responseData: "", // Capture the Staking API response
   errorResponse: "", // Capture any error response from the Staking API
   transitionErrorResponse: "", // Capture any transition error from the Staking API
@@ -21,6 +22,7 @@ const initialState = {
   unsignedTransactionPayload: "", // Returned by the Staking API
   decodedTransactionPayload: "", // Decoded using @figmentio/slate or multi-chain-signer-sdk
   signedTransactionPayload: "", // Signed using @figmentio/slate or multi-chain-signer-sdk
+  unsignedDelegateTransactionPayload: "", // Used for Solana delegate transaction
   validatorAddress: "", // Store the validator address for verification during decode/sign
   delegateAmount: "", // Store the delegation amount for verification during decode/sign
   stepCompleted: 0, // Which step has been completed
@@ -33,9 +35,11 @@ const initialState = {
   sol_accountPrivateKey: new Uint8Array(), // Store the
   sol_txhashAirdrop: "", // Store the
   sol_airDropsRequested: 0, // Number of airdrops requested by user
+  sol_TxConfirmations: [], // Airdrop transaction confirmation slots
   sol_createStakeAccountAmount: 0, // Amount used to create a stake account
-  solBalance: 0, // SOL balance
+  solBalance: 0, // SOL balance on Devnet
   stateChange: "", // State change
+  createError: "", // Capture any error when creating an account
 };
 
 const AppStateContext = createContext({

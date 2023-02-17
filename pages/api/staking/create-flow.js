@@ -1,5 +1,5 @@
 export default async function connection(req, res) {
-  const HOSTNAME = "near-slate.datahub.figment.io";
+  const HOSTNAME = "solana-slate.datahub.figment.io";
   const ENDPOINT = "/api/v1/flows";
   const body = req.body;
   try {
@@ -44,7 +44,8 @@ export default async function connection(req, res) {
     if (response.status === 200) {
       res.status(200).json(await response.json());
     }
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
   }
 }

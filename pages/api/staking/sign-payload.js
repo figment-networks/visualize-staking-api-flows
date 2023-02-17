@@ -16,7 +16,7 @@ export default async function signPayload(req, res) {
         };
      */
 
-  const signed = await slate.sign("near", "v1", body.transaction_payload, [
+  const signed = await slate.sign("solana", "v1", body.transaction_payload, [
     body.privateKey,
   ]);
 

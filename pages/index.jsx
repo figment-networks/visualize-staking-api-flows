@@ -42,23 +42,18 @@ export default function IndexPage() {
 
         {!loaded && <></>}
 
-        {loaded && accountAddress && <AccountCard />}
+        {loaded && sol_accountPublicKey && <AccountCard />}
 
-        {loaded && !accountAddress && (
+        {loaded && !sol_accountPublicKey && (
           <>
             <Card small>
-              <h5>Get started by creating a NEAR testnet account &rarr;</h5>
-              <Button href="/create-near-account">Create NEAR Account</Button>
+              <h5>Get started by creating a Solana testnet account &rarr;</h5>
+              <Button href="/create-solana-account">
+                Create Solana Account
+              </Button>
             </Card>
           </>
         )}
-
-        {loaded && sol_accountPublicKey && <AccountCard />}
-
-        <Card small>
-          <h5>Get started by creating a Solana testnet account &rarr;</h5>
-          <Button href="/create-solana-account">Create Solana Account</Button>
-        </Card>
 
         {flowCompleted && (
           <Card small>

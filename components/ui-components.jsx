@@ -270,24 +270,13 @@ export const BreadCrumbs = ({ step = 0 }) => {
 
   const stepRoute = (step) =>
     ({
-      0: "/create-near-account",
+      0: "/create-solana-account",
       1: "/operations/staking/create-flow",
       2: "/operations/staking/submit-data",
       3: "/operations/staking/sign-payload",
       4: "/operations/staking/broadcast-transaction",
       5: "/operations/staking/flow-state",
-      6: "/view-all-flows",
-    }[step]);
-
-  const stepRouteSolana = (step) =>
-    ({
-      0: "/create-solana-account",
-      1: "/operations/sol-staking/create-flow",
-      2: "/operations/sol-staking/submit-data",
-      3: "/operations/sol-staking/sign-payload",
-      4: "/operations/sol-staking/broadcast-transaction",
-      5: "/operations/sol-staking/flow-state",
-      6: "/operations/sol-staking/delegate",
+      6: "/operations/staking/delegate",
       7: "/view-all-flows",
     }[step]);
 
@@ -345,10 +334,7 @@ export const BreadCrumbs = ({ step = 0 }) => {
             }}
             className={step === index ? "current" : ""}
           >
-            <Link
-              href={stepRouteSolana(index)}
-              style={{ textDecoration: "none" }}
-            >
+            <Link href={stepRoute(index)} style={{ textDecoration: "none" }}>
               {text}
             </Link>
           </div>
@@ -358,8 +344,13 @@ export const BreadCrumbs = ({ step = 0 }) => {
   );
 };
 
-export const Formatted = ({ children, block = false, maxHeight = "none" }) => (
-  <code>
+export const Formatted = ({
+  children,
+  block = false,
+  maxHeight = "none",
+  key = "none",
+}) => (
+  <code key={key}>
     <style jsx>{`
       code {
         border-radius: 5px;
@@ -526,3 +517,9 @@ with multi-line support`}
     </>
   );
 }
+
+export const trimmedSolanaAccount = (account) => {
+  let trimmedAccount = account.slice(0, 6);
+  trimmedAccount += `...${account.slice(-6)}`;
+  return <Formatted>{trimmedAccount}</Formatted>;
+};

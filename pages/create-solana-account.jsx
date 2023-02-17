@@ -1,6 +1,6 @@
 import React from "react";
-import CreateSolanaAccount from "@components/CreateSolanaAccount";
+import CreateAccount from "@components/CreateAccount";
 
 export default function createSolanaAccount() {
-  return <CreateSolanaAccount />;
+  return <CreateAccount />;
 }
