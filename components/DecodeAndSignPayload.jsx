@@ -20,6 +20,8 @@ import {
 import { useAppState } from "@utilities/appState";
 
 export default function DecodeAndSignSolanaPayload({ operation }) {
+  const fakesig =
+    "00000000000000000000000006a1d8179137542a983437bdfe2a7ab2557f535c8a78722b68a49dc00000000006a7d517192c5c51218cc94c3d4af17f58daee089ba1fd44e3dbd98a00000000bc5c9f61ac3bba1326c008b6bfaf2739cc4ae8e11ae20323ea3a3672ea99dacb02020200013400000000002f685900000000c80000000000000006a1d8179137542a983437bdfe2a7ab2557f535c8a78722b68a49dc000000000030201047400000000a794868b620f4b32ec9221e900cee6d9bb88219057752502adc16c6298df42dea794868b620f4b32ec9221e900cee6d9bb88219057752502adc16c6298df42de00000000000000000000000000000000a794868b620f4b32ec9221e900cee6d9bb88219057752502adc16c6298df42de";
   const { appState, setAppState } = useAppState();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -473,17 +475,42 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
 
                   <h6>&darr; Signed Transaction Payload</h6>
                   <p>
-                    When used to sign a payload, <b>@figmentio/slate</b> appends
-                    the signature to the unsigned transaction payload. In the
-                    next step, you can send this signed payload to the Staking
-                    API to be broadcast to the network. Mouseover the different
-                    colored sections of the payload below.
+                    When used to sign a payload on Solana,{" "}
+                    <b>@figmentio/slate</b> adds the signature to the beginning
+                    of the unsigned transaction payload. The payload size
+                    remains constant. In the next step, you can send this signed
+                    payload to the Staking API to be broadcast to the network.
+                    Mouseover the different colored sections of the payload
+                    below.
                   </p>
 
                   <Formatted block contrast>
                     <ToolTip
                       placement="top"
-                      title={`This portion is the unsigned transaction payload, also shown on the left.`}
+                      title={`This portion is the signature, created by signing the payload using the private key of the delegator account. It is inserted in the first 130 characters of the transaction payload.`}
+                    >
+                      {/* signature highlight span - 
+                  
+                    signature length for Solana is 130 characters,
+                    added to the beginning of the unsigned payload.
+                    This slice prepended to the unsigned payload is
+                    identical to signedTransactionPayload
+
+                    color: "#8FE2DD"
+                    color: "#CEFCFF"
+                    color: "#FEC70D"
+                    color: "#FFF29B"
+                    color: "#034d76"
+                    color: "#a7431b"
+                  */}
+                      <span style={{ color: "#a7431f" }}>
+                        {signedTransactionPayload.slice(0, 130)}
+                      </span>
+                    </ToolTip>
+
+                    <ToolTip
+                      placement="bottom"
+                      title={`This portion is the remainder of the transaction payload, also shown on the left. You'll notice that the first 130 characters of the unsigned payload are mostly zeroes.`}
                     >
                       {/* payload highlight span - 
                   
@@ -497,31 +524,9 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
                     color: "#034d76"
                     color: "#10726d"
                   */}
-                      <span style={{ color: "#10726d" }}>
-                        {unsignedTransactionPayload}
-                      </span>
-                    </ToolTip>
 
-                    <ToolTip
-                      placement="bottom"
-                      title={`This portion is the signature, created by signing the payload using the private key of the delegator account.`}
-                    >
-                      {/* signature highlight span - 
-                  
-                    signature length for NEAR is 128 characters,
-                    appended to the unsigned payload.
-                    This slice appended to the unsigned payload is
-                    identical to signedTransactionPayload
-
-                    color: "#8FE2DD"
-                    color: "#CEFCFF"
-                    color: "#FEC70D"
-                    color: "#FFF29B"
-                    color: "#034d76"
-                    color: "#a7431b"
-                  */}
-                      <span style={{ color: "#a7431f", background: "rgba" }}>
-                        {signedTransactionPayload.slice(434, 562)}
+                      <span style={{ color: "#10726d", background: "rgba" }}>
+                        {signedTransactionPayload.slice(130, 1008)}
                       </span>
                     </ToolTip>
                   </Formatted>
