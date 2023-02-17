@@ -27,25 +27,25 @@ Otherwise, clone the repository with the HTTPS method as a fallback.
 
 #### SSH Method
 
-`git clone git@github.com:figment-networks/visualize-staking-api-flows.git`
+- `git clone git@github.com:figment-networks/visualize-staking-api-flows.git`
 
 #### HTTPS Method
 
-`git clone https://github.com/figment-networks/visualize-staking-api-flows.git`
+- `git clone https://github.com/figment-networks/visualize-staking-api-flows.git`
 
 ### 2. Enter Directory
 
-`cd visualize-staking-api-flows`
+- `cd visualize-staking-api-flows`
 
 ### 3. Install Dependencies
 
-`npm install`
+- `npm install`
 
 ### 4. Add Figment API Key
 
 If you don't already have an API key, reach out to Figment.
 
-`cp .env.template .env` &rarr; Copies the template file to `.env`.
+- `cp .env.template .env` &rarr; Copies the template file to `.env`.
 
 Paste a valid Figment API key in `.env` after the variable `API_KEY=` (on the same line), then save the file.
 
@@ -56,6 +56,18 @@ API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 **Note**: The `.env` file is already included in the `.gitignore` file for this project.
 Once you have added your API key, make sure to keep it safe to avoid exposing it.
 Check out Figment's [API Key Best Practices](https://docs.figment.io/guides/manage-and-secure-api-keys#api-key-best-practices).
+
+### 4a. Select a Network
+
+#### NEAR
+
+If you would like to proceed with a delegation flow using the **NEAR** blockchain, stay on the `main` branch and continue with **Step 5 - Build the Visualize App**.
+
+#### Solana
+
+If you would like to proceed with a delegation flow using the **Solana** blockchain, switch to the `solana` branch:
+
+- `git switch solana` or `git checkout solana` &rarr; Moves to the correct branch.
 
 ### 5. Build the Visualize App
 
