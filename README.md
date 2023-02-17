@@ -57,6 +57,18 @@ API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 Once you have added your API key, make sure to keep it safe to avoid exposing it.
 Check out Figment's [API Key Best Practices](https://docs.figment.io/guides/manage-and-secure-api-keys#api-key-best-practices).
 
+### 4a. Select a Network
+
+#### NEAR
+
+- If you would like to proceed with a delegation flow using the **NEAR** blockchain, stay on the `main` branch and continue with **Step 5 - Build the Visualize App**.
+
+#### Solana
+
+- If you would like to proceed with a delegation flow using the **Solana** blockchain, switch to the `solana` branch:
+
+`git switch solana` or `git checkout solana` &rarr; Moves to the correct branch.
+
 ### 5. Build the Visualize App
 
 For the best experience and to avoid any slow loading pages, build the app before running it.
