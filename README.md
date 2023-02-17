@@ -67,7 +67,7 @@ If you would like to proceed with a delegation flow using the **NEAR** blockchai
 
 If you would like to proceed with a delegation flow using the **Solana** blockchain, switch to the `solana` branch:
 
-- git switch solana`or`git checkout solana` &rarr; Moves to the correct branch.
+- `git switch solana` or `git checkout solana` &rarr; Moves to the correct branch.
 
 ### 5. Build the Visualize App
 
