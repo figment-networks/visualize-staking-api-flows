@@ -452,10 +452,10 @@ export default function CreateFlowSolana({ operation }) {
                       Use the <Formatted>create_new_stake_account</Formatted>{" "}
                       action to create a stake account and assign it a balance.
                       The inputs for this action are{" "}
-                      <Formatted>{action1Inputs[0].name}</Formatted>,{" "}
-                      <Formatted>{action1Inputs[1].name}</Formatted>,{" "}
-                      <Formatted>{action1Inputs[2].name}</Formatted>,{" "}
-                      <Formatted>{action1Inputs[3].name}</Formatted>.
+                      <Formatted>{action1Inputs[0]?.name}</Formatted>,{" "}
+                      <Formatted>{action1Inputs[1]?.name}</Formatted>,{" "}
+                      <Formatted>{action1Inputs[2]?.name}</Formatted>,{" "}
+                      <Formatted>{action1Inputs[3]?.name}</Formatted>.
                     </p>
                   </li>
 
@@ -465,8 +465,8 @@ export default function CreateFlowSolana({ operation }) {
                       you can use the{" "}
                       <Formatted>assign_stake_account</Formatted> action. The
                       inputs for this action are{" "}
-                      <Formatted>{action0Inputs[0].name}</Formatted> and{" "}
-                      <Formatted>{action0Inputs[1].name}</Formatted>.{" "}
+                      <Formatted>{action0Inputs[0]?.name}</Formatted> and{" "}
+                      <Formatted>{action0Inputs[1]?.name}</Formatted>.{" "}
                     </p>
                   </li>
                 </ul>
