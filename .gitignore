@@ -4,3 +4,11 @@ node_modules
 .vscode
 .DS_Store
 visualize-staking-api-flows.code-workspace
+
+# Solana vote account artifacts
+authorized-withdrawer-keypair.json
+ledger/*
+my-keypair.json
+solana-validator-*.log
+validator-keypair.json
+vote-account-keypair.json
