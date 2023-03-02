@@ -23,6 +23,9 @@ const initialState = {
   decodedTransactionPayload: "", // Decoded using @figmentio/slate or multi-chain-signer-sdk
   signedTransactionPayload: "", // Signed using @figmentio/slate or multi-chain-signer-sdk
   unsignedDelegateTransactionPayload: "", // Used for Solana delegate transaction
+  unsignedSigningPayload: "", // Used for custodial signing of transactions
+  decodedSigningPayload: "", // Used for custodial signing of transactions
+  signedSigningPayload: "", // Used for custodial signing of transactions
   validatorAddress: "", // Store the validator address for verification during decode/sign
   delegateAmount: "", // Store the delegation amount for verification during decode/sign
   stepCompleted: 0, // Which step has been completed

@@ -20,11 +20,12 @@ import {
 import { useAppState } from "@utilities/appState";
 
 export default function DecodeAndSignSolanaPayload({ operation }) {
-  const fakesig =
-    "00000000000000000000000006a1d8179137542a983437bdfe2a7ab2557f535c8a78722b68a49dc00000000006a7d517192c5c51218cc94c3d4af17f58daee089ba1fd44e3dbd98a00000000bc5c9f61ac3bba1326c008b6bfaf2739cc4ae8e11ae20323ea3a3672ea99dacb02020200013400000000002f685900000000c80000000000000006a1d8179137542a983437bdfe2a7ab2557f535c8a78722b68a49dc000000000030201047400000000a794868b620f4b32ec9221e900cee6d9bb88219057752502adc16c6298df42dea794868b620f4b32ec9221e900cee6d9bb88219057752502adc16c6298df42de00000000000000000000000000000000a794868b620f4b32ec9221e900cee6d9bb88219057752502adc16c6298df42de";
   const { appState, setAppState } = useAppState();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [custodialSigningPage, setCustodialSigningPage] = useState(false);
+  const [isCustodialSigningModalOpen, setIsCustodialSigningModalOpen] =
+    useState(false);
 
   // Destructure state variables
   const {
@@ -33,11 +34,9 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
     unsignedTransactionPayload,
     decodedTransactionPayload,
     signedTransactionPayload,
-    accountAddress,
-    accountPublicKey,
-    accountPrivateKey,
-    validatorAddress,
-    delegateAmount,
+    unsignedSigningPayload,
+    decodedSigningPayload,
+    signedSigningPayload,
     stepCompleted,
     sol_accountPublicKey,
     sol_accountPrivateKey,
@@ -52,13 +51,22 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
     setIsModalOpen(false);
   };
 
+  const showCustodialSigningModal = () => {
+    setIsCustodialSigningModalOpen(true);
+  };
+
+  const closeCustodialSigningModal = () => {
+    setIsCustodialSigningModalOpen(false);
+  };
+
   const handleDecode = async (event) => {
     event.preventDefault();
     const form = event.target;
 
     // for @figmentio/slate decode function
     const data = {
-      transaction_payload: form.transaction_payload.value,
+      transaction_payload:
+        form.transaction_payload?.value || form.signing_payload?.value,
       network: "solana",
       operation: "staking",
       version: "v1",
@@ -134,56 +142,124 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
           }}
         >
           <Card small>
-            {!unsignedTransactionPayload && (
+            {custodialSigningPage ? (
               <>
                 <p>
-                  No unsigned transaction payload is available to decode or
-                  sign. Please complete the previous step, <b>Submit Data</b>.
+                  Custodial signing of transactions within Staking API flows,
+                  for example using the{" "}
+                  <Link
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href="https://docs.fireblocks.com/api/#introduction"
+                  >
+                    Fireblocks API
+                  </Link>
+                  , differs from non-custodial signing.
                 </p>
-                <Button
-                  small
-                  href={`/operations/${operation}/submit-data`}
-                  style={{
-                    display: "block",
-                    margin: "0 auto",
-                    marginTop: "2rem",
-                  }}
-                >
-                  &larr; Go Back
-                </Button>
-              </>
-            )}
-            {unsignedTransactionPayload && (
-              <>
                 <p>
                   After receiving the unsigned{" "}
-                  <Formatted>transaction_payload</Formatted> from the Staking
-                  API, the next step is to decode it for verification before
-                  signing it with the necessary private key(s).
+                  <Formatted>signing_payload</Formatted> from the Staking API,
+                  the next step is to send it to the Fireblocks API for signing.
                 </p>
-
-                <p></p>
-
                 <p>
-                  Developers can write their own verification script, or
-                  leverage Figment’s npm package{" "}
-                  <ToolTip
-                    placement="top"
-                    title={`Click here to view the package details on npmjs.com in a new tab.`}
-                  >
-                    <Link
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.npmjs.com/package/@figmentio/slate"
-                    >
-                      <b>@figmentio/slate</b>
-                    </Link>
-                  </ToolTip>
-                  .
+                  <b>Note</b>: The <Formatted>signing_payload</Formatted> is a
+                  hashed version of the{" "}
+                  <Formatted>transaction_payload</Formatted>.{" "}
+                  <b>@figmentio/slate</b> does not support decoding the signing
+                  payload directly.
                 </p>
-                <br />
-                <Button secondary small onClick={() => showModal()}>
+                <Button
+                  secondary
+                  small
+                  onClick={() => showCustodialSigningModal()}
+                >
                   Click Here For More Information
+                </Button>
+                <br />
+              </>
+            ) : (
+              <>
+                {!unsignedTransactionPayload && (
+                  <>
+                    <p>
+                      No unsigned transaction payload is available to decode or
+                      sign. Please complete the previous step,{" "}
+                      <b>Submit Data</b>.
+                    </p>
+                    <Button
+                      small
+                      href={`/operations/${operation}/submit-data`}
+                      style={{
+                        display: "block",
+                        margin: "0 auto",
+                        marginTop: "2rem",
+                      }}
+                    >
+                      &larr; Go Back
+                    </Button>
+                  </>
+                )}
+                {unsignedTransactionPayload && (
+                  <>
+                    <p>
+                      After receiving the unsigned{" "}
+                      <Formatted>transaction_payload</Formatted> from the
+                      Staking API, the next step is to decode it for
+                      verification before signing it with the necessary private
+                      key(s).
+                    </p>
+
+                    <p></p>
+
+                    <p>
+                      Developers can write their own verification script, or
+                      leverage Figment’s npm package{" "}
+                      <ToolTip
+                        placement="top"
+                        title={`Click here to view the package details on npmjs.com in a new tab.`}
+                      >
+                        <Link
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="https://www.npmjs.com/package/@figmentio/slate"
+                        >
+                          <b>@figmentio/slate</b>
+                        </Link>
+                      </ToolTip>
+                      .
+                    </p>
+                    <br />
+                    <Button secondary small onClick={() => showModal()}>
+                      Click Here For More Information
+                    </Button>
+                    <br />
+                  </>
+                )}
+              </>
+            )}
+
+            {custodialSigningPage ? (
+              <>
+                <Button
+                  secondary
+                  small
+                  onClick={() => {
+                    setCustodialSigningPage(false);
+                  }}
+                >
+                  Click Here To Explore Non-Custodial Signing
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  secondary
+                  small
+                  onClick={() => {
+                    setCustodialSigningPage(true);
+                  }}
+                >
+                  Click Here To Explore Custodial Signing
                 </Button>
               </>
             )}
@@ -198,7 +274,31 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
             marginBottom: "2.4rem",
           }}
         >
-          {unsignedTransactionPayload && (
+          {custodialSigningPage && (
+            <Card small>
+              <form onSubmit={handleDecode} method="post">
+                <h6>&darr; Signing Payload</h6>
+                <textarea
+                  className="textArea"
+                  id="signing_payload"
+                  name="signing_payload"
+                  // defaultValue={unsignedSigningPayload}
+                  defaultValue={
+                    flowResponse?.actions[1]?.inputs[1].signing_payload
+                  }
+                  required
+                />
+                <br />
+                {/* <Button
+                  disabled={decodedSigningPayload || signedSigningPayload}
+                  type="submit"
+                >
+                  Decode Signing Payload
+                </Button> */}
+              </form>
+            </Card>
+          )}
+          {unsignedTransactionPayload && !custodialSigningPage && (
             <Card small>
               <form onSubmit={handleDecode} method="post">
                 <h6>&darr; Unsigned Transaction Payload</h6>
@@ -224,21 +324,71 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
         </LayoutColumn.Column>
 
         <LayoutColumn.Column>
-          {!decodedTransactionPayload && unsignedTransactionPayload && (
+          {custodialSigningPage && (
             <>
-              <p className="spacer">
-                {isLoading && (
-                  <>
-                    <p>
-                      <LoadingOutlined /> Decoding Payload...
-                    </p>
-                  </>
-                )}
-                The decoded payload will appear here after you click{" "}
-                <b>Decode Transaction Payload</b>.
-              </p>
+              <Card small>
+                <p>
+                  The <Formatted>signing_payload</Formatted> is located in the{" "}
+                  <Formatted>signatures</Formatted> input of the{" "}
+                  <Formatted>sign_stake_account_tx</Formatted> action in the
+                  Staking API response. For other networks and flows, the{" "}
+                  <Formatted>signing_payload</Formatted> will be located in the
+                  relevant signing action.
+                  <br />
+                  <details>
+                    <summary>
+                      Click to view the relevant portion of the Staking API
+                      response
+                    </summary>
+                    <Formatted block>
+                      {JSON.stringify(
+                        flowResponse?.actions[1].inputs[1],
+                        null,
+                        2
+                      )}
+                    </Formatted>
+                  </details>
+                </p>
+                <p>
+                  Follow the guide{" "}
+                  <Link
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href="https://docs.figment.io/guides/staking-api/fireblocks-signing-transactions"
+                  >
+                    Signing Transactions with the Fireblocks API
+                  </Link>{" "}
+                  if you require a custodial signing solution. This app does not
+                  currently support signing using the Fireblocks API.
+                </p>
+                <Button
+                  small
+                  onClick={() => {
+                    setCustodialSigningPage(false);
+                  }}
+                >
+                  Continue with Non-Custodial Signing
+                </Button>
+              </Card>
             </>
           )}
+          {!custodialSigningPage &&
+            !decodedTransactionPayload &&
+            unsignedTransactionPayload && (
+              <>
+                <p className="spacer">
+                  {isLoading && (
+                    <>
+                      <p>
+                        <LoadingOutlined /> Decoding Payload...
+                      </p>
+                    </>
+                  )}
+                  The decoded payload will appear here after you click{" "}
+                  <b>Decode Transaction Payload</b>.
+                </p>
+              </>
+            )}
           {decodedTransactionPayload &&
             !isLoading &&
             !signedTransactionPayload && (
@@ -559,6 +709,7 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
         <Footer />
       </LayoutColumn>
 
+      {/* Non-custodial signing modal (default) */}
       <Modal
         title="Details"
         width="calc(40% - 10px)"
@@ -566,6 +717,20 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
         open={isModalOpen}
         onCancel={closeModal}
       >
+        <p>
+          <b>Note</b>: You are currently viewing the page for{" "}
+          <b>{custodialSigningPage ? "custodial" : "non-custodial"}</b> signing.
+          Use the button &quot;
+          <b>
+            Click Here to Explore{" "}
+            {custodialSigningPage ? "Non-Custodial" : "Custodial"} Signing
+          </b>
+          &quot; outside of this modal, for further information on the
+          respective signing method. This will display a different page for the
+          current step.
+        </p>
+        <br />
+
         <p>There are several methods available for signing transactions:</p>
         <ul>
           <li>
@@ -582,7 +747,16 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
           <br />
 
           <li>
-            The unsigned transaction payload can be found in the response from
+            <b>Non-custodial signing</b>: For more information about decoding
+            and signing payloads, refer to the guide{" "}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://docs.figment.io/guides/staking-api/figment-signing-transactions"
+            >
+              Signing Transactions with Figment&apos;s npm Package
+            </Link>
+            . The unsigned transaction payload can be found in the response from
             the Staking API after submitting data to a flow. Refer to the{" "}
             <Link
               target="_blank"
@@ -596,21 +770,8 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
           <br />
 
           <li>
-            For more information about decoding and signing payloads, refer to
-            the guide{" "}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.figment.io/guides/staking-api/figment-signing-transactions"
-            >
-              Signing Transactions with Figment&apos;s npm Package
-            </Link>
-          </li>
-          <br />
-
-          <li>
-            If you&apos;re signing with a custodial solution such as the
-            Fireblocks API, refer to the guide{" "}
+            <b>Custodial signing</b>: If you&apos;re signing with a custodial
+            solution such as the Fireblocks API, refer to the guide{" "}
             <Link
               target="_blank"
               rel="noopener noreferrer"
@@ -628,6 +789,83 @@ export default function DecodeAndSignSolanaPayload({ operation }) {
             might choose to write their own solution using a library intended
             for a specific network (ex. Solana&apos;s web3.js, Avalanche.js,
             Polkadot.js, etc.)
+          </li>
+          <br />
+
+          <li>
+            The signature is appended to the payload. At this point in the flow,
+            another request is made to the Staking API, including the signed
+            payload. The Staking API then broadcasts the signed transaction to
+            the blockchain, completing the flow
+          </li>
+          <br />
+
+          <li>
+            <b>Note</b>: In the context of this application, the private key
+            being used to sign the transaction payload is the one{" "}
+            <b>
+              <i>generated by this app</i>
+            </b>
+            . This is not a production-grade pattern for handling private keys!
+            The signing process used here is only intended to illustrate the
+            mechanics of signing.{" "}
+            <b>
+              Always excercise extreme caution when handling cryptographic
+              keypairs, following your organizations security best practices at
+              all times
+            </b>
+          </li>
+          <br />
+        </ul>
+      </Modal>
+
+      {/* Custodial signing modal */}
+      <Modal
+        title="Details"
+        width="calc(40% - 10px)"
+        footer={null}
+        open={isCustodialSigningModalOpen}
+        onCancel={closeCustodialSigningModal}
+      >
+        <p>
+          <b>Note</b>: You are currently viewing the page for{" "}
+          <b>{custodialSigningPage ? "custodial" : "non-custodial"}</b> signing.
+          Use the button &quot;
+          <b>
+            Click Here to{" "}
+            {custodialSigningPage
+              ? "Continue with Non-Custodial"
+              : "Explore Custodial"}{" "}
+            Signing
+          </b>
+          &quot; outside of this modal, for further information on the
+          respective signing method. This will display a different page for the
+          current step.
+        </p>
+        <br />
+
+        <p>There are several methods available for signing transactions:</p>
+        <ul>
+          <li>
+            For any network, the payload can be signed by applying the correct
+            signing algorithm to the transaction, using a valid keypair. This
+            can be accomplished with <b>@figmentio/slate</b>, or developers
+            might choose to write their own solution using a library intended
+            for a specific network (ex. Solana&apos;s web3.js, Avalanche.js,
+            Polkadot.js, etc.)
+          </li>
+          <br />
+
+          <li>
+            If you&apos;re signing with a custodial solution such as the
+            Fireblocks API, refer to the guide{" "}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://docs.figment.io/guides/staking-api/fireblocks-signing-transactions"
+            >
+              Signing Transactions with the Fireblocks API
+            </Link>
           </li>
           <br />
 
