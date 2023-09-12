@@ -1,4 +1,6 @@
-# Visualize Staking API Flows
+# This project is no longer maintained.
+
+## Visualize Staking API Flows
 
 Welcome to the Figment Staking API. The goal of this app is to provide you with a way to visualize and interact with Staking API flows, to better understand how they function.
 
